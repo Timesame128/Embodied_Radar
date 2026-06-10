@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="最近 15 天具身智能 arXiv 论文雷达">
+  <meta name="papers-url" content="{{ papers_url|default('/api/papers') }}">
+  <meta name="refresh-url" content="{{ refresh_url|default('/api/refresh') }}">
+  <meta name="deployment-mode" content="{{ deployment_mode|default('local') }}">
+  <title>Embodied Radar · 具身智能论文雷达</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% if style_url is defined %}{{ style_url }}{% else %}{{ url_for('static', filename='style.css') }}{% endif %}">
+</head>
+<body>
+  <header class="hero">
+    <nav>
+      <a class="brand" href="/">
+        <span class="brand-mark">ER</span>
+        <span>Embodied Radar</span>
+      </a>
+      <button id="refreshButton" class="refresh-button" type="button">立即刷新</button>
+    </nav>
+    <div class="hero-copy">
+      <p class="eyebrow">ARXIV · LAST 15 DAYS</p>
+      <h1>追踪具身智能<br><span>正在发生的事</span></h1>
+      <p class="intro">自动发现、二次分类并整理最近 15 天的具身智能论文。论文、PDF 与项目链接，一步直达。</p>
+    </div>
+    <div class="stats">
+      <div><strong id="paperCount">—</strong><span>篇论文</span></div>
+      <div><strong id="categoryCount">—</strong><span>个方向</span></div>
+      <div><strong id="updatedAt">等待首次同步</strong><span>最近更新</span></div>
+    </div>
+  </header>
+
+  <main>
+    <section class="toolbar" aria-label="论文筛选">
+      <label class="search-box">
+        <span>⌕</span>
+        <input id="searchInput" type="search" placeholder="搜索标题、作者、团队单位…" autocomplete="off">
+      </label>
+      <div id="categoryFilters" class="filters"></div>
+    </section>
+
+    <section class="section-heading">
+      <div>
+        <p class="eyebrow">LATEST RESEARCH</p>
+        <h2>最新论文</h2>
+      </div>
+      <p id="resultHint">正在读取本地数据…</p>
+    </section>
+
+    <section id="paperGrid" class="paper-grid" aria-live="polite"></section>
+    <section id="emptyState" class="empty-state" hidden>
+      <div class="empty-orbit"></div>
+      <h2>还没有可展示的论文</h2>
+      <p id="emptyHint">点击“立即刷新”从 arXiv 获取最新结果。首次同步可能需要一点时间。</p>
+    </section>
+  </main>
+
+  <footer>
+    <span>Embodied Radar</span>
+    <span>数据来自 arXiv，单位信息由 OpenAlex 辅助匹配</span>
+  </footer>
+
+  <script src="{% if script_url is defined %}{{ script_url }}{% else %}{{ url_for('static', filename='app.js') }}{% endif %}"></script>
+</body>
+</html>
