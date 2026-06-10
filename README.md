@@ -3,6 +3,8 @@
 自动追踪 arXiv 最近 15 天具身智能论文的 Web 应用，支持本地 Flask
 运行和 GitHub Pages 自动发布。
 
+链接：https://timesame128.github.io/reach-arXiv/
+
 ## 功能
 
 - 从 arXiv API 自动抓取最近论文，每 6 小时刷新一次
