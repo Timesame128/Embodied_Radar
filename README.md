@@ -75,7 +75,8 @@ python -m pytest
 
 ## 会议与奖项数据
 
-会议论文、正式 venue、发表年份和引用量来自 OpenAlex。GitHub Pages 每 6 小时自动刷新，
+会议论文原始目录优先来自 OpenAlex，venue 缺失时自动回退到 DBLP；引用量、摘要和单位
+由 OpenAlex 补充。GitHub Pages 每 6 小时自动刷新，
 并把成功获取的 `data/papers.json` 提交回仓库。部署时请在仓库
 `Settings → Secrets and variables → Actions` 中添加 `OPENALEX_API_KEY`；工作流会在每次
 更新时刷新引用量。

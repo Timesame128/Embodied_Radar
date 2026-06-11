@@ -10,6 +10,7 @@ from embodied_arxiv.arxiv_client import ArxivClient
 from embodied_arxiv.awards import AwardCatalog
 from embodied_arxiv.classifier import classify, normalize_text
 from embodied_arxiv.conferences import SUPPORTED_CONFERENCES, detect_conferences
+from embodied_arxiv.dblp import DblpClient
 from embodied_arxiv.openalex import OpenAlexClient
 
 
@@ -48,6 +49,10 @@ class PaperService:
             api_key=openalex_api_key,
             conference_max_results=conference_max_results,
             conference_years=conference_years,
+        )
+        self.dblp = DblpClient(
+            max_results=conference_max_results,
+            years=conference_years,
         )
         self.awards = AwardCatalog(awards_path)
         self._lock = threading.Lock()
@@ -208,10 +213,15 @@ class PaperService:
             conference_papers = []
             for conference in SUPPORTED_CONFERENCES:
                 try:
-                    fetched = self.openalex.conference_papers(conference)
+                    fetched = self._fetch_conference(conference)
                     selected = self._classify_conference_papers(fetched, conference)
                     if not selected:
                         raise RuntimeError("主题筛选后没有符合条件的论文")
+                    if any(
+                        paper.get("id", "").startswith("dblp:")
+                        for paper in selected
+                    ):
+                        selected = self.openalex.enrich_papers(selected, limit=40)
                     conference_papers.extend(selected)
                 except Exception as exc:
                     cached_for_conference = [
@@ -235,6 +245,17 @@ class PaperService:
         finally:
             with self._lock:
                 self._refreshing = False
+
+    def _fetch_conference(self, conference: str) -> list[dict]:
+        try:
+            return self.openalex.conference_papers(conference)
+        except Exception as openalex_error:
+            papers = self.dblp.conference_papers(conference)
+            if not papers:
+                raise RuntimeError(
+                    f"OpenAlex 与 DBLP 均未返回数据；OpenAlex: {openalex_error}"
+                )
+            return papers
 
     def _refresh_arxiv(self, existing: dict[str, dict]) -> list[dict]:
         selected = []

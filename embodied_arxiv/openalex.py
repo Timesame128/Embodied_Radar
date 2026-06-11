@@ -79,6 +79,52 @@ class OpenAlexClient:
             raise RuntimeError(f"OpenAlex 未返回 {conference} 会议论文")
         return papers
 
+    def enrich_papers(self, papers: list[dict], limit: int = 100) -> list[dict]:
+        enriched = []
+        for index, paper in enumerate(papers):
+            item = dict(paper)
+            if index >= limit:
+                enriched.append(item)
+                continue
+            try:
+                match = self._work_for_title(item.get("title", ""))
+            except Exception:
+                match = None
+            if match:
+                item.update(
+                    {
+                        "summary": _abstract(match.get("abstract_inverted_index"))
+                        or item.get("summary", ""),
+                        "cited_by_count": int(match.get("cited_by_count") or 0),
+                        "institutions": _institutions(match)
+                        or item.get("institutions", []),
+                        "institutions_source": "OpenAlex",
+                    }
+                )
+            enriched.append(item)
+        return enriched
+
+    def _work_for_title(self, title: str) -> dict | None:
+        if not title:
+            return None
+        data = self._get(
+            self.works_endpoint,
+            {
+                "search": title,
+                "per-page": 3,
+                "select": (
+                    "title,display_name,cited_by_count,authorships,"
+                    "abstract_inverted_index"
+                ),
+            },
+        )
+        normalized = _normalize(title)
+        for work in data.get("results", []):
+            candidate = _normalize(work.get("display_name") or work.get("title", ""))
+            if SequenceMatcher(None, normalized, candidate).ratio() >= 0.92:
+                return work
+        return None
+
     def _source_ids(self, conference: str) -> list[str]:
         config = CONFERENCES[conference]
         aliases = [_normalize(alias) for alias in config["aliases"]]
