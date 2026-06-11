@@ -4,11 +4,11 @@ on:
   push:
     branches: ["main", "master"]
   schedule:
-    - cron: "0 * * * *"
+    - cron: "17 */6 * * *"
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -36,7 +36,25 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Refresh papers and build site
+        env:
+          OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
+          OPENALEX_EMAIL: ${{ secrets.OPENALEX_EMAIL }}
+          CONFERENCE_MAX_RESULTS: "1000"
+          CONFERENCE_YEARS: "5"
+          REQUIRE_CONFERENCE_DATA: "1"
         run: python build_static.py --refresh
+
+      - name: Persist refreshed paper cache
+        run: |
+          if git diff --quiet -- data/papers.json; then
+            echo "Paper cache is already up to date."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/papers.json
+          git commit -m "chore: refresh paper data [skip ci]"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
 
       - name: Configure Pages
         uses: actions/configure-pages@v5

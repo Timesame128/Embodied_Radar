@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import shutil
 from pathlib import Path
 
@@ -18,6 +19,11 @@ def build(output_dir: Path, refresh: bool = False) -> dict:
         cache_path=str(ROOT / "data" / "papers.json"),
         days=15,
         max_results=300,
+        openalex_email=os.getenv("OPENALEX_EMAIL", ""),
+        openalex_api_key=os.getenv("OPENALEX_API_KEY", ""),
+        conference_max_results=int(os.getenv("CONFERENCE_MAX_RESULTS", "200")),
+        conference_years=int(os.getenv("CONFERENCE_YEARS", "5")),
+        awards_path=str(ROOT / "data" / "awards.json"),
     )
     if refresh:
         service.refresh()
@@ -26,6 +32,17 @@ def build(output_dir: Path, refresh: bool = False) -> dict:
     if not data["papers"]:
         error = data.get("last_error") or "缓存中没有最近 15 天的论文"
         raise RuntimeError(f"无法构建站点：{error}")
+    if os.getenv("REQUIRE_CONFERENCE_DATA", "0") == "1":
+        missing = [
+            conference
+            for conference in data["conferences"]
+            if data["section_counts"].get(conference, 0) == 0
+        ]
+        if missing:
+            details = data.get("last_error") or "未返回错误详情"
+            raise RuntimeError(
+                f"会议数据同步不完整：{', '.join(missing)}。{details}"
+            )
 
     if output_dir.exists():
         shutil.rmtree(output_dir)
@@ -50,7 +67,6 @@ def build(output_dir: Path, refresh: bool = False) -> dict:
     public_data = {
         **data,
         "refreshing": False,
-        "last_error": "",
     }
     (output_dir / "data" / "papers.json").write_text(
         json.dumps(public_data, ensure_ascii=False, indent=2),
@@ -70,4 +86,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
