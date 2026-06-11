@@ -14,6 +14,9 @@
 - 自动提取摘要/备注中的项目与代码链接
 - 一键打开 arXiv 详情、PDF、项目或代码页面
 - OpenAlex 辅助补全作者团队单位；匹配失败时明确提示
+- 识别并筛选 CoRL、ICRA、RSS、IROS、CVPR、ICLR、NeurIPS（NIPS）、ICML、ICCV 论文
+- arXiv 与各会议独立成区，支持时间、引用量排序及年份、引用量区间筛选
+- Best Paper、Outstanding Paper、Honorable Mention 等荣誉通过官方清单人工核验
 
 ## 启动
 
@@ -57,6 +60,10 @@ python -m http.server 8000 --directory _site
 - `REFRESH_INTERVAL_MINUTES`：自动刷新间隔，默认 `360`
 - `ARXIV_MAX_RESULTS`：每次 arXiv 查询上限，默认 `300`
 - `OPENALEX_EMAIL`：可选，OpenAlex polite pool 邮箱
+- `OPENALEX_API_KEY`：OpenAlex API Key，用于同步会议论文和引用量
+- `CONFERENCE_MAX_RESULTS`：每个会议最多缓存的论文数，默认 `200`，最高 `1000`
+- `CONFERENCE_YEARS`：会议论文回溯年数，默认 `5`
+- `AWARDS_PATH`：奖项清单路径，默认 `data/awards.json`
 - `PORT`：服务端口，默认 `5000`
 - `DISABLE_SCHEDULER=1`：关闭后台自动刷新
 
@@ -65,3 +72,25 @@ python -m http.server 8000 --directory _site
 ```powershell
 python -m pytest
 ```
+
+## 会议与奖项数据
+
+会议论文、正式 venue、发表年份和引用量来自 OpenAlex。GitHub Pages 每 6 小时自动刷新，
+并把成功获取的 `data/papers.json` 提交回仓库。部署时请在仓库
+`Settings → Secrets and variables → Actions` 中添加 `OPENALEX_API_KEY`；工作流会在每次
+更新时刷新引用量。
+
+奖项不能由引用量可靠推断，因此使用 `data/awards.json` 人工维护。每条记录可填写：
+
+```json
+{
+  "title": "论文完整标题",
+  "doi": "可选 DOI",
+  "conference": "CoRL",
+  "year": 2025,
+  "award": "Best Paper",
+  "source_url": "会议官方奖项页面"
+}
+```
+
+系统优先按 DOI、其次按规范化标题匹配，只展示经过清单确认的获奖论文。

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="最近 15 天具身智能 arXiv 论文雷达">
+  <meta name="description" content="具身智能 arXiv 与顶级会议论文雷达">
   <meta name="papers-url" content="{{ papers_url|default('/api/papers') }}">
   <meta name="refresh-url" content="{{ refresh_url|default('/api/refresh') }}">
   <meta name="deployment-mode" content="{{ deployment_mode|default('local') }}">
@@ -16,37 +16,62 @@
 <body>
   <header class="hero">
     <nav>
-      <a class="brand" href="/">
-        <span class="brand-mark">ER</span>
-        <span>Embodied Radar</span>
-      </a>
+      <div class="brand-group">
+        <a class="brand" href="/">
+          <span class="brand-mark">ER</span>
+          <span>Embodied Radar</span>
+        </a>
+        <a class="repo-link" href="https://github.com/Timesame128/reach-arXiv" target="_blank" rel="noopener noreferrer">Timesame128 / reach-arXiv ↗</a>
+      </div>
       <button id="refreshButton" class="refresh-button" type="button">立即刷新</button>
     </nav>
     <div class="hero-copy">
-      <p class="eyebrow">ARXIV · LAST 15 DAYS</p>
+      <p class="eyebrow">ARXIV · TOP CONFERENCES · CITATION RADAR</p>
       <h1>追踪具身智能<br><span>正在发生的事</span></h1>
-      <p class="intro">自动发现、二次分类并整理最近 15 天的具身智能论文。论文、PDF 与项目链接，一步直达。</p>
+      <p class="intro">arXiv 最新研究与九大会议论文独立呈现，支持按发表时间、引用量和研究方向筛选，并收录 Best Paper 等特别荣誉。</p>
     </div>
     <div class="stats">
       <div><strong id="paperCount">—</strong><span>篇论文</span></div>
-      <div><strong id="categoryCount">—</strong><span>个方向</span></div>
+      <div><strong id="sectionCount">—</strong><span>个专区</span></div>
       <div><strong id="updatedAt">等待首次同步</strong><span>最近更新</span></div>
     </div>
   </header>
 
   <main>
+    <section class="source-nav" aria-label="论文专区">
+      <div id="sourceTabs" class="source-tabs"></div>
+    </section>
+
     <section class="toolbar" aria-label="论文筛选">
       <label class="search-box">
         <span>⌕</span>
-        <input id="searchInput" type="search" placeholder="搜索标题、作者、团队单位…" autocomplete="off">
+        <input id="searchInput" type="search" placeholder="搜索标题、作者、单位、奖项…" autocomplete="off">
       </label>
-      <div id="categoryFilters" class="filters"></div>
+      <div class="category-filter-group">
+        <span class="filter-label">研究方向</span>
+        <div id="categoryFilters" class="category-filters"></div>
+      </div>
+      <div class="advanced-filters">
+        <label>排序方式
+          <select id="sortSelect">
+            <option value="date_desc">时间：最新优先</option>
+            <option value="date_asc">时间：最早优先</option>
+            <option value="citations_desc">引用量：从高到低</option>
+            <option value="citations_asc">引用量：从低到高</option>
+          </select>
+        </label>
+        <label>起始年份<input id="fromYearInput" type="number" min="1950" placeholder="不限"></label>
+        <label>结束年份<input id="toYearInput" type="number" min="1950" placeholder="不限"></label>
+        <label>最低引用<input id="minCitationsInput" type="number" min="0" placeholder="0"></label>
+        <label>最高引用<input id="maxCitationsInput" type="number" min="0" placeholder="不限"></label>
+      </div>
+      <button id="clearFiltersButton" class="clear-filters" type="button">清除筛选</button>
     </section>
 
     <section class="section-heading">
       <div>
-        <p class="eyebrow">LATEST RESEARCH</p>
-        <h2>最新论文</h2>
+        <p id="sectionEyebrow" class="eyebrow">ARXIV · LATEST</p>
+        <h2 id="sectionTitle">arXiv 最新论文</h2>
       </div>
       <p id="resultHint">正在读取本地数据…</p>
     </section>
@@ -55,13 +80,13 @@
     <section id="emptyState" class="empty-state" hidden>
       <div class="empty-orbit"></div>
       <h2>还没有可展示的论文</h2>
-      <p id="emptyHint">点击“立即刷新”从 arXiv 获取最新结果。首次同步可能需要一点时间。</p>
+      <p id="emptyHint">当前专区暂无符合条件的论文，请尝试放宽筛选条件。</p>
     </section>
   </main>
 
   <footer>
-    <span>Embodied Radar</span>
-    <span>数据来自 arXiv，单位信息由 OpenAlex 辅助匹配</span>
+    <a href="https://github.com/Timesame128/reach-arXiv" target="_blank" rel="noopener noreferrer">Embodied Radar · Open source on GitHub ↗</a>
+    <span>arXiv 提供预印本；OpenAlex 提供会议元数据与引用量；奖项以官方清单人工核验</span>
   </footer>
 
   <script src="{% if script_url is defined %}{{ script_url }}{% else %}{{ url_for('static', filename='app.js') }}{% endif %}"></script>

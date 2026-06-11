@@ -20,6 +20,10 @@ def create_app(testing: bool = False) -> Flask:
         days=int(os.getenv("PAPER_DAYS", "15")),
         max_results=int(os.getenv("ARXIV_MAX_RESULTS", "300")),
         openalex_email=os.getenv("OPENALEX_EMAIL", ""),
+        openalex_api_key=os.getenv("OPENALEX_API_KEY", ""),
+        conference_max_results=int(os.getenv("CONFERENCE_MAX_RESULTS", "200")),
+        conference_years=int(os.getenv("CONFERENCE_YEARS", "5")),
+        awards_path=os.getenv("AWARDS_PATH", "data/awards.json"),
     )
     app.extensions["paper_service"] = service
 
@@ -30,8 +34,23 @@ def create_app(testing: bool = False) -> Flask:
     @app.get("/api/papers")
     def papers():
         category = request.args.get("category", "").strip()
+        conference = request.args.get("conference", "").strip()
+        source = request.args.get("source", "").strip()
         keyword = request.args.get("q", "").strip()
-        return jsonify(service.list_papers(category=category, keyword=keyword))
+        sort = request.args.get("sort", "date_desc").strip()
+        return jsonify(
+            service.list_papers(
+                category=category,
+                conference=conference,
+                source=source,
+                keyword=keyword,
+                sort=sort,
+                from_year=_optional_int(request.args.get("from_year")),
+                to_year=_optional_int(request.args.get("to_year")),
+                min_citations=_optional_int(request.args.get("min_citations")),
+                max_citations=_optional_int(request.args.get("max_citations")),
+            )
+        )
 
     @app.get("/api/status")
     def status():
@@ -63,6 +82,13 @@ def start_scheduler(service: PaperService) -> None:
 
 app = create_app()
 
+
+def _optional_int(value: str | None) -> int | None:
+    try:
+        return int(value) if value not in (None, "") else None
+    except ValueError:
+        return None
+
 if __name__ == "__main__":
     app.run(
         host=os.getenv("HOST", "127.0.0.1"),
@@ -70,4 +96,3 @@ if __name__ == "__main__":
         debug=os.getenv("FLASK_DEBUG", "0") == "1",
         use_reloader=False,
     )
-
