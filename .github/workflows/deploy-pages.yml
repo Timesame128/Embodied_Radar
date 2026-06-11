@@ -4,7 +4,7 @@ on:
   push:
     branches: ["main", "master"]
   schedule:
-    - cron: "17 */6 * * *"
+    - cron: "0 * * * *"
   workflow_dispatch:
 
 permissions:
@@ -49,4 +49,3 @@ jobs:
       - name: Deploy Pages
         id: deployment
         uses: actions/deploy-pages@v4
-
