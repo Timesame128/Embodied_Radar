@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-06-13T14:33:59.071851+00:00",
+  "updated_at": "2026-06-13T19:57:26.184743+00:00",
   "arxiv_papers": [
     {
       "id": "2606.13677v1",
@@ -969,8 +969,11 @@
         "embodied agent",
         "exploration"
       ],
-      "institutions": [],
-      "institutions_source": ""
+      "institutions": [
+        "Hong Kong University of Science and Technology",
+        "University of Hong Kong"
+      ],
+      "institutions_source": "OpenAlex"
     },
     {
       "id": "2606.12783v1",
@@ -12839,285 +12842,6 @@
       ],
       "institutions": [],
       "institutions_source": ""
-    },
-    {
-      "id": "2606.00269v1",
-      "title": "Closed-Loop Neural Activation Control in Vision-Language-Action Models",
-      "summary": "Vision-Language-Action (VLA) models can be steered at test time by intervening on semantically meaningful internal directions, but existing methods use a fixed steering coefficient, effectively operating in open loop. This is poorly suited to embodied control, where task state and concept error evolve over time, often causing overcorrection, oscillation, and reduced task success, especially for temporal behaviors such as speed and smoothness. We propose CTRL-STEER, a closed-loop framework that replaces static intervention strength with adaptive, time-varying control signals. The key idea is to decouple representation from regulation: rather than assuming temporal concepts are directly controlled by individual neurons, we steer along motion-aligned residual directions while a feedback controller adjusts intervention magnitude online. We instantiate this framework with both PID and reinforcement learning based controllers. Experiments with a fine-tuned OpenVLA policy on four LIBERO task suites show that CTRL-STEER achieves more stable concept regulation and a better steering-task success trade-off than fixed-coefficient baselines, without modifying or retraining the base model.",
-      "authors": [
-        "Abhijith Babu",
-        "Ramneet Kaur",
-        "Nathaniel D. Bastian",
-        "Olivera Kotevska",
-        "Susmit Jha",
-        "Yanzhao Wu",
-        "Sumit Kumar Jha",
-        "Anirban Roy"
-      ],
-      "published": "2026-05-29T18:59:53Z",
-      "updated": "2026-05-29T18:59:53Z",
-      "published_ts": 1780081193.0,
-      "arxiv_url": "http://arxiv.org/abs/2606.00269v1",
-      "pdf_url": "https://arxiv.org/pdf/2606.00269v1",
-      "primary_category": "cs.AI",
-      "arxiv_categories": [
-        "cs.AI"
-      ],
-      "comment": "Accepted at the IEEE/CVF CVPR 2026 Workshop on Visual Concepts (VisCon). 25 pages, 8 figures, including supplementary material",
-      "journal_ref": "",
-      "doi": "",
-      "doi_url": "",
-      "external_urls": [],
-      "source_kind": "arxiv",
-      "conference": "",
-      "conferences": [
-        "CVPR"
-      ],
-      "publication_year": 2026,
-      "cited_by_count": 0,
-      "awards": [],
-      "embodied_categories": [
-        "视觉-语言-动作"
-      ],
-      "match_evidence": [
-        "embodied",
-        "vision-language-action"
-      ],
-      "institutions": [],
-      "institutions_source": ""
-    },
-    {
-      "id": "2606.00267v1",
-      "title": "StressDream: Steering Video World Models for Robust Policy Evaluation and Improvement",
-      "summary": "Video world models (WMs) have shown promise for policy evaluation and improvement by imagining realistic future observations conditioned on ego-robot actions. While WMs can model distributions over futures, policy evaluation and improvement typically rely on nominal imaginations, which can miss high-impact outcomes of robot actions unless prohibitively many samples are drawn. To enable robust policy evaluation and improvement over WM imaginations, we propose StressDream, which steers imaginations toward high-impact yet plausible outcomes specified at inference time by optimizing the initial noise of diffusion-based WMs. However, optimizing high-dimensional noise is challenging: the optimization must reason about nuanced, scene-dependent target events in generated videos while avoiding out-of-distribution (OOD) noise that yields implausible imaginations. We address this with two complementary objectives: a semantic objective with a Vision-Language Model that provides informative gradients by reasoning about the generated video, and a plausibility objective that prevents the optimized noise from drifting OOD. With state-of-the-art video world models for autonomous driving and robotic manipulation, we show that StressDream effectively steers imaginations toward high-impact yet plausible outcomes specified by text at inference time, such as task failures, enabling robust policy evaluation and improvement by identifying actions whose plausible futures include undesirable outcomes. Video results are available at https://junwon.me/StressDream/.",
-      "authors": [
-        "Junwon Seo",
-        "Sushant Veer",
-        "Ran Tian",
-        "Wenhao Ding",
-        "Apoorva Sharma",
-        "Karen Leung",
-        "Edward Schmerling",
-        "Marco Pavone",
-        "Andrea Bajcsy"
-      ],
-      "published": "2026-05-29T18:57:57Z",
-      "updated": "2026-05-29T18:57:57Z",
-      "published_ts": 1780081077.0,
-      "arxiv_url": "http://arxiv.org/abs/2606.00267v1",
-      "pdf_url": "https://arxiv.org/pdf/2606.00267v1",
-      "primary_category": "cs.CV",
-      "arxiv_categories": [
-        "cs.CV",
-        "cs.AI",
-        "cs.LG",
-        "cs.RO"
-      ],
-      "comment": "Project page: https://junwon.me/StressDream/",
-      "journal_ref": "",
-      "doi": "",
-      "doi_url": "",
-      "external_urls": [
-        "https://junwon.me/StressDream/"
-      ],
-      "source_kind": "arxiv",
-      "conference": "",
-      "conferences": [],
-      "publication_year": 2026,
-      "cited_by_count": 0,
-      "awards": [],
-      "embodied_categories": [
-        "世界模型与仿真"
-      ],
-      "match_evidence": [
-        "manipulation",
-        "robot",
-        "robotic",
-        "world model"
-      ],
-      "institutions": [],
-      "institutions_source": ""
-    },
-    {
-      "id": "2606.00253v1",
-      "title": "Per-Group Error, Not Total MSE: Fine-Tuning Vision-Language-Action Models for 11-DoF Mobile Manipulation",
-      "summary": "Fine-tuning Vision-Language-Action (VLA) models for mobile manipulators with heterogeneous joint spaces can produce a counterintuitive result: the checkpoint with the lowest aggregate MSE is not the one that performs best on the real robot. We argue this is a predictable consequence of collapsing heterogeneous joint groups (arm, gripper, head, wheeled base) into a single metric, where easy-to-predict joints can mask joints that still fail. We fine-tune SmolVLA (450M, action-expert only) on the 11-DoF Toyota HSR and compare it against $π_{0.5}$ (3.3B), a stronger pretrained baseline. Per-group analysis exposes two patterns: in SmolVLA, the mobile base converges slowest and limits overall performance. In expert-only fine-tuning of $π_{0.5}$ (training only the action head, backbone frozen), total MSE drops below the baseline but arm accuracy degrades. On 60 real-robot trials (20 per model), $π_{0.5}$ 80k (4.0/4) significantly outperforms both fine-tuned variants (expert-only 3k: 3.75/4; HSR-SmolVLA: 3.5/4; Mann-Whitney $p \\leq 0.010$), despite expert-only 3k having the lowest total MSE. This separation is most consistent with the offline arm-group error, not total MSE or base-group error. We conclude that per-group error is a more reliable signal than total MSE for checkpoint selection on robots with heterogeneous action spaces. Code: https://github.com/paumontagut/per-group-mse-vla",
-      "authors": [
-        "Pau Montagut Bofi",
-        "Mario García Blasco",
-        "Tessa Pulli",
-        "Markus Vincze"
-      ],
-      "published": "2026-05-29T18:36:08Z",
-      "updated": "2026-05-29T18:36:08Z",
-      "published_ts": 1780079768.0,
-      "arxiv_url": "http://arxiv.org/abs/2606.00253v1",
-      "pdf_url": "https://arxiv.org/pdf/2606.00253v1",
-      "primary_category": "cs.RO",
-      "arxiv_categories": [
-        "cs.RO",
-        "cs.LG"
-      ],
-      "comment": "4 pages, 3 figures, 3 tables. Accepted as poster at ICRA 2026 Workshop \"From Data to Decisions: VLA Pipelines for Real Robots\". Code: [https://github.com/paumontagut/per-group-mse-vla](https://github.com/paumontagut/per-group-mse-vla)",
-      "journal_ref": "",
-      "doi": "",
-      "doi_url": "",
-      "external_urls": [
-        "https://github.com/paumontagut/per-group-mse-vla"
-      ],
-      "source_kind": "arxiv",
-      "conference": "",
-      "conferences": [
-        "ICRA"
-      ],
-      "publication_year": 2026,
-      "cited_by_count": 0,
-      "awards": [],
-      "embodied_categories": [
-        "视觉-语言-动作",
-        "操作与抓取"
-      ],
-      "match_evidence": [
-        "manipulation",
-        "mobile manipulation",
-        "robot",
-        "vision-language-action"
-      ],
-      "institutions": [],
-      "institutions_source": ""
-    },
-    {
-      "id": "2606.00252v1",
-      "title": "HOIST: Humanoid Optimization with Imitation and Sample-efficient Tuning for Manipulating Suspended Loads",
-      "summary": "Manipulating suspended payloads with humanoid robots is challenging because the robot can only influence an underactuated, oscillatory load through whole-body motion and intermittent contact. Imitation learning provides safe initial behavior but does not directly optimize final placement, while reinforcement learning from scratch is unsafe and sample-inefficient on real humanoids. We present HOIST-Humanoid Optimized with Imitation and Sample-efficient Tuning for manipulating suspended loads. HOIST first finetunes a high-level vision-language-action (VLA) policy from virtual-reality (VR) teleoperation demonstrations and executes its commands through a whole-body controller. It then uses VLA rollouts and iterative batched RL to improve placement accuracy and stopping behavior. Experiments in simulation and on a real humanoid show that HOIST improves over imitation-only and additional-demonstration baselines; compared with pure VLA rollouts, HOIST reduces translational placement error by 19.9 cm and raw angular error by 3.56 degrees, demonstrating the potential of humanoids for underactuated material-handling tasks.",
-      "authors": [
-        "Songyang Liu",
-        "Shunyu Yao",
-        "Dingyuan Huang",
-        "Shuai Li"
-      ],
-      "published": "2026-05-29T18:33:32Z",
-      "updated": "2026-05-29T18:33:32Z",
-      "published_ts": 1780079612.0,
-      "arxiv_url": "http://arxiv.org/abs/2606.00252v1",
-      "pdf_url": "https://arxiv.org/pdf/2606.00252v1",
-      "primary_category": "cs.RO",
-      "arxiv_categories": [
-        "cs.RO",
-        "cs.LG"
-      ],
-      "comment": "",
-      "journal_ref": "",
-      "doi": "",
-      "doi_url": "",
-      "external_urls": [],
-      "source_kind": "arxiv",
-      "conference": "",
-      "conferences": [],
-      "publication_year": 2026,
-      "cited_by_count": 0,
-      "awards": [],
-      "embodied_categories": [
-        "视觉-语言-动作",
-        "运动与控制",
-        "人机交互"
-      ],
-      "match_evidence": [
-        "humanoid",
-        "robot",
-        "teleoperation",
-        "vision-language-action",
-        "whole-body control"
-      ],
-      "institutions": [],
-      "institutions_source": ""
-    },
-    {
-      "id": "2606.00229v2",
-      "title": "Continuous Reasoning for Vision-Language-Action",
-      "summary": "Natural language is a powerful reasoning medium for language and vision-language models, but it is mismatched to the granularity of continuous control. Text and explicit subgoals operate at task-level granularity, whereas vision-language-action (VLA) policies must choose actions at a much finer temporal scale; a single reasoning step can therefore span many action chunks while remaining only weakly coupled to the action needed now. This suggests a different question for VLA: what should play the role of language? We argue that a useful VLA reasoning medium must be shareable across model instances, verifiable through downstream action improvement, and aligned with temporally extended control structure. Based on this view, we propose Continuous Reasoning for Vision-Language-Action. Our model first predicts continuous reasoning in the form of a structured set of continuous thoughts, then reuses them as shared context for chunk-structured action generation. Better action prediction alone does not certify good reasoning: if the same internal medium cannot be shared across model instances and independently verified through improved downstream control, the added latent may simply become a model-private shortcut that helps on seen behaviors without supporting generalizable control. We therefore instantiate continuous reasoning as a shared Gaussian latent interface and train it with a self-verification objective in which an exponential-moving-average teacher must successfully consume the student's reasoning when predicting target actions. Empirically, Continuous Reasoning improves LIBERO-PRO robustness and performs strongly on real robots, raising mean subtask success over π0.5 by 40.4% on TX-G2, an AgiBot G2-compatible variant, and 26.3% on HSR. This suggests that reasoning in VLA is less about extra tokens than about a shareable, verifiable internal language for action.",
-      "authors": [
-        "Yueh-Hua Wu",
-        "Tatsuya Matsushima",
-        "Kei Ota"
-      ],
-      "published": "2026-05-29T18:02:09Z",
-      "updated": "2026-06-08T17:22:58Z",
-      "published_ts": 1780077729.0,
-      "arxiv_url": "http://arxiv.org/abs/2606.00229v2",
-      "pdf_url": "https://arxiv.org/pdf/2606.00229v2",
-      "primary_category": "cs.RO",
-      "arxiv_categories": [
-        "cs.RO",
-        "cs.AI",
-        "cs.LG"
-      ],
-      "comment": "Project page: https://continuous-reasoning.airoa.io",
-      "journal_ref": "",
-      "doi": "",
-      "doi_url": "",
-      "external_urls": [
-        "https://continuous-reasoning.airoa.io"
-      ],
-      "source_kind": "arxiv",
-      "conference": "",
-      "conferences": [],
-      "publication_year": 2026,
-      "cited_by_count": 0,
-      "awards": [],
-      "embodied_categories": [
-        "视觉-语言-动作"
-      ],
-      "match_evidence": [
-        "robot",
-        "vision-language-action"
-      ],
-      "institutions": [],
-      "institutions_source": ""
-    },
-    {
-      "id": "2606.02246v1",
-      "title": "Ego-METAS: Egocentric online Multimodal Energy-efficient Temporal Action Segmentation benchmark",
-      "summary": "To operate in the physical world, embodied agents must perceive their environment in an \"always-on\" fashion, selectively accessing the most informative sensors to balance energy constraints and task accuracy. Despite its importance for resource-constrained devices, energy-aware perception remains under-explored, with most prior work assuming unlimited compute. To address this, we introduce Ego-METAS: the first Egocentric online Multimodal Energy-efficient Temporal Action Segmentation benchmark. Ego-METAS provides a unified testbed of more than 100 hours of untrimmed egocentric video from EgoExo4D, CMU-MMAC, and CaptainCook4D, spanning 5 modalities (RGB, audio, gaze, IMU, and monochrome camera). We formulate an online temporal action segmentation task where models must dynamically select which sensors to activate at each timestep while strictly adhering to hardware-representative energy budgets. Alongside the benchmark, we release unified splits, cleaned annotations, pre-extracted features, and a diverse suite of baseline routing policies. Our evaluations show that optimal routing is highly scenario-dependent, and that existing policy-learning methods, designed primarily for trimmed clips, struggle to adapt to continuous, untrimmed environments. However, even simple dynamic fusion of complementary modalities (e.g., via random routing) proves critical for balancing predictive accuracy against strict energy budgets. Ultimately, Ego-METAS provides a standardized foundation to develop robust, cost-aware policies for autonomous, always-on embodied AI.",
-      "authors": [
-        "Maria Santos-Villafranca",
-        "Jesus Bermudez-cameo",
-        "Alejandro Perez-Yus",
-        "Giovanni Maria Farinella",
-        "Antonino Furnari"
-      ],
-      "published": "2026-05-29T17:36:10Z",
-      "updated": "2026-05-29T17:36:10Z",
-      "published_ts": 1780076170.0,
-      "arxiv_url": "http://arxiv.org/abs/2606.02246v1",
-      "pdf_url": "https://arxiv.org/pdf/2606.02246v1",
-      "primary_category": "cs.CV",
-      "arxiv_categories": [
-        "cs.CV"
-      ],
-      "comment": "Project Page: https://maria-sanvil.github.io/Ego-METAS-website/",
-      "journal_ref": "",
-      "doi": "",
-      "doi_url": "",
-      "external_urls": [
-        "https://maria-sanvil.github.io/Ego-METAS-website/"
-      ],
-      "source_kind": "arxiv",
-      "conference": "",
-      "conferences": [],
-      "publication_year": 2026,
-      "cited_by_count": 0,
-      "awards": [],
-      "embodied_categories": [
-        "具身智能体"
-      ],
-      "match_evidence": [
-        "embodied",
-        "embodied agent",
-        "embodied ai"
-      ],
-      "institutions": [],
-      "institutions_source": ""
     }
   ],
   "conference_papers": [
@@ -24640,7 +24364,7 @@
       "published": "2022-05-23",
       "published_ts": 1653264000.0,
       "publication_year": 2022,
-      "cited_by_count": 253,
+      "cited_by_count": 254,
       "doi": "10.1109/icra46639.2022.9811849",
       "doi_url": "https://doi.org/10.1109/icra46639.2022.9811849",
       "paper_url": "https://doi.org/10.1109/icra46639.2022.9811849",
@@ -24920,7 +24644,7 @@
       "published": "2022-05-23",
       "published_ts": 1653264000.0,
       "publication_year": 2022,
-      "cited_by_count": 101,
+      "cited_by_count": 102,
       "doi": "10.1109/icra46639.2022.9812401",
       "doi_url": "https://doi.org/10.1109/icra46639.2022.9812401",
       "paper_url": "https://doi.org/10.1109/icra46639.2022.9812401",
@@ -26776,7 +26500,7 @@
       "published": "2022-05-23",
       "published_ts": 1653264000.0,
       "publication_year": 2022,
-      "cited_by_count": 48,
+      "cited_by_count": 49,
       "doi": "10.1109/icra46639.2022.9811684",
       "doi_url": "https://doi.org/10.1109/icra46639.2022.9811684",
       "paper_url": "https://doi.org/10.1109/icra46639.2022.9811684",
@@ -32092,6 +31816,49 @@
       ]
     },
     {
+      "id": "openalex:W4221155307",
+      "openalex_id": "W4221155307",
+      "source_kind": "conference",
+      "conference": "ICRA",
+      "conferences": [
+        "ICRA"
+      ],
+      "venue": "2022 International Conference on Robotics and Automation (ICRA)",
+      "title": "Motion Primitives-based Navigation Planning using Deep Collision Prediction",
+      "summary": "This paper contributes a method to design a novel navigation planner exploiting a learning-based collision prediction network. The neural network is tasked to predict the collision cost of each action sequence in a predefined motion primitives library in the robot's velocity-steering angle space, given only the current depth image and the estimated linear and angular velocities of the robot. Furthermore, we account for the uncertainty of the robot's partial state by utilizing the Unscented Transform and the uncertainty of the neural network model by using Monte Carlo dropout. The uncertainty-aware collision cost is then combined with the goal direction given by a global planner in order to determine the best action sequence to execute in a receding horizon manner. To demonstrate the method, we develop a resilient small flying robot integrating lightweight sensing and computing resources. A set of simulation and experimental studies, including a field deployment, in both cluttered and perceptually-challenging environments is conducted to evaluate the quality of the prediction network and the performance of the proposed planner.",
+      "authors": [
+        "Huan X. Nguyen",
+        "Sondre Holm Fyhn",
+        "Paolo De Petris",
+        "Kostas Alexis"
+      ],
+      "institutions": [
+        "Norwegian University of Science and Technology"
+      ],
+      "institutions_source": "OpenAlex",
+      "published": "2022-05-23",
+      "published_ts": 1653264000.0,
+      "publication_year": 2022,
+      "cited_by_count": 24,
+      "doi": "10.1109/icra46639.2022.9812231",
+      "doi_url": "https://doi.org/10.1109/icra46639.2022.9812231",
+      "paper_url": "https://doi.org/10.1109/icra46639.2022.9812231",
+      "pdf_url": "",
+      "arxiv_url": "",
+      "arxiv_categories": [],
+      "primary_category": "",
+      "external_urls": [],
+      "comment": "",
+      "journal_ref": "",
+      "awards": [],
+      "embodied_categories": [
+        "机器人学习"
+      ],
+      "match_evidence": [
+        "ICRA"
+      ]
+    },
+    {
       "id": "openalex:W4226331969",
       "openalex_id": "W4226331969",
       "source_kind": "conference",
@@ -32350,49 +32117,6 @@
       "doi": "10.1109/icra46639.2022.9811774",
       "doi_url": "https://doi.org/10.1109/icra46639.2022.9811774",
       "paper_url": "https://doi.org/10.1109/icra46639.2022.9811774",
-      "pdf_url": "",
-      "arxiv_url": "",
-      "arxiv_categories": [],
-      "primary_category": "",
-      "external_urls": [],
-      "comment": "",
-      "journal_ref": "",
-      "awards": [],
-      "embodied_categories": [
-        "机器人学习"
-      ],
-      "match_evidence": [
-        "ICRA"
-      ]
-    },
-    {
-      "id": "openalex:W4221155307",
-      "openalex_id": "W4221155307",
-      "source_kind": "conference",
-      "conference": "ICRA",
-      "conferences": [
-        "ICRA"
-      ],
-      "venue": "2022 International Conference on Robotics and Automation (ICRA)",
-      "title": "Motion Primitives-based Navigation Planning using Deep Collision Prediction",
-      "summary": "This paper contributes a method to design a novel navigation planner exploiting a learning-based collision prediction network. The neural network is tasked to predict the collision cost of each action sequence in a predefined motion primitives library in the robot's velocity-steering angle space, given only the current depth image and the estimated linear and angular velocities of the robot. Furthermore, we account for the uncertainty of the robot's partial state by utilizing the Unscented Transform and the uncertainty of the neural network model by using Monte Carlo dropout. The uncertainty-aware collision cost is then combined with the goal direction given by a global planner in order to determine the best action sequence to execute in a receding horizon manner. To demonstrate the method, we develop a resilient small flying robot integrating lightweight sensing and computing resources. A set of simulation and experimental studies, including a field deployment, in both cluttered and perceptually-challenging environments is conducted to evaluate the quality of the prediction network and the performance of the proposed planner.",
-      "authors": [
-        "Huan X. Nguyen",
-        "Sondre Holm Fyhn",
-        "Paolo De Petris",
-        "Kostas Alexis"
-      ],
-      "institutions": [
-        "Norwegian University of Science and Technology"
-      ],
-      "institutions_source": "OpenAlex",
-      "published": "2022-05-23",
-      "published_ts": 1653264000.0,
-      "publication_year": 2022,
-      "cited_by_count": 23,
-      "doi": "10.1109/icra46639.2022.9812231",
-      "doi_url": "https://doi.org/10.1109/icra46639.2022.9812231",
-      "paper_url": "https://doi.org/10.1109/icra46639.2022.9812231",
       "pdf_url": "",
       "arxiv_url": "",
       "arxiv_categories": [],
@@ -43487,6 +43211,48 @@
       ]
     },
     {
+      "id": "openalex:W3200750070",
+      "openalex_id": "W3200750070",
+      "source_kind": "conference",
+      "conference": "ICRA",
+      "conferences": [
+        "ICRA"
+      ],
+      "venue": "2022 International Conference on Robotics and Automation (ICRA)",
+      "title": "I Know You Can't See Me: Dynamic Occlusion-Aware Safety Validation of Strategic Planners for Autonomous Vehicles Using Hypergames",
+      "summary": "A particular challenge for both autonomous and human driving is dealing with risk associated with dynamic occlusion, i.e., occlusion caused by other vehicles in traffic. Based on the theory of hypergames, we develop a novel multi-agent dynamic occlusion risk (DOR) measure for assessing situational risk in dynamic occlusion scenarios. Furthermore, we present a white-box, scenario-based, accelerated safety validation framework for assessing safety of strategic planners in AV. Based on evaluation over a large naturalistic database, our proposed validation method achieves a 4000% speedup compared to direct validation on naturalistic data, a more diverse coverage, and ability to generalize beyond the dataset and generate commonly observed dynamic occlusion crashes in traffic in an automated manner.",
+      "authors": [
+        "Maximilian Kahn",
+        "Atrisha Sarkar",
+        "Krzysztof Czarnecki"
+      ],
+      "institutions": [
+        "University of Waterloo"
+      ],
+      "institutions_source": "OpenAlex",
+      "published": "2022-05-23",
+      "published_ts": 1653264000.0,
+      "publication_year": 2022,
+      "cited_by_count": 11,
+      "doi": "10.1109/icra46639.2022.9812041",
+      "doi_url": "https://doi.org/10.1109/icra46639.2022.9812041",
+      "paper_url": "https://doi.org/10.1109/icra46639.2022.9812041",
+      "pdf_url": "",
+      "arxiv_url": "",
+      "arxiv_categories": [],
+      "primary_category": "",
+      "external_urls": [],
+      "comment": "",
+      "journal_ref": "",
+      "awards": [],
+      "embodied_categories": [
+        "机器人学习"
+      ],
+      "match_evidence": [
+        "ICRA"
+      ]
+    },
+    {
       "id": "openalex:W3201026584",
       "openalex_id": "W3201026584",
       "source_kind": "conference",
@@ -44457,48 +44223,6 @@
       "doi": "10.1109/icra46639.2022.9811861",
       "doi_url": "https://doi.org/10.1109/icra46639.2022.9811861",
       "paper_url": "https://doi.org/10.1109/icra46639.2022.9811861",
-      "pdf_url": "",
-      "arxiv_url": "",
-      "arxiv_categories": [],
-      "primary_category": "",
-      "external_urls": [],
-      "comment": "",
-      "journal_ref": "",
-      "awards": [],
-      "embodied_categories": [
-        "机器人学习"
-      ],
-      "match_evidence": [
-        "ICRA"
-      ]
-    },
-    {
-      "id": "openalex:W3200750070",
-      "openalex_id": "W3200750070",
-      "source_kind": "conference",
-      "conference": "ICRA",
-      "conferences": [
-        "ICRA"
-      ],
-      "venue": "2022 International Conference on Robotics and Automation (ICRA)",
-      "title": "I Know You Can't See Me: Dynamic Occlusion-Aware Safety Validation of Strategic Planners for Autonomous Vehicles Using Hypergames",
-      "summary": "A particular challenge for both autonomous and human driving is dealing with risk associated with dynamic occlusion, i.e., occlusion caused by other vehicles in traffic. Based on the theory of hypergames, we develop a novel multi-agent dynamic occlusion risk (DOR) measure for assessing situational risk in dynamic occlusion scenarios. Furthermore, we present a white-box, scenario-based, accelerated safety validation framework for assessing safety of strategic planners in AV. Based on evaluation over a large naturalistic database, our proposed validation method achieves a 4000% speedup compared to direct validation on naturalistic data, a more diverse coverage, and ability to generalize beyond the dataset and generate commonly observed dynamic occlusion crashes in traffic in an automated manner.",
-      "authors": [
-        "Maximilian Kahn",
-        "Atrisha Sarkar",
-        "Krzysztof Czarnecki"
-      ],
-      "institutions": [
-        "University of Waterloo"
-      ],
-      "institutions_source": "OpenAlex",
-      "published": "2022-05-23",
-      "published_ts": 1653264000.0,
-      "publication_year": 2022,
-      "cited_by_count": 10,
-      "doi": "10.1109/icra46639.2022.9812041",
-      "doi_url": "https://doi.org/10.1109/icra46639.2022.9812041",
-      "paper_url": "https://doi.org/10.1109/icra46639.2022.9812041",
       "pdf_url": "",
       "arxiv_url": "",
       "arxiv_categories": [],
@@ -63813,7 +63537,7 @@
       "published": "2024-01-01",
       "published_ts": 1704067200.0,
       "publication_year": 2024,
-      "cited_by_count": 67,
+      "cited_by_count": 68,
       "doi": "10.15607/RSS.2024.XX.090",
       "doi_url": "https://doi.org/10.15607/RSS.2024.XX.090",
       "paper_url": "https://doi.org/10.15607/RSS.2024.XX.090",
@@ -69573,7 +69297,7 @@
       "published": "2022-10-23",
       "published_ts": 1666483200.0,
       "publication_year": 2022,
-      "cited_by_count": 33,
+      "cited_by_count": 34,
       "doi": "10.1109/iros47612.2022.9981424",
       "doi_url": "https://doi.org/10.1109/iros47612.2022.9981424",
       "paper_url": "https://doi.org/10.1109/iros47612.2022.9981424",
@@ -69621,7 +69345,7 @@
       "published": "2022-10-23",
       "published_ts": 1666483200.0,
       "publication_year": 2022,
-      "cited_by_count": 33,
+      "cited_by_count": 34,
       "doi": "10.1109/iros47612.2022.9981119",
       "doi_url": "https://doi.org/10.1109/iros47612.2022.9981119",
       "paper_url": "https://doi.org/10.1109/iros47612.2022.9981119",
@@ -73424,6 +73148,49 @@
       ]
     },
     {
+      "id": "openalex:W4312589189",
+      "openalex_id": "W4312589189",
+      "source_kind": "conference",
+      "conference": "IROS",
+      "conferences": [
+        "IROS"
+      ],
+      "venue": "2022 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)",
+      "title": "Core Processes in Intelligent Robotic Lab Assistants: Flexible Liquid Handling",
+      "summary": "Laboratory automation is a suitable solution to establish higher reproducibility with less manual work and thus higher quality standards in life sciences. To date, mobile robots are capable of performing autonomous pick-and-place tasks in the laboratory, and specialized pipetting machines can be used for sequenced liquid handling. However, the complex and creative process of developing new research protocols requires flexible robotic systems that can perform tasks such as pipetting in more versatile ways. In addition, the correct technique, according to ISO standards, has a great influence on precision and accuracy and therefore on reproducibility. This paper introduces our Intelligent Robotic Lab Assistants in the framework of our holistic, human-like, but standardized paradigm for collaborative lab automation, AI.Laboratory. Our system demonstrates mastery of pipetting following ISO 8655 as a force-sensitive robotic manipulation skill, which is a key component of our taxonomy of cell culture skills and the first steps toward true intelligent robotic laboratory assistants. This intelligent robotic pipetting skill is a versatile tool for general handling of µL-liquids, using only standard laboratory equipment that can be flexibly positioned in the robot's workspace. To demonstrate its pipetting performance, flexible handling of small volumes from 10 µL to 1000 µL was experimentally validated to the ISO 8655 standard, demonstrating superhuman performance that outperformed laymen, human experts, and other commercial and non-commercial robotic pipetting systems.",
+      "authors": [
+        "Dennis Knobbe",
+        "Henning Zwirnmann",
+        "Moritz Eckhoff",
+        "Sami Haddadin"
+      ],
+      "institutions": [
+        "Technical University of Munich"
+      ],
+      "institutions_source": "OpenAlex",
+      "published": "2022-10-23",
+      "published_ts": 1666483200.0,
+      "publication_year": 2022,
+      "cited_by_count": 21,
+      "doi": "10.1109/iros47612.2022.9981636",
+      "doi_url": "https://doi.org/10.1109/iros47612.2022.9981636",
+      "paper_url": "https://doi.org/10.1109/iros47612.2022.9981636",
+      "pdf_url": "",
+      "arxiv_url": "",
+      "arxiv_categories": [],
+      "primary_category": "",
+      "external_urls": [],
+      "comment": "",
+      "journal_ref": "",
+      "awards": [],
+      "embodied_categories": [
+        "机器人学习"
+      ],
+      "match_evidence": [
+        "IROS"
+      ]
+    },
+    {
       "id": "openalex:W4312630992",
       "openalex_id": "W4312630992",
       "source_kind": "conference",
@@ -74056,49 +73823,6 @@
       "match_evidence": [
         "robot",
         "slam"
-      ]
-    },
-    {
-      "id": "openalex:W4312589189",
-      "openalex_id": "W4312589189",
-      "source_kind": "conference",
-      "conference": "IROS",
-      "conferences": [
-        "IROS"
-      ],
-      "venue": "2022 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)",
-      "title": "Core Processes in Intelligent Robotic Lab Assistants: Flexible Liquid Handling",
-      "summary": "Laboratory automation is a suitable solution to establish higher reproducibility with less manual work and thus higher quality standards in life sciences. To date, mobile robots are capable of performing autonomous pick-and-place tasks in the laboratory, and specialized pipetting machines can be used for sequenced liquid handling. However, the complex and creative process of developing new research protocols requires flexible robotic systems that can perform tasks such as pipetting in more versatile ways. In addition, the correct technique, according to ISO standards, has a great influence on precision and accuracy and therefore on reproducibility. This paper introduces our Intelligent Robotic Lab Assistants in the framework of our holistic, human-like, but standardized paradigm for collaborative lab automation, AI.Laboratory. Our system demonstrates mastery of pipetting following ISO 8655 as a force-sensitive robotic manipulation skill, which is a key component of our taxonomy of cell culture skills and the first steps toward true intelligent robotic laboratory assistants. This intelligent robotic pipetting skill is a versatile tool for general handling of µL-liquids, using only standard laboratory equipment that can be flexibly positioned in the robot's workspace. To demonstrate its pipetting performance, flexible handling of small volumes from 10 µL to 1000 µL was experimentally validated to the ISO 8655 standard, demonstrating superhuman performance that outperformed laymen, human experts, and other commercial and non-commercial robotic pipetting systems.",
-      "authors": [
-        "Dennis Knobbe",
-        "Henning Zwirnmann",
-        "Moritz Eckhoff",
-        "Sami Haddadin"
-      ],
-      "institutions": [
-        "Technical University of Munich"
-      ],
-      "institutions_source": "OpenAlex",
-      "published": "2022-10-23",
-      "published_ts": 1666483200.0,
-      "publication_year": 2022,
-      "cited_by_count": 20,
-      "doi": "10.1109/iros47612.2022.9981636",
-      "doi_url": "https://doi.org/10.1109/iros47612.2022.9981636",
-      "paper_url": "https://doi.org/10.1109/iros47612.2022.9981636",
-      "pdf_url": "",
-      "arxiv_url": "",
-      "arxiv_categories": [],
-      "primary_category": "",
-      "external_urls": [],
-      "comment": "",
-      "journal_ref": "",
-      "awards": [],
-      "embodied_categories": [
-        "机器人学习"
-      ],
-      "match_evidence": [
-        "IROS"
       ]
     },
     {
@@ -79235,6 +78959,48 @@
       ]
     },
     {
+      "id": "openalex:W4312968852",
+      "openalex_id": "W4312968852",
+      "source_kind": "conference",
+      "conference": "IROS",
+      "conferences": [
+        "IROS"
+      ],
+      "venue": "2022 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)",
+      "title": "Shape memory polymer variable stiffness magnetic catheters with hybrid stiffness control",
+      "summary": "Variable stiffness catheters typically rely on thermally induced stiffness transitions with a transition temperature above body temperature. This imposes considerable safety limitations for medical applications. In this work, we present a variable stiffness catheter using a hybrid control strategy capable of actively heating and actively cooling the catheter material. The proposed catheter is made of a single biocompatible shape memory polymer, which significantly increases its manufacturability and scalability compared to existing designs. Potentially increased safety is obtained by ensuring a lower-risk compliant state at body temperature while maintaining higher stiffness ranges in actively controlled states. Additionally, the combined use of variable stiffness and magnetic actuation increases the dexterity and steerability of the device compared to existing robotic tools.",
+      "authors": [
+        "Michael Mattmann",
+        "Quentin Boehler",
+        "Xiangzhong Chen",
+        "Salvador Pané",
+        "Bradley J. Nelson"
+      ],
+      "institutions": [],
+      "institutions_source": "OpenAlex",
+      "published": "2022-10-23",
+      "published_ts": 1666483200.0,
+      "publication_year": 2022,
+      "cited_by_count": 13,
+      "doi": "10.1109/iros47612.2022.9981935",
+      "doi_url": "https://doi.org/10.1109/iros47612.2022.9981935",
+      "paper_url": "https://doi.org/10.1109/iros47612.2022.9981935",
+      "pdf_url": "",
+      "arxiv_url": "",
+      "arxiv_categories": [],
+      "primary_category": "",
+      "external_urls": [],
+      "comment": "",
+      "journal_ref": "",
+      "awards": [],
+      "embodied_categories": [
+        "机器人学习"
+      ],
+      "match_evidence": [
+        "IROS"
+      ]
+    },
+    {
       "id": "openalex:W4313055208",
       "openalex_id": "W4313055208",
       "source_kind": "conference",
@@ -79708,48 +79474,6 @@
       "doi": "10.1109/iros47612.2022.9982090",
       "doi_url": "https://doi.org/10.1109/iros47612.2022.9982090",
       "paper_url": "https://doi.org/10.1109/iros47612.2022.9982090",
-      "pdf_url": "",
-      "arxiv_url": "",
-      "arxiv_categories": [],
-      "primary_category": "",
-      "external_urls": [],
-      "comment": "",
-      "journal_ref": "",
-      "awards": [],
-      "embodied_categories": [
-        "机器人学习"
-      ],
-      "match_evidence": [
-        "IROS"
-      ]
-    },
-    {
-      "id": "openalex:W4312968852",
-      "openalex_id": "W4312968852",
-      "source_kind": "conference",
-      "conference": "IROS",
-      "conferences": [
-        "IROS"
-      ],
-      "venue": "2022 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)",
-      "title": "Shape memory polymer variable stiffness magnetic catheters with hybrid stiffness control",
-      "summary": "Variable stiffness catheters typically rely on thermally induced stiffness transitions with a transition temperature above body temperature. This imposes considerable safety limitations for medical applications. In this work, we present a variable stiffness catheter using a hybrid control strategy capable of actively heating and actively cooling the catheter material. The proposed catheter is made of a single biocompatible shape memory polymer, which significantly increases its manufacturability and scalability compared to existing designs. Potentially increased safety is obtained by ensuring a lower-risk compliant state at body temperature while maintaining higher stiffness ranges in actively controlled states. Additionally, the combined use of variable stiffness and magnetic actuation increases the dexterity and steerability of the device compared to existing robotic tools.",
-      "authors": [
-        "Michael Mattmann",
-        "Quentin Boehler",
-        "Xiangzhong Chen",
-        "Salvador Pané",
-        "Bradley J. Nelson"
-      ],
-      "institutions": [],
-      "institutions_source": "OpenAlex",
-      "published": "2022-10-23",
-      "published_ts": 1666483200.0,
-      "publication_year": 2022,
-      "cited_by_count": 12,
-      "doi": "10.1109/iros47612.2022.9981935",
-      "doi_url": "https://doi.org/10.1109/iros47612.2022.9981935",
-      "paper_url": "https://doi.org/10.1109/iros47612.2022.9981935",
       "pdf_url": "",
       "arxiv_url": "",
       "arxiv_categories": [],
@@ -95112,6 +94836,50 @@
       ]
     },
     {
+      "id": "openalex:W4312972830",
+      "openalex_id": "W4312972830",
+      "source_kind": "conference",
+      "conference": "IROS",
+      "conferences": [
+        "IROS"
+      ],
+      "venue": "2022 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)",
+      "title": "Scene-level Tracking and Reconstruction without Object Priors",
+      "summary": "We present the first real-time system capable of tracking and reconstructing, individually, every visible object in a given scene, without any form of prior on the rigidness of the objects, texture existence, or object category. In contrast with previous methods such as Co-Fusion and MaskFusion that first segment the scene into individual objects and then process each object independently, the proposed method dynamically segments the non-rigid scene as part of the tracking and reconstruction process. When new measurements indicate topology change, reconstructed models are updated in real-time to reflect that change. Our proposed system can provide the live geometry and deformation of all visible objects in a novel scene in real-time, which makes it possible to be integrated seamlessly into numerous existing robotics applications that rely on object models for grasping and manipulation. The capabilities of the proposed system are demonstrated in challenging scenes that contain multiple rigid and non-rigid objects. Supplementary material, including video, can be found at https://github.com/changhaonan/STAR-no-prior.",
+      "authors": [
+        "Haonan Chang",
+        "Abdeslam Boularias"
+      ],
+      "institutions": [
+        "Rutgers, The State University of New Jersey"
+      ],
+      "institutions_source": "OpenAlex",
+      "published": "2022-10-23",
+      "published_ts": 1666483200.0,
+      "publication_year": 2022,
+      "cited_by_count": 5,
+      "doi": "10.1109/iros47612.2022.9982159",
+      "doi_url": "https://doi.org/10.1109/iros47612.2022.9982159",
+      "paper_url": "https://doi.org/10.1109/iros47612.2022.9982159",
+      "pdf_url": "",
+      "arxiv_url": "",
+      "arxiv_categories": [],
+      "primary_category": "",
+      "external_urls": [],
+      "comment": "",
+      "journal_ref": "",
+      "awards": [],
+      "embodied_categories": [
+        "操作与抓取"
+      ],
+      "match_evidence": [
+        "grasping",
+        "manipulation",
+        "robot",
+        "robotic"
+      ]
+    },
+    {
       "id": "openalex:W4312991057",
       "openalex_id": "W4312991057",
       "source_kind": "conference",
@@ -106083,50 +105851,6 @@
       ],
       "match_evidence": [
         "IROS"
-      ]
-    },
-    {
-      "id": "openalex:W4312972830",
-      "openalex_id": "W4312972830",
-      "source_kind": "conference",
-      "conference": "IROS",
-      "conferences": [
-        "IROS"
-      ],
-      "venue": "2022 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)",
-      "title": "Scene-level Tracking and Reconstruction without Object Priors",
-      "summary": "We present the first real-time system capable of tracking and reconstructing, individually, every visible object in a given scene, without any form of prior on the rigidness of the objects, texture existence, or object category. In contrast with previous methods such as Co-Fusion and MaskFusion that first segment the scene into individual objects and then process each object independently, the proposed method dynamically segments the non-rigid scene as part of the tracking and reconstruction process. When new measurements indicate topology change, reconstructed models are updated in real-time to reflect that change. Our proposed system can provide the live geometry and deformation of all visible objects in a novel scene in real-time, which makes it possible to be integrated seamlessly into numerous existing robotics applications that rely on object models for grasping and manipulation. The capabilities of the proposed system are demonstrated in challenging scenes that contain multiple rigid and non-rigid objects. Supplementary material, including video, can be found at https://github.com/changhaonan/STAR-no-prior.",
-      "authors": [
-        "Haonan Chang",
-        "Abdeslam Boularias"
-      ],
-      "institutions": [
-        "Rutgers, The State University of New Jersey"
-      ],
-      "institutions_source": "OpenAlex",
-      "published": "2022-10-23",
-      "published_ts": 1666483200.0,
-      "publication_year": 2022,
-      "cited_by_count": 4,
-      "doi": "10.1109/iros47612.2022.9982159",
-      "doi_url": "https://doi.org/10.1109/iros47612.2022.9982159",
-      "paper_url": "https://doi.org/10.1109/iros47612.2022.9982159",
-      "pdf_url": "",
-      "arxiv_url": "",
-      "arxiv_categories": [],
-      "primary_category": "",
-      "external_urls": [],
-      "comment": "",
-      "journal_ref": "",
-      "awards": [],
-      "embodied_categories": [
-        "操作与抓取"
-      ],
-      "match_evidence": [
-        "grasping",
-        "manipulation",
-        "robot",
-        "robotic"
       ]
     },
     {
