@@ -8,20 +8,24 @@
   <meta name="refresh-url" content="{{ refresh_url|default('/api/refresh') }}">
   <meta name="deployment-mode" content="{{ deployment_mode|default('local') }}">
   <title>Embodied Radar · 具身智能论文雷达</title>
+  <link rel="icon" type="image/png" href="{% if icon_url is defined %}{{ icon_url }}{% else %}{{ url_for('static', filename='site-icon.png') }}{% endif %}">
+  <link rel="apple-touch-icon" href="{% if icon_url is defined %}{{ icon_url }}{% else %}{{ url_for('static', filename='site-icon.png') }}{% endif %}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{% if style_url is defined %}{{ style_url }}{% else %}{{ url_for('static', filename='style.css') }}{% endif %}">
+  <link rel="stylesheet" href="{% if style_url is defined %}{{ style_url }}{% else %}{{ url_for('static', filename='style.css') }}{% endif %}?v={{ asset_version|default('aligned-results-20260616') }}">
 </head>
 <body>
   <header class="hero">
     <nav>
       <div class="brand-group">
-        <a class="brand" href="/">
-          <span class="brand-mark">ER</span>
+        <a class="brand" href="https://github.com/Timesame128/reach-arXiv">
+          <span class="brand-mark">
+            <img src="{% if icon_url is defined %}{{ icon_url }}{% else %}{{ url_for('static', filename='site-icon.png') }}{% endif %}" alt="">
+          </span>
           <span>Embodied Radar</span>
         </a>
-        <a class="repo-link" href="https://github.com/Timesame128/reach-arXiv" target="_blank" rel="noopener noreferrer">Timesame128 / reach-arXiv ↗</a>
+        <a class="repo-link" href="https://github.com/Timesame128/reach-arXiv">Timesame128 / reach-arXiv ↗</a>
       </div>
       <button id="refreshButton" class="refresh-button" type="button">立即刷新</button>
     </nav>
@@ -47,33 +51,93 @@
         <span>⌕</span>
         <input id="searchInput" type="search" placeholder="搜索标题、作者、单位、奖项…" autocomplete="off">
       </label>
-      <div class="category-filter-group">
-        <span class="filter-label">研究方向</span>
-        <div id="categoryFilters" class="category-filters"></div>
+
+      <div class="filter-toolbar">
+        <div>
+          <strong>分面筛选</strong>
+          <span>按方向、时间与引用量缩小结果范围</span>
+        </div>
+        <button id="filterToggleButton" class="filter-toggle" type="button"
+          aria-expanded="true" aria-controls="facetPanel">收起筛选</button>
       </div>
-      <div class="advanced-filters">
-        <label>排序方式
-          <select id="sortSelect">
-            <option value="date_desc">时间：最新优先</option>
-            <option value="date_asc">时间：最早优先</option>
-            <option value="citations_desc">引用量：从高到低</option>
-            <option value="citations_asc">引用量：从低到高</option>
-          </select>
-        </label>
-        <label>起始年份<input id="fromYearInput" type="number" min="1950" placeholder="不限"></label>
-        <label>结束年份<input id="toYearInput" type="number" min="1950" placeholder="不限"></label>
-        <label>最低引用<input id="minCitationsInput" type="number" min="0" placeholder="0"></label>
-        <label>最高引用<input id="maxCitationsInput" type="number" min="0" placeholder="不限"></label>
+
+      <div id="facetPanel" class="facet-panel">
+        <section class="facet-section" aria-labelledby="categoryFacetTitle">
+          <div class="facet-heading">
+            <div>
+              <h3 id="categoryFacetTitle">研究方向</h3>
+              <p>可多选，同一维度内按“或”匹配</p>
+            </div>
+          </div>
+          <div id="categoryFacet" class="facet-options category-facet"></div>
+        </section>
+
+        <section class="facet-section" aria-labelledby="timeFacetTitle">
+          <div class="facet-heading">
+            <div>
+              <h3 id="timeFacetTitle">时间范围</h3>
+              <p>快速定位近期或指定年份的论文</p>
+            </div>
+          </div>
+          <div id="timeFacet" class="facet-options compact-facet"></div>
+          <div id="customYearRange" class="custom-year-range" hidden>
+            <label>
+              <span id="customFromLabel">起始年份</span>
+              <input id="customFromYear" type="number" min="1950" placeholder="例如 2021">
+            </label>
+            <span class="range-separator">至</span>
+            <label>
+              <span id="customToLabel">结束年份</span>
+              <input id="customToYear" type="number" min="1950" placeholder="例如 2026">
+            </label>
+          </div>
+        </section>
+
+        <section class="facet-section" aria-labelledby="citationFacetTitle">
+          <div class="facet-heading">
+            <div>
+              <h3 id="citationFacetTitle">引用量</h3>
+              <p>按长尾分布划分引用量区间</p>
+            </div>
+          </div>
+          <div id="citationFacet" class="facet-options compact-facet"></div>
+        </section>
       </div>
-      <button id="clearFiltersButton" class="clear-filters" type="button">清除筛选</button>
+
+      <div id="activeFilters" class="active-filters" hidden>
+        <span class="active-filters-label">当前筛选</span>
+        <div id="activeFilterTags" class="active-filter-tags"></div>
+        <span id="emptyFilterLabel" class="empty-filter-label">无</span>
+        <button id="clearFiltersButton" class="clear-filters" type="button">清除全部</button>
+      </div>
     </section>
 
     <section class="section-heading">
-      <div>
+      <div class="section-title-block">
         <p id="sectionEyebrow" class="eyebrow">ARXIV · LATEST</p>
         <h2 id="sectionTitle">arXiv 最新论文</h2>
       </div>
-      <p id="resultHint">正在读取本地数据…</p>
+      <div class="results-tools">
+        <p id="resultHint">正在读取本地数据…</p>
+        <div class="view-switcher" role="group" aria-label="论文展示方式">
+          <button class="view-option" data-view="list" type="button"
+            aria-pressed="false">列表视图</button>
+          <button class="view-option active" data-view="card" type="button"
+            aria-pressed="true">卡片视图</button>
+        </div>
+        <button id="immersiveButton" class="immersive-button" type="button">沉浸浏览</button>
+        <label class="sort-control">
+          <span>排序</span>
+          <span class="sort-select-shell">
+            <select id="sortSelect">
+            <option value="date_desc">最新优先</option>
+            <option value="citations_desc">引用最高</option>
+            <option value="relevance_desc">相关性最高</option>
+            <option value="recommended_desc">综合推荐</option>
+            </select>
+          </span>
+        </label>
+      </div>
     </section>
 
     <section id="paperGrid" class="paper-grid" aria-live="polite"></section>
@@ -84,11 +148,41 @@
     </section>
   </main>
 
+  <section id="immersiveOverlay" class="immersive-overlay" hidden
+    aria-label="沉浸浏览模式">
+    <header class="immersive-header">
+      <strong class="immersive-title">Embodied Radar</strong>
+      <div id="immersiveSearchSlot" class="immersive-search-slot"></div>
+      <div id="immersiveToolsSlot" class="immersive-tools-slot"></div>
+      <button id="immersiveFilterButton" class="immersive-filter-button"
+        type="button" aria-expanded="false">筛选</button>
+      <button id="exitImmersiveButton" class="exit-immersive-button"
+        type="button">退出全屏</button>
+    </header>
+    <div class="immersive-body">
+      <button id="immersiveBackdrop" class="immersive-backdrop"
+        type="button" aria-label="关闭筛选抽屉"></button>
+      <aside id="immersiveSidebar" class="immersive-sidebar">
+        <div class="immersive-sidebar-heading">
+          <strong>筛选条件</strong>
+          <button id="closeImmersiveFilters" type="button">关闭</button>
+        </div>
+        <div id="immersiveSourceSlot"></div>
+        <div id="immersiveFacetSlot"></div>
+        <div id="immersiveActiveSlot"></div>
+      </aside>
+      <section class="immersive-results">
+        <div id="immersiveHeadingSlot" class="immersive-heading-slot"></div>
+        <div id="immersiveGridSlot" class="immersive-grid-slot"></div>
+      </section>
+    </div>
+  </section>
+
   <footer>
     <a href="https://github.com/Timesame128/reach-arXiv" target="_blank" rel="noopener noreferrer">Embodied Radar · Open source on GitHub ↗</a>
     <span>arXiv 提供预印本；OpenAlex 提供会议元数据与引用量；奖项以官方清单人工核验</span>
   </footer>
 
-  <script src="{% if script_url is defined %}{{ script_url }}{% else %}{{ url_for('static', filename='app.js') }}{% endif %}"></script>
+  <script src="{% if script_url is defined %}{{ script_url }}{% else %}{{ url_for('static', filename='app.js') }}{% endif %}?v={{ asset_version|default('aligned-results-20260616') }}"></script>
 </body>
 </html>

@@ -58,10 +58,13 @@ def build(output_dir: Path, refresh: bool = False) -> dict:
         deployment_mode="static",
         style_url="./style.css",
         script_url="./app.js",
+        icon_url="./site-icon.png",
+        asset_version="aligned-results-20260616",
     )
     (output_dir / "index.html").write_text(html, encoding="utf-8")
     shutil.copy2(ROOT / "static" / "style.css", output_dir / "style.css")
     shutil.copy2(ROOT / "static" / "app.js", output_dir / "app.js")
+    shutil.copy2(ROOT / "static" / "site-icon.png", output_dir / "site-icon.png")
     (output_dir / ".nojekyll").write_text("", encoding="utf-8")
 
     public_data = {
