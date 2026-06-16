@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+from math import ceil
 
 import requests
 
@@ -29,25 +30,49 @@ class DblpClient:
         self.years = max(years, 1)
 
     def conference_papers(self, conference: str) -> list[dict]:
-        response = requests.get(
-            self.endpoint,
-            params={
-                "q": f"stream:{DBLP_STREAMS[conference]}:",
-                "h": self.max_results,
-                "format": "json",
-            },
-            timeout=self.timeout,
-            headers={"User-Agent": "EmbodiedArxivRadar/2.0"},
-        )
-        response.raise_for_status()
         cutoff_year = datetime.now(timezone.utc).year - self.years + 1
-        hits = response.json().get("result", {}).get("hits", {}).get("hit", [])
-        papers = [
-            _parse_hit(hit.get("info", {}), conference)
-            for hit in hits
-            if _year(hit.get("info", {}).get("year")) >= cutoff_year
-        ]
-        return [paper for paper in papers if paper["title"]]
+        per_year_limit = max(1, ceil(self.max_results / self.years))
+        page_size = 1000
+        max_pages = self.years + 4
+        papers = []
+        year_counts: dict[int, int] = {}
+        for page in range(max_pages):
+            response = requests.get(
+                self.endpoint,
+                params={
+                    "q": f"stream:{DBLP_STREAMS[conference]}:",
+                    "h": page_size,
+                    "f": page * page_size,
+                    "format": "json",
+                },
+                timeout=self.timeout,
+                headers={"User-Agent": "EmbodiedArxivRadar/2.0"},
+            )
+            response.raise_for_status()
+            hits = response.json().get("result", {}).get("hits", {}).get("hit", [])
+            if not hits:
+                break
+            for hit in hits:
+                info = hit.get("info", {})
+                year = _year(info.get("year"))
+                if year < cutoff_year:
+                    continue
+                if year_counts.get(year, 0) >= per_year_limit:
+                    continue
+                paper = _parse_hit(info, conference)
+                if not paper["title"]:
+                    continue
+                papers.append(paper)
+                year_counts[year] = year_counts.get(year, 0) + 1
+                if len(papers) >= self.max_results:
+                    break
+            if len(papers) >= self.max_results:
+                break
+        papers.sort(
+            key=lambda item: (item.get("published_ts", 0), item.get("title", "")),
+            reverse=True,
+        )
+        return papers[: self.max_results]
 
 
 def _parse_hit(info: dict, conference: str) -> dict:

@@ -125,3 +125,9 @@ def classify(title: str, summary: str) -> tuple[list[str], list[str]]:
         return [], []
     return categories, sorted(set(evidence + matched_core))[:8]
 
+
+def core_evidence(title: str, summary: str) -> list[str]:
+    text = normalize_text(f"{title} {summary}")
+    if any(term in text for term in NEGATIVE_CONTEXTS):
+        return []
+    return sorted(term for term in CORE_TERMS if term in text)

@@ -8,7 +8,7 @@ from pathlib import Path
 
 from embodied_arxiv.arxiv_client import ArxivClient
 from embodied_arxiv.awards import AwardCatalog
-from embodied_arxiv.classifier import classify, normalize_text
+from embodied_arxiv.classifier import classify, core_evidence, normalize_text
 from embodied_arxiv.conferences import SUPPORTED_CONFERENCES, detect_conferences
 from embodied_arxiv.dblp import DblpClient
 from embodied_arxiv.openalex import OpenAlexClient
@@ -247,15 +247,25 @@ class PaperService:
                 self._refreshing = False
 
     def _fetch_conference(self, conference: str) -> list[dict]:
+        papers = []
+        errors = []
         try:
-            return self.openalex.conference_papers(conference)
-        except Exception as openalex_error:
-            papers = self.dblp.conference_papers(conference)
-            if not papers:
-                raise RuntimeError(
-                    f"OpenAlex 与 DBLP 均未返回数据；OpenAlex: {openalex_error}"
-                )
-            return papers
+            papers.extend(self.openalex.conference_papers(conference))
+        except Exception as exc:
+            errors.append(f"OpenAlex: {exc}")
+        try:
+            papers.extend(self.dblp.conference_papers(conference))
+        except Exception as exc:
+            errors.append(f"DBLP: {exc}")
+        papers = self._deduplicate(papers)
+        papers.sort(
+            key=lambda item: (item.get("published_ts", 0), item.get("title", "")),
+            reverse=True,
+        )
+        if not papers:
+            detail = "；".join(errors) or "未返回错误详情"
+            raise RuntimeError(f"OpenAlex 与 DBLP 均未返回数据；{detail}")
+        return papers
 
     def _refresh_arxiv(self, existing: dict[str, dict]) -> list[dict]:
         selected = []
@@ -304,11 +314,15 @@ class PaperService:
                 paper.get("title", ""),
                 paper.get("summary", ""),
             )
-            if not categories and conference not in ROBOTICS_CONFERENCES:
-                continue
             if not categories:
+                core = core_evidence(
+                    paper.get("title", ""),
+                    paper.get("summary", ""),
+                )
+                if conference not in ROBOTICS_CONFERENCES and not core:
+                    continue
                 categories = ["机器人学习"]
-                evidence = [conference]
+                evidence = core or [conference]
             paper["embodied_categories"] = categories
             paper["match_evidence"] = evidence
             selected.append(paper)
@@ -383,7 +397,10 @@ class PaperService:
         result = {}
         for paper in papers:
             key = paper.get("doi") or normalize_text(paper.get("title", ""))
-            if key:
+            if not key:
+                continue
+            existing = result.get(key)
+            if not existing or _paper_quality(paper) > _paper_quality(existing):
                 result[key] = paper
         return list(result.values())
 
@@ -403,3 +420,12 @@ class PaperService:
             encoding="utf-8",
         )
         os.replace(temp_path, self.cache_path)
+
+
+def _paper_quality(paper: dict) -> tuple[int, int, int, int]:
+    return (
+        1 if paper.get("openalex_id") else 0,
+        1 if paper.get("summary") else 0,
+        1 if paper.get("institutions") else 0,
+        int(paper.get("cited_by_count") or 0),
+    )

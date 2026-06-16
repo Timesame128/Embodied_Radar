@@ -3,6 +3,7 @@ from __future__ import annotations
 import re
 from datetime import date, datetime, timezone
 from difflib import SequenceMatcher
+from math import ceil
 
 import requests
 
@@ -41,43 +42,64 @@ class OpenAlexClient:
         return []
 
     def conference_papers(self, conference: str) -> list[dict]:
-        source_ids = self._source_ids(conference)
+        years = list(range(date.today().year, date.today().year - self.conference_years, -1))
+        source_ids = self._source_ids(conference, years)
         if not source_ids:
             raise RuntimeError(f"OpenAlex 未找到 {conference} 的会议来源")
-        from_year = date.today().year - self.conference_years + 1
-        filters = [
-            f"primary_location.source.id:{'|'.join(source_ids)}",
-            f"from_publication_date:{from_year}-01-01",
-        ]
         papers = []
-        cursor = "*"
-        while len(papers) < self.conference_max_results and cursor:
-            page_size = min(200, self.conference_max_results - len(papers))
-            data = self._get(
-                self.works_endpoint,
-                {
-                    "filter": ",".join(filters),
-                    "per-page": page_size,
-                    "sort": "publication_date:desc",
-                    "cursor": cursor,
-                    "select": (
-                        "id,doi,title,display_name,publication_date,publication_year,"
-                        "cited_by_count,authorships,primary_location,"
-                        "abstract_inverted_index,ids"
-                    ),
-                },
-            )
-            papers.extend(
-                self._parse_work(work, conference)
-                for work in data.get("results", [])
-                if work.get("title")
-            )
-            cursor = data.get("meta", {}).get("next_cursor")
-            if not data.get("results"):
+        per_year_limit = max(1, ceil(self.conference_max_results / len(years)))
+        for year in years:
+            cursor = "*"
+            year_count = 0
+            filters = [
+                f"primary_location.source.id:{'|'.join(source_ids)}",
+                f"from_publication_date:{year}-01-01",
+                f"to_publication_date:{year}-12-31",
+            ]
+            while (
+                len(papers) < self.conference_max_results
+                and year_count < per_year_limit
+                and cursor
+            ):
+                page_size = min(
+                    200,
+                    self.conference_max_results - len(papers),
+                    per_year_limit - year_count,
+                )
+                data = self._get(
+                    self.works_endpoint,
+                    {
+                        "filter": ",".join(filters),
+                        "per-page": page_size,
+                        "sort": "publication_date:desc",
+                        "cursor": cursor,
+                        "select": (
+                            "id,doi,title,display_name,publication_date,publication_year,"
+                            "cited_by_count,authorships,primary_location,"
+                            "abstract_inverted_index,ids"
+                        ),
+                    },
+                )
+                results = data.get("results", [])
+                papers.extend(
+                    self._parse_work(work, conference)
+                    for work in results
+                    if work.get("title")
+                )
+                year_count += len(results)
+                cursor = data.get("meta", {}).get("next_cursor")
+                if not results:
+                    break
+            if len(papers) >= self.conference_max_results:
                 break
+        papers = self._deduplicate(papers)
+        papers.sort(
+            key=lambda item: (item.get("published_ts", 0), item.get("title", "")),
+            reverse=True,
+        )
         if not papers:
             raise RuntimeError(f"OpenAlex 未返回 {conference} 会议论文")
-        return papers
+        return papers[: self.conference_max_results]
 
     def enrich_papers(self, papers: list[dict], limit: int = 100) -> list[dict]:
         enriched = []
@@ -125,11 +147,16 @@ class OpenAlexClient:
                 return work
         return None
 
-    def _source_ids(self, conference: str) -> list[str]:
+    def _source_ids(self, conference: str, years: list[int] | None = None) -> list[str]:
         config = CONFERENCES[conference]
         aliases = [_normalize(alias) for alias in config["aliases"]]
         source_ids = []
-        queries = list(dict.fromkeys((config["name"], *config["aliases"])))
+        base_queries = list(dict.fromkeys((config["name"], *config["aliases"])))
+        year_queries = []
+        for year in years or []:
+            for query in base_queries:
+                year_queries.extend((f"{query} {year}", f"{year} {query}"))
+        queries = list(dict.fromkeys([*year_queries, *base_queries]))
         for query in queries:
             data = self._get(
                 self.sources_endpoint,
@@ -146,7 +173,7 @@ class OpenAlexClient:
                 source_id = source.get("id", "").rsplit("/", 1)[-1]
                 if source_id:
                     source_ids.append(source_id)
-        return list(dict.fromkeys(source_ids))[:10]
+        return list(dict.fromkeys(source_ids))[:50]
 
     def _get(self, url: str, params: dict) -> dict:
         params = dict(params)
@@ -206,6 +233,15 @@ class OpenAlexClient:
             "journal_ref": "",
             "awards": [],
         }
+
+    @staticmethod
+    def _deduplicate(papers: list[dict]) -> list[dict]:
+        result = {}
+        for paper in papers:
+            key = paper.get("doi") or _normalize(paper.get("title", ""))
+            if key:
+                result[key] = paper
+        return list(result.values())
 
 
 def _normalize(value: str) -> str:

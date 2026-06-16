@@ -1,87 +1,118 @@
 # Embodied Radar
 
-自动追踪 arXiv 最近 15 天具身智能论文的 Web 应用，支持本地 Flask
-运行和 GitHub Pages 自动发布。
+Embodied Radar 是一个面向具身智能研究的论文雷达，用于自动汇总 arXiv 最新论文、顶级会议论文、引用量、团队单位、项目链接和获奖信息，并发布为 GitHub Pages 静态站点。
 
-链接：https://timesame128.github.io/reach-arXiv/
+线上地址：
+
+<https://timesame128.github.io/reach-arXiv/>
 
 ## 功能
 
-- 从 arXiv API 自动抓取最近论文，每小时整点刷新一次
-- 用具身关键词与任务子类规则进行二次筛选
-- 按视觉-语言-动作、操作、导航、运动、感知、智能体等方向分类
-- 展示标题、摘要、作者、日期、arXiv 分类和团队单位
-- 自动提取摘要/备注中的项目与代码链接
-- 一键打开 arXiv 详情、PDF、项目或代码页面
-- OpenAlex 辅助补全作者团队单位；匹配失败时明确提示
-- 识别并筛选 CoRL、ICRA、RSS、IROS、CVPR、ICLR、NeurIPS（NIPS）、ICML、ICCV 论文
-- arXiv 与各会议独立成区，支持时间、引用量排序及年份、引用量区间筛选
-- Best Paper、Outstanding Paper、Honorable Mention 等荣誉通过官方清单人工核验
+- 自动同步近期待筛选的 arXiv 论文。
+- 收录 CoRL、ICRA、RSS、IROS、CVPR、ICLR、NeurIPS、ICML、ICCV 等会议论文。
+- 使用 OpenAlex 补全作者单位、引用量、摘要和会议元数据，并在必要时回退到 DBLP。
+- 支持按论文来源、研究方向、时间范围、引用量区间和关键词筛选。
+- 支持最新优先、引用最高、相关性最高和综合推荐排序。
+- 支持列表视图、卡片视图和沉浸浏览模式。
+- 展示论文详情、PDF、项目或代码链接。
+- 通过 `data/awards.json` 人工维护 Best Paper、Outstanding Paper、Honorable Mention 等获奖论文。
+- GitHub Actions 定时刷新数据并自动部署 GitHub Pages。
 
-## 启动
+## 仓库结构
+
+```text
+.github/workflows/   GitHub Actions 自动刷新和 Pages 部署
+data/                论文缓存与获奖清单
+embodied_arxiv/      抓取、分类、会议同步和服务逻辑
+static/              前端 CSS、JavaScript 和图标
+templates/           Flask 页面模板
+tests/               自动测试
+app.py               本地 Flask 服务
+build_static.py      静态站点构建脚本
+requirements.txt     Python 依赖
+```
+
+## 本地运行
 
 ```powershell
 python -m pip install -r requirements.txt
 python app.py
 ```
 
-访问 <http://127.0.0.1:5000>，首次启动后会自动同步，也可以点击“立即刷新”。
+打开：
 
-## 发布到 GitHub Pages
+<http://127.0.0.1:5000>
 
-仓库已经包含 `.github/workflows/deploy-pages.yml`：
+默认会启动后台刷新任务。调试前端或只想读取本地缓存时，可以关闭后台刷新：
 
-1. 把项目推送到 GitHub 仓库的 `main` 或 `master` 分支。
-2. 打开仓库 `Settings → Pages`。
-3. 在 `Build and deployment` 的 `Source` 中选择 `GitHub Actions`。
-4. 打开 `Actions`，手动运行一次 `Update papers and deploy Pages`。
-
-部署完成后，页面地址通常是：
-
-```text
-https://你的用户名.github.io/仓库名/
+```powershell
+$env:DISABLE_SCHEDULER = "1"
+python app.py
 ```
 
-工作流每小时整点自动抓取一次 arXiv，并重新部署网页。GitHub 的定时任务可能有
-少量延迟，也可以随时在 Actions 页面点击 `Run workflow` 手动更新。
-
-本地预览静态站点：
+## 构建静态站点
 
 ```powershell
 python build_static.py
 python -m http.server 8000 --directory _site
 ```
 
-## 配置
+然后访问：
 
-环境变量：
+<http://127.0.0.1:8000>
 
-- `PAPER_DAYS`：保留天数，默认 `15`
-- `REFRESH_INTERVAL_MINUTES`：自动刷新间隔，默认 `360`
-- `ARXIV_MAX_RESULTS`：每次 arXiv 查询上限，默认 `300`
-- `OPENALEX_EMAIL`：可选，OpenAlex polite pool 邮箱
-- `OPENALEX_API_KEY`：OpenAlex API Key，用于同步会议论文和引用量
-- `CONFERENCE_MAX_RESULTS`：每个会议最多缓存的论文数，默认 `200`，最高 `1000`
-- `CONFERENCE_YEARS`：会议论文回溯年数，默认 `5`
-- `AWARDS_PATH`：奖项清单路径，默认 `data/awards.json`
-- `PORT`：服务端口，默认 `5000`
-- `DISABLE_SCHEDULER=1`：关闭后台自动刷新
-
-## 测试
+如果需要在构建时刷新论文数据：
 
 ```powershell
-python -m pytest
+python build_static.py --refresh
 ```
 
-## 会议与奖项数据
+## GitHub Pages 部署
 
-会议论文原始目录优先来自 OpenAlex，venue 缺失时自动回退到 DBLP；引用量、摘要和单位
-由 OpenAlex 补充。GitHub Pages 每 6 小时自动刷新，
-并把成功获取的 `data/papers.json` 提交回仓库。部署时请在仓库
-`Settings → Secrets and variables → Actions` 中添加 `OPENALEX_API_KEY`；工作流会在每次
-更新时刷新引用量。
+仓库包含 `.github/workflows/deploy-pages.yml`。工作流会：
 
-奖项不能由引用量可靠推断，因此使用 `data/awards.json` 人工维护。每条记录可填写：
+1. 安装 Python 依赖。
+2. 执行 `python build_static.py --refresh`。
+3. 如果 `data/papers.json` 有变化，将刷新后的缓存提交回当前分支。
+4. 上传 `_site` 并部署到 GitHub Pages。
+
+工作流触发方式：
+
+- 推送到 `main` 或 `master`
+- 每 6 小时定时运行一次
+- 在 Actions 页面手动运行 `Update papers and deploy Pages`
+
+Pages 设置中需要选择：
+
+```text
+Settings -> Pages -> Build and deployment -> Source -> GitHub Actions
+```
+
+## 环境变量
+
+| 变量 | 默认值 | 说明 |
+| --- | --- | --- |
+| `PAPER_DAYS` | `15` | 保留最近多少天的 arXiv 论文 |
+| `REFRESH_INTERVAL_MINUTES` | `360` | 本地服务后台刷新间隔 |
+| `ARXIV_MAX_RESULTS` | `300` | 每次 arXiv 查询上限 |
+| `OPENALEX_EMAIL` | 空 | OpenAlex polite pool 邮箱 |
+| `OPENALEX_API_KEY` | 空 | OpenAlex API Key，建议在 GitHub Actions Secrets 中配置 |
+| `CONFERENCE_MAX_RESULTS` | `200` | 每个会议最多缓存的论文数，部署时通常设为 `1000` |
+| `CONFERENCE_YEARS` | `5` | 会议论文回溯年数 |
+| `AWARDS_PATH` | `data/awards.json` | 获奖论文清单路径 |
+| `PORT` | `5000` | 本地服务端口 |
+| `DISABLE_SCHEDULER` | `0` | 设为 `1` 时关闭本地后台刷新 |
+
+GitHub Actions 中建议配置：
+
+```text
+OPENALEX_API_KEY
+OPENALEX_EMAIL
+```
+
+## 获奖论文维护
+
+获奖信息不能可靠地从引用量推断，因此使用 `data/awards.json` 人工维护。每条记录可以包含：
 
 ```json
 {
@@ -90,8 +121,18 @@ python -m pytest
   "conference": "CoRL",
   "year": 2025,
   "award": "Best Paper",
-  "source_url": "会议官方奖项页面"
+  "source_url": "会议官方获奖页面"
 }
 ```
 
-系统优先按 DOI、其次按规范化标题匹配，只展示经过清单确认的获奖论文。
+系统优先按 DOI 匹配，其次按规范化标题匹配，只展示清单确认过的获奖论文。
+
+## 测试
+
+```powershell
+python -m pytest
+```
+
+## 说明
+
+arXiv 提供预印本数据；OpenAlex 提供会议元数据、引用量、摘要和单位信息；DBLP 用作会议同步的补充来源。由于外部服务偶尔会限流或返回异常，页面会在部分数据更新失败时保留已有缓存并显示异常提示。

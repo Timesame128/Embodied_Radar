@@ -123,3 +123,52 @@ def test_award_does_not_cross_conference_boundary(tmp_path):
     )
 
     assert service.list_papers(source="awards")["count"] == 0
+
+
+def test_fetch_conference_merges_openalex_and_dblp(tmp_path):
+    service = PaperService(cache_path=str(tmp_path / "papers.json"))
+    openalex_paper = {
+        **_paper(
+            "openalex:one",
+            "ICRA",
+            2025,
+            42,
+            "Shared Robot Paper",
+        ),
+        "doi": "10.1000/shared",
+        "openalex_id": "W1",
+        "summary": "Robot manipulation with institutions.",
+        "institutions": ["Example Lab"],
+    }
+    dblp_duplicate = {
+        **_paper("dblp:one", "ICRA", 2025, 0, "Shared Robot Paper"),
+        "doi": "10.1000/shared",
+    }
+    dblp_new = _paper("dblp:two", "ICRA", 2024, 0, "Another Robot Paper")
+
+    service.openalex.conference_papers = lambda conference: [openalex_paper]
+    service.dblp.conference_papers = lambda conference: [dblp_duplicate, dblp_new]
+
+    papers = service._fetch_conference("ICRA")
+
+    assert [paper["id"] for paper in papers] == ["openalex:one", "dblp:two"]
+    assert papers[0]["institutions"] == ["Example Lab"]
+
+
+def test_non_robotics_conference_keeps_core_robot_paper():
+    paper = {
+        **_paper(
+            "iclr-robot",
+            "ICLR",
+            2025,
+            0,
+            "Robot Learning with Diffusion Policies",
+        ),
+        "summary": "A benchmark for robot policy learning.",
+    }
+
+    selected = PaperService._classify_conference_papers([paper], "ICLR")
+
+    assert len(selected) == 1
+    assert selected[0]["embodied_categories"] == ["机器人学习"]
+    assert "robot" in selected[0]["match_evidence"]
