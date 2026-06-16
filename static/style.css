@@ -524,22 +524,31 @@ main {
   display: flex;
   width: 100%;
   max-width: 1180px;
+  min-width: 0;
   align-items: end;
   justify-content: space-between;
+  gap: 24px;
   margin: 70px auto 26px;
 }
 .section-heading h2 { margin: 7px 0 0; font-size: 38px; letter-spacing: -.04em; }
 
 .results-tools {
   display: flex;
+  min-width: 0;
+  flex: 1;
   align-items: end;
+  justify-content: flex-end;
   gap: 18px;
 }
 
 #resultHint {
+  min-width: 0;
+  max-width: min(640px, 44vw);
   margin: 0 0 11px;
   color: var(--muted);
   font-size: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
 }
 
 .sort-control {
@@ -1069,10 +1078,17 @@ footer a { color: var(--lime); font-weight: 700; text-decoration: none; }
   .paper-card h3 { width: 100%; margin-top: 14px; font-size: 19px; word-break: break-word; }
   .authors, .summary { width: 100%; word-break: break-word; }
   .paper-grid.view-list .summary { -webkit-line-clamp: 2; }
-  .metadata-line { flex-wrap: wrap; white-space: normal; row-gap: 3px; }
+  .metadata-line,
+  .paper-grid.view-list .metadata-line {
+    margin: 16px 0 22px;
+    padding-top: 15px;
+    flex-wrap: wrap;
+    row-gap: 7px;
+    white-space: normal;
+  }
   .institution-meta { flex-basis: 100%; }
   .metadata-line .institution-meta::before { display: none; }
-  .card-actions { gap: 12px; flex-wrap: wrap; }
+  .card-actions { gap: 14px 16px; flex-wrap: wrap; }
   .paper-grid.view-list .card-actions {
     width: 100%;
     min-width: 0;
@@ -1084,7 +1100,7 @@ footer a { color: var(--lime); font-weight: 700; text-decoration: none; }
   .section-heading { align-items: stretch; margin: 52px 0 22px; flex-direction: column; gap: 18px; }
   .section-heading h2 { font-size: 34px; }
   .results-tools { align-items: flex-end; justify-content: space-between; flex-wrap: wrap; }
-  #resultHint { margin: 0; }
+  #resultHint { max-width: 100%; margin: 0; flex-basis: 100%; }
   .sort-control { min-width: 140px; }
   footer { gap: 15px; padding: 26px 18px; flex-direction: column; }
 }
