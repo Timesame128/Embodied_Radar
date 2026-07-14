@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-14T08:31:17.243333+00:00",
+  "updated_at": "2026-07-14T14:17:38.914369+00:00",
   "arxiv_papers": [
     {
       "id": "2607.11884v1",
@@ -10591,282 +10591,6 @@
       ],
       "institutions": [],
       "institutions_source": ""
-    },
-    {
-      "id": "2606.30308v2",
-      "title": "The Surprising Effectiveness of Video Diffusion Models for Hand Motion Reconstruction",
-      "summary": "4D hand motion reconstruction from egocentric video is bottlenecked by clear limitations of existing methods: image-based pipelines depend on a detector that fails under heavy occlusion, while video-based methods rely on temporal modules learned only from scarce hand-pose annotations, a narrow signal insufficient to model motion dynamics, occlusion reasoning, and hand-object interaction. These capabilities, however, are exactly what video generative models must implicitly acquire when trained to synthesize coherent video at internet scale. Motivated by this, we present ViDiHand, which leverages the representations of a pretrained video diffusion model to reconstruct 4D two-hand pose. We adapt it via a hand-overlay rendering objective that specializes its features for hands while preserving its world priors. A decoder then recovers metric-scale pose from the adapted features. The whole pipeline operates directly on full frames--no detector, no infiller, and no test-time optimization. On ARCTIC, HOT3D, and HOI4D, ViDiHand substantially outperforms prior methods, establishing video diffusion models as a powerful new foundation for hand motion reconstruction and a promising route to scalable in-the-wild data collection for embodied AI. Project page: https://vidihand.github.io.",
-      "authors": [
-        "Yuxi Wang",
-        "Chengkai Jin",
-        "Yufei Liu",
-        "Wenqi Ouyang",
-        "Tianyi Wei",
-        "Zhiwei Zeng",
-        "Siyuan Huang",
-        "Zhiqi Shen",
-        "Xingang Pan"
-      ],
-      "published": "2026-06-29T13:53:00Z",
-      "updated": "2026-07-09T09:39:31Z",
-      "published_ts": 1782741180.0,
-      "arxiv_url": "http://arxiv.org/abs/2606.30308v2",
-      "pdf_url": "https://arxiv.org/pdf/2606.30308v2",
-      "primary_category": "cs.CV",
-      "arxiv_categories": [
-        "cs.CV"
-      ],
-      "comment": "",
-      "journal_ref": "",
-      "doi": "",
-      "doi_url": "",
-      "external_urls": [
-        "https://vidihand.github.io"
-      ],
-      "source_kind": "arxiv",
-      "conference": "",
-      "conferences": [],
-      "publication_year": 2026,
-      "cited_by_count": 0,
-      "awards": [],
-      "embodied_categories": [
-        "具身智能体"
-      ],
-      "match_evidence": [
-        "embodied",
-        "embodied ai"
-      ],
-      "institutions": [],
-      "institutions_source": ""
-    },
-    {
-      "id": "2606.30290v1",
-      "title": "X-Morph: Human Motion Priors for Scalable Robot Learning Across Morphologies",
-      "summary": "Recent progress in humanoid behavior models has been driven in large part by abundant human motion data, but comparable motion data is scarce for non-humanoid legged robots such as quadrupeds, hexapods, and quadruped manipulators. A promising alternative is to repurpose human motion across embodiments; however, direct retargeting often produces motions that are visually plausible yet physically inconsistent or difficult to track under robot dynamics. We present X-Morph, a human-motion-to-robot-behavior pipeline that converts human motion into deployable locomotion and loco-manipulation policies for diverse non-humanoid legged morphologies. A cross-morphology retargeting stage converts human motions into kinematically plausible, intent-preserving robot references, which are then tracked by a privileged RL policy and distilled into a causal student policy. We evaluate X-Morph on three morphologically distinct platforms: a quadruped, a hexapod, and a quadruped equipped with a manipulator. The resulting policies track diverse retargeted motions, generalize to unseen human motions, and support downstream use cases including video-based teleoperation, behavior-prior control, and text-conditioned motion generation. These results suggest that large-scale human motion can serve as a substrate for learning broad, reusable behavior priors beyond humanoid robots. Project page: https://maker-rat.github.io/morph/",
-      "authors": [
-        "Ritwik Sharma",
-        "Shivam Sood",
-        "Arhaan Jain",
-        "Shyam Charan Kesavamoorthi",
-        "Chengyang He",
-        "Guillaume Sartoretti"
-      ],
-      "published": "2026-06-29T13:31:27Z",
-      "updated": "2026-06-29T13:31:27Z",
-      "published_ts": 1782739887.0,
-      "arxiv_url": "http://arxiv.org/abs/2606.30290v1",
-      "pdf_url": "https://arxiv.org/pdf/2606.30290v1",
-      "primary_category": "cs.RO",
-      "arxiv_categories": [
-        "cs.RO"
-      ],
-      "comment": "",
-      "journal_ref": "",
-      "doi": "",
-      "doi_url": "",
-      "external_urls": [
-        "https://maker-rat.github.io/morph/"
-      ],
-      "source_kind": "arxiv",
-      "conference": "",
-      "conferences": [],
-      "publication_year": 2026,
-      "cited_by_count": 0,
-      "awards": [],
-      "embodied_categories": [
-        "运动与控制",
-        "人机交互"
-      ],
-      "match_evidence": [
-        "humanoid",
-        "legged robot",
-        "locomotion",
-        "manipulation",
-        "robot",
-        "teleoperation"
-      ],
-      "institutions": [],
-      "institutions_source": ""
-    },
-    {
-      "id": "2606.30268v1",
-      "title": "ConCent: Contact-Centric Real-to-Sim-to-Real Learning from One Demonstration",
-      "summary": "Sim-to-real policy transfer -- deploying policies trained in simulation in the real world -- is a promising paradigm for scaling robot manipulation without large-scale real-world data. However, transferring simulation-trained policies remains challenging due to discrepancies in contact dynamics -- particularly in contact-rich tasks where subtle differences can alter task outcomes entirely. Because interaction between the manipulated object and the environment is mediated through contact, task success depends on accurately reproducing task-relevant contacts. Accordingly, in manipulation, contact-centric fidelity -- reproducing both the contact event sequence (when, where, and how contacts occur) and the local contact dynamics (how forces and motions evolve at each contact) -- is a necessary condition for task success. Based on this insight, we propose a contact-centric real-to-sim-to-real RL framework that uses task-relevant contact event sequences extracted from real demonstrations as the learning objective. We approximate objects as groups of primitives and optimize their contact geometry in simulation so that the resulting local contact dynamics explain the observed state transitions. The contact event sequence is automatically extracted by replaying the demonstration. This sequence serves as a structured reward signal, guiding the policy toward physically plausible contact regimes validated in reality and preventing exploitation of unrealistic simulator contacts. The signal is obtained automatically, requiring no per-task reward design. Experiments on contact-rich manipulation tasks demonstrate more stable and robust sim-to-real policy transfer compared to unconstrained RL baselines.",
-      "authors": [
-        "Heecheol Kim",
-        "Namiko Saito",
-        "Katsushi Ikeuchi",
-        "Yasuyuki Matsushita"
-      ],
-      "published": "2026-06-29T13:16:33Z",
-      "updated": "2026-06-29T13:16:33Z",
-      "published_ts": 1782738993.0,
-      "arxiv_url": "http://arxiv.org/abs/2606.30268v1",
-      "pdf_url": "https://arxiv.org/pdf/2606.30268v1",
-      "primary_category": "cs.RO",
-      "arxiv_categories": [
-        "cs.RO"
-      ],
-      "comment": "18 pages, 8 figures",
-      "journal_ref": "",
-      "doi": "",
-      "doi_url": "",
-      "external_urls": [],
-      "source_kind": "arxiv",
-      "conference": "",
-      "conferences": [],
-      "publication_year": 2026,
-      "cited_by_count": 0,
-      "awards": [],
-      "embodied_categories": [
-        "操作与抓取",
-        "世界模型与仿真"
-      ],
-      "match_evidence": [
-        "manipulation",
-        "robot",
-        "robot manipulation",
-        "sim-to-real"
-      ],
-      "institutions": [],
-      "institutions_source": ""
-    },
-    {
-      "id": "2606.30113v1",
-      "title": "SA-VLA: State-aware tokenizer for improving Vision-Language-Action Models' performance",
-      "summary": "Discrete action tokenization provides a compact interface for autoregressive VLA policies, but accurately recovering continuous robot actions from discrete codes remains challenging. Existing tokenizers typically map each discrete code to a fixed continuous action prototype, ignoring the robot's current proprioceptive state. This limitation is particularly pronounced in manipulation, where the same action token may require different continuous controls under different joint configurations, object poses, and contact conditions. We therefore propose SA-VLA, a state-aware action tokenizer that conditions action decoding on robot state. We study two state-injection mechanisms for VQ-based action tokenization: cross-attention between state and action features, and a lightweight state adapter that predicts action-wise modulation factors for state-conditioned action modulation and reconstruction. The adapter formulation expands the effective support of a finite codebook by allowing each discrete token to represent a family of state-dependent continuous actions, while preserving the efficiency and compatibility of discrete action modeling. Integrated into an LLM-based VLA policy, SA-VLA supports both autoregressive and parallel action-token decoding with minimal changes to the model interface. On 12 RoboTwin manipulation tasks, SA-VLA improves the average success rate from 0.29 to 0.56 over the strongest tokenizer baseline. In zero-shot sim-to-real experiments on three real-world tasks, it further improves average success from 0.15 to 0.33 over the strongest tokenizer baseline. These results demonstrate that state-conditioned action decoding is a simple and effective mechanism for reducing the compression gap in discrete VLA policies.",
-      "authors": [
-        "Tengyue Jiang",
-        "Chunpu Xu",
-        "Jiayue Kang",
-        "Yao Mu"
-      ],
-      "published": "2026-06-29T10:45:53Z",
-      "updated": "2026-06-29T10:45:53Z",
-      "published_ts": 1782729953.0,
-      "arxiv_url": "http://arxiv.org/abs/2606.30113v1",
-      "pdf_url": "https://arxiv.org/pdf/2606.30113v1",
-      "primary_category": "cs.RO",
-      "arxiv_categories": [
-        "cs.RO",
-        "cs.AI"
-      ],
-      "comment": "",
-      "journal_ref": "",
-      "doi": "",
-      "doi_url": "",
-      "external_urls": [],
-      "source_kind": "arxiv",
-      "conference": "",
-      "conferences": [],
-      "publication_year": 2026,
-      "cited_by_count": 0,
-      "awards": [],
-      "embodied_categories": [
-        "视觉-语言-动作",
-        "世界模型与仿真"
-      ],
-      "match_evidence": [
-        "manipulation",
-        "robot",
-        "sim-to-real",
-        "vision-language-action"
-      ],
-      "institutions": [],
-      "institutions_source": ""
-    },
-    {
-      "id": "2606.30111v2",
-      "title": "Automating the Design of Embodied Agent Architectures",
-      "summary": "Embodied agents are typically built as hand-designed compositions of perception, memory, planning, and action modules. This modularity exposes a large architectural design space, but current systems still rely on researcher intuition to choose where information is stored, how observations are processed, and how model calls are connected. Agent Architecture Search (AAS) automates such design for text-domain agents, but has not been systematically evaluated on perceptual embodied agents through simulator rollouts. We study this transfer. We introduce AgentCanvas, a typed-graph runtime that hosts embodied executors as editable node-and-wire programs with simulator-aware execution and episode-level logs, and KDLoop, a coding-agent search procedure that cycles through proposal, critique, experiment, and distillation, with triggered reflection after stalls. We evaluate three AAS variants across four embodied executors spanning vision-language navigation, embodied question answering, and language-conditioned manipulation. The resulting 3x4 matrix shows that architecture-level search can produce deployable and directional success-rate gains on embodied tasks, while one apparent high-scoring candidate is rejected as leak-bearing. At the same time, the experiments expose constraints that are muted in text-domain AAS: optimization signals can be masked by rollout noise, search can become trapped in local edit basins, and episode-level credit assignment only partially emerges even when detailed logs are available. These results characterize both the promise and the current limits of automated architecture search for embodied agents.",
-      "authors": [
-        "Jian Zhou",
-        "Sihao Lin",
-        "Jin Li",
-        "Shuai Fu",
-        "Gengze Zhou",
-        "Qi Wu"
-      ],
-      "published": "2026-06-29T10:45:37Z",
-      "updated": "2026-07-03T09:48:56Z",
-      "published_ts": 1782729937.0,
-      "arxiv_url": "http://arxiv.org/abs/2606.30111v2",
-      "pdf_url": "https://arxiv.org/pdf/2606.30111v2",
-      "primary_category": "cs.RO",
-      "arxiv_categories": [
-        "cs.RO",
-        "cs.AI",
-        "cs.LG"
-      ],
-      "comment": "",
-      "journal_ref": "",
-      "doi": "",
-      "doi_url": "",
-      "external_urls": [],
-      "source_kind": "arxiv",
-      "conference": "",
-      "conferences": [],
-      "publication_year": 2026,
-      "cited_by_count": 0,
-      "awards": [],
-      "embodied_categories": [
-        "导航与探索",
-        "具身智能体"
-      ],
-      "match_evidence": [
-        "embodied",
-        "embodied agent",
-        "manipulation",
-        "navigation",
-        "vision-language navigation"
-      ],
-      "institutions": [],
-      "institutions_source": ""
-    },
-    {
-      "id": "2606.30014v1",
-      "title": "Shell-Supervised Gaussian Splatting for Urban Real-to-Sim Reconstruction",
-      "summary": "Real-to-sim reconstruction for embodied AI requires geometry that is useful for collision reasoning, navigation, and agent-environment interaction, not only photorealistic novel-view synthesis. However, close-range urban facades are difficult for video-to-3D reconstruction: glass, reflections, repeated windows, and weak texture can produce visually plausible renderings with unstable surface geometry. We introduce shell-supervised Gaussian Splatting, a reconstruction-stage framework that uses an external facade structural shell as lightweight geometric supervision for video-driven Gaussian reconstruction. The method aligns an exterior shell to the video reconstruction frame, renders per-view depth, camera-space normal, and valid-mask maps, and applies these cues through mask-gated losses during Gaussian optimization. This design preserves RGB-driven appearance while regularizing only visible shell-supported facade regions. Experiments on anonymized close-range urban facade scenes show improved facade orientation and visible-surface point-cloud consistency over photo-only, monocular-cue, and surface-oriented Gaussian baselines, while maintaining comparable held-out rendering quality.",
-      "authors": [
-        "Yuan Yang",
-        "Peijun Lu",
-        "Fangzhou Lu",
-        "Sai Fan",
-        "Siqi Yan",
-        "Chenyuan Zhang",
-        "Haobo Liang",
-        "Yichen Wang"
-      ],
-      "published": "2026-06-29T09:19:24Z",
-      "updated": "2026-06-29T09:19:24Z",
-      "published_ts": 1782724764.0,
-      "arxiv_url": "http://arxiv.org/abs/2606.30014v1",
-      "pdf_url": "https://arxiv.org/pdf/2606.30014v1",
-      "primary_category": "cs.CV",
-      "arxiv_categories": [
-        "cs.CV"
-      ],
-      "comment": "10 pages main paper, 2 pages supplementary material",
-      "journal_ref": "",
-      "doi": "",
-      "doi_url": "",
-      "external_urls": [],
-      "source_kind": "arxiv",
-      "conference": "",
-      "conferences": [],
-      "publication_year": 2026,
-      "cited_by_count": 0,
-      "awards": [],
-      "embodied_categories": [
-        "具身智能体"
-      ],
-      "match_evidence": [
-        "embodied",
-        "embodied ai",
-        "navigation"
-      ],
-      "institutions": [],
-      "institutions_source": ""
     }
   ],
   "conference_papers": [
@@ -12065,7 +11789,7 @@
       "published": "2024-01-01",
       "published_ts": 1704067200.0,
       "publication_year": 2024,
-      "cited_by_count": 8,
+      "cited_by_count": 9,
       "doi": "",
       "doi_url": "",
       "paper_url": "https://proceedings.mlr.press/v270/huang25g.html",
@@ -22700,7 +22424,7 @@
       "published": "2022-05-23",
       "published_ts": 1653264000.0,
       "publication_year": 2022,
-      "cited_by_count": 457,
+      "cited_by_count": 458,
       "doi": "10.1109/icra46639.2022.9812038",
       "doi_url": "https://doi.org/10.1109/icra46639.2022.9812038",
       "paper_url": "https://doi.org/10.1109/icra46639.2022.9812038",
@@ -30340,7 +30064,7 @@
       "published": "2022-10-23",
       "published_ts": 1666483200.0,
       "publication_year": 2022,
-      "cited_by_count": 23,
+      "cited_by_count": 24,
       "doi": "10.1109/iros47612.2022.9982043",
       "doi_url": "https://doi.org/10.1109/iros47612.2022.9982043",
       "paper_url": "https://doi.org/10.1109/iros47612.2022.9982043",
@@ -31791,7 +31515,7 @@
       "published": "2022-10-23",
       "published_ts": 1666483200.0,
       "publication_year": 2022,
-      "cited_by_count": 34,
+      "cited_by_count": 35,
       "doi": "10.1109/iros47612.2022.9981424",
       "doi_url": "https://doi.org/10.1109/iros47612.2022.9981424",
       "paper_url": "https://doi.org/10.1109/iros47612.2022.9981424",
@@ -35114,7 +34838,7 @@
       "published": "2022-10-23",
       "published_ts": 1666483200.0,
       "publication_year": 2022,
-      "cited_by_count": 23,
+      "cited_by_count": 24,
       "doi": "10.1109/iros47612.2022.9981070",
       "doi_url": "https://doi.org/10.1109/iros47612.2022.9981070",
       "paper_url": "https://doi.org/10.1109/iros47612.2022.9981070",
@@ -36855,7 +36579,7 @@
       "published": "2022-10-23",
       "published_ts": 1666483200.0,
       "publication_year": 2022,
-      "cited_by_count": 36,
+      "cited_by_count": 37,
       "doi": "10.1109/iros47612.2022.9981284",
       "doi_url": "https://doi.org/10.1109/iros47612.2022.9981284",
       "paper_url": "https://doi.org/10.1109/iros47612.2022.9981284",
@@ -37690,7 +37414,7 @@
       "published": "2022-10-23",
       "published_ts": 1666483200.0,
       "publication_year": 2022,
-      "cited_by_count": 23,
+      "cited_by_count": 24,
       "doi": "10.1109/iros47612.2022.9981642",
       "doi_url": "https://doi.org/10.1109/iros47612.2022.9981642",
       "paper_url": "https://doi.org/10.1109/iros47612.2022.9981642",
@@ -37931,7 +37655,7 @@
       "published": "2022-10-23",
       "published_ts": 1666483200.0,
       "publication_year": 2022,
-      "cited_by_count": 86,
+      "cited_by_count": 87,
       "doi": "10.1109/iros47612.2022.9981973",
       "doi_url": "https://doi.org/10.1109/iros47612.2022.9981973",
       "paper_url": "https://doi.org/10.1109/iros47612.2022.9981973",
@@ -37976,7 +37700,7 @@
       "published": "2022-10-23",
       "published_ts": 1666483200.0,
       "publication_year": 2022,
-      "cited_by_count": 82,
+      "cited_by_count": 83,
       "doi": "10.1109/iros47612.2022.9981198",
       "doi_url": "https://doi.org/10.1109/iros47612.2022.9981198",
       "paper_url": "https://doi.org/10.1109/iros47612.2022.9981198",
@@ -38541,7 +38265,7 @@
       "published": "2022-06-01",
       "published_ts": 1654041600.0,
       "publication_year": 2022,
-      "cited_by_count": 370,
+      "cited_by_count": 371,
       "doi": "10.1109/cvpr52688.2022.01103",
       "doi_url": "https://doi.org/10.1109/cvpr52688.2022.01103",
       "paper_url": "https://doi.org/10.1109/cvpr52688.2022.01103",
