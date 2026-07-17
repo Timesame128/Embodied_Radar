@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-17T08:33:24.908390+00:00",
+  "updated_at": "2026-07-17T14:07:47.397587+00:00",
   "arxiv_papers": [
     {
       "id": "2607.15278v1",
@@ -10219,229 +10219,6 @@
         "robot",
         "robotic",
         "sim-to-real"
-      ],
-      "institutions": [],
-      "institutions_source": ""
-    },
-    {
-      "id": "2607.02195v1",
-      "title": "Bridge-WA: Predicting Where and How the World Changes for Robotic Action",
-      "summary": "General-purpose vision-language-action models benefit from large vision-language priors, but effective manipulation also requires anticipating action-relevant scene changes. Existing world-action models often rely on large generative world models or dense future rollouts, which are expensive and spend capacity on visual details weakly coupled to control. We present Bridge-WA, a lightweight world-action framework that distills a frozen future-change teacher into three compact priors: future tokens for intended outcomes, change maps for intervention support, and motion-flow maps for local transition direction. A WorldBridge conditions the action transformer on these priors through multi-source attention memories and spatial-temporal biases, while the teacher model is removed at inference. Across VLABench, RoboTwin2.0, LIBERO-Plus and real-robot evaluations, Bridge-WA improves task success, progress, and robustness, with particularly clear gains under out-of-distribution visual shifts. By focusing action generation on where and how the scene will change, Bridge-WA suppresses nuisance appearance factors such as background, lighting, and distractors, leading to better generalization without deployment-time dense future-image generation. Code and visualizations are available at: https://hcplab-sysu.github.io/BRIDGE-WA .",
-      "authors": [
-        "Yongjie Bai",
-        "Hanting Wang",
-        "Mingtong Dai",
-        "Qijun Zhong",
-        "Yang Liu",
-        "Liang Lin"
-      ],
-      "published": "2026-07-02T14:03:44Z",
-      "updated": "2026-07-02T14:03:44Z",
-      "published_ts": 1783001024.0,
-      "arxiv_url": "http://arxiv.org/abs/2607.02195v1",
-      "pdf_url": "https://arxiv.org/pdf/2607.02195v1",
-      "primary_category": "cs.RO",
-      "arxiv_categories": [
-        "cs.RO"
-      ],
-      "comment": "21 pages, 8 figures, https://hcplab-sysu.github.io/BRIDGE-WA",
-      "journal_ref": "",
-      "doi": "",
-      "doi_url": "",
-      "external_urls": [
-        "https://hcplab-sysu.github.io/BRIDGE-WA"
-      ],
-      "source_kind": "arxiv",
-      "conference": "",
-      "conferences": [],
-      "publication_year": 2026,
-      "cited_by_count": 0,
-      "awards": [],
-      "embodied_categories": [
-        "视觉-语言-动作",
-        "世界模型与仿真"
-      ],
-      "match_evidence": [
-        "manipulation",
-        "robot",
-        "robotic",
-        "vision-language-action",
-        "world model"
-      ],
-      "institutions": [],
-      "institutions_source": ""
-    },
-    {
-      "id": "2607.02092v2",
-      "title": "Guided Action Flow: Q-Guided Inference for Flow-Matching Vision-Language-Action Policies",
-      "summary": "Flow-matching vision-language-action policies generate robot action chunks through an iterative transport process, creating an opportunity for test-time guidance without retraining the base policy. We study this opportunity in Guided Action Flow, an inference-time framework that keeps a pretrained SmolVLA policy frozen and uses a learned action-chunk critic to guide its reverse-time flow sampler. The critic is trained from real success and failure rollouts, can condition on task-description features from the frozen SmolVLA language pathway, and is used only through action gradients during sampling. We evaluate the approach on LIBERO manipulation tasks. A single-task critic improves success from 68.0% to 82.0% on one seed window and from 82.0% to 86.0% on another. A multi-family task-description critic improves validation success from 46.0% to 56.0%, while the locked held-out test gain is positive but modest, from 65.0% to 67.5%. These results support the feasibility of Q-guided inference for frozen flow-matching VLA policies, while showing that critic generalization and uncertainty-aware guidance remain the central bottlenecks.",
-      "authors": [
-        "Liuhaichen Yang",
-        "Zhuang Jiang",
-        "Chenchao Sheng",
-        "Zezhi Tang"
-      ],
-      "published": "2026-07-02T12:30:50Z",
-      "updated": "2026-07-03T08:21:35Z",
-      "published_ts": 1782995450.0,
-      "arxiv_url": "http://arxiv.org/abs/2607.02092v2",
-      "pdf_url": "https://arxiv.org/pdf/2607.02092v2",
-      "primary_category": "cs.RO",
-      "arxiv_categories": [
-        "cs.RO",
-        "cs.AI"
-      ],
-      "comment": "",
-      "journal_ref": "",
-      "doi": "",
-      "doi_url": "",
-      "external_urls": [],
-      "source_kind": "arxiv",
-      "conference": "",
-      "conferences": [],
-      "publication_year": 2026,
-      "cited_by_count": 0,
-      "awards": [],
-      "embodied_categories": [
-        "视觉-语言-动作"
-      ],
-      "match_evidence": [
-        "manipulation",
-        "robot",
-        "vision-language-action"
-      ],
-      "institutions": [],
-      "institutions_source": ""
-    },
-    {
-      "id": "2607.02034v2",
-      "title": "ComplexMimic: Human-Scene Interaction Imitation in Complex 3D Environments",
-      "summary": "Physics-based Human-Scene Interaction (HSI) imitation learning is crucial for embodied intelligence as it bridges the gap between kinematic 3D motions and real-world dynamics. However, most existing methods focus on simplified scene settings, leaving complex environments largely unexplored, which limits their applicability in real-world scenarios. In this paper, we focus on HSI mimicry in complex environments. Under this complex setting, we observe an inherent trade-off between successfully performing interaction and maintaining natural, physically plausible motions. To address this challenge, we propose ComplexMimic, a framework that reconstructs diverse HSI by interpreting imperfect MoCap data. First, we introduce a Dual Flow Strategy, which learns two complementary experts: an imitation expert for accurate motion tracking and an interaction expert for collision-aware adaptation in complex scenes. Second, naive multi-expert distillation, which treats all experts equally, often under-samples challenging behaviors, limiting effective learning. To mitigate this issue, we propose a difficulty-aware distillation strategy that adaptively weights supervision and prioritizes hard-yet-learnable trajectories guided by failure statistics and learning progress signals. Extensive experiments on three benchmark datasets demonstrate that our approach outperforms current state-of-the-art methods.",
-      "authors": [
-        "Lu Pan",
-        "Hongwei Zhao"
-      ],
-      "published": "2026-07-02T11:01:20Z",
-      "updated": "2026-07-03T05:22:51Z",
-      "published_ts": 1782990080.0,
-      "arxiv_url": "http://arxiv.org/abs/2607.02034v2",
-      "pdf_url": "https://arxiv.org/pdf/2607.02034v2",
-      "primary_category": "cs.CV",
-      "arxiv_categories": [
-        "cs.CV"
-      ],
-      "comment": "",
-      "journal_ref": "",
-      "doi": "",
-      "doi_url": "",
-      "external_urls": [],
-      "source_kind": "arxiv",
-      "conference": "",
-      "conferences": [],
-      "publication_year": 2026,
-      "cited_by_count": 0,
-      "awards": [],
-      "embodied_categories": [
-        "具身智能体"
-      ],
-      "match_evidence": [
-        "embodied",
-        "embodied intelligence"
-      ],
-      "institutions": [],
-      "institutions_source": ""
-    },
-    {
-      "id": "2607.09734v1",
-      "title": "The Individual-Targeting Assumption: A Systematic Review of Proactive Robots in Human Group Settings",
-      "summary": "Proactive robots are increasingly deployed in public environments where people are encountered not as isolated individuals but as members of cohesive social groups. Yet whether the prevailing design paradigm in proactive human-robot interaction (HRI) accounts for the relational structure that defines a group as a social unit remains largely unexamined. Through a systematic review of 63 proactive HRI studies in group settings from 2000 to 2025, we identify a recurring tendency, the Individual-Targeting Assumption (ITA), in which robots treat co-present people as independent engagement targets. We find that ITA is present in 60.3% of the corpus, with group-aware approaches emerging almost entirely after the robot is already embedded in an ongoing interaction. Critically, how a robot should detect and negotiate entry into a pre-formed group before initiating contact remains unaddressed across the corpus. Three failure modes, engagement misdetection, social ratification blindness, and bystander neglect, emerge as recurring patterns when proactive robots interact with human groups. These findings reframe proactive HRI in group settings not as an extension of dyadic interaction but as a qualitatively distinct design problem, and they identify the robot's approach to the group during the entry phase as a critical and understudied open challenge.",
-      "authors": [
-        "Tauhid Tanjim",
-        "Tasmia Mayen",
-        "Malte F. Jung",
-        "Susan R. Fussell"
-      ],
-      "published": "2026-07-02T10:12:29Z",
-      "updated": "2026-07-02T10:12:29Z",
-      "published_ts": 1782987149.0,
-      "arxiv_url": "http://arxiv.org/abs/2607.09734v1",
-      "pdf_url": "https://arxiv.org/pdf/2607.09734v1",
-      "primary_category": "cs.HC",
-      "arxiv_categories": [
-        "cs.HC",
-        "cs.RO"
-      ],
-      "comment": "8 pages, 3 figures, 4 tables. Accepted at the 2026 IEEE International Conference on Robot and Human Interactive Communication (RO-MAN)",
-      "journal_ref": "",
-      "doi": "",
-      "doi_url": "",
-      "external_urls": [],
-      "source_kind": "arxiv",
-      "conference": "",
-      "conferences": [],
-      "publication_year": 2026,
-      "cited_by_count": 0,
-      "awards": [],
-      "embodied_categories": [
-        "人机交互"
-      ],
-      "match_evidence": [
-        "human-robot interaction",
-        "robot"
-      ],
-      "institutions": [],
-      "institutions_source": ""
-    },
-    {
-      "id": "2607.01938v1",
-      "title": "PhysMani: Physics-principled 3D World Model for Dynamic Object Manipulation",
-      "summary": "Manipulating fast and dynamically moving targets in unstructured 3D environments remains challenging for embodied AI. Existing visual-language-action models and world models struggle with accurate 3D geometry and physically meaningful forecasting. We propose PhysMani, a framework that couples a physics-principled 3D Gaussian world model with a future-aware action policy model. The world model learns a divergence-free Gaussian velocity field via online optimization for fast and physically grounded future dynamics prediction. The policy model integrates the predicted 3D scene future dynamics through a learnable token based cross-attention module. We introduce PhysMani-Bench, a dynamic manipulation benchmark with 16 tasks, and demonstrate a superior success rate over strong baselines in both simulation and real-world robot experiments.",
-      "authors": [
-        "Peng Yun",
-        "Shouwang Huang",
-        "Hao Li",
-        "Jinxi Li",
-        "Jianan Wang",
-        "Bo Yang"
-      ],
-      "published": "2026-07-02T09:32:39Z",
-      "updated": "2026-07-02T09:32:39Z",
-      "published_ts": 1782984759.0,
-      "arxiv_url": "http://arxiv.org/abs/2607.01938v1",
-      "pdf_url": "https://arxiv.org/pdf/2607.01938v1",
-      "primary_category": "cs.RO",
-      "arxiv_categories": [
-        "cs.RO",
-        "cs.AI",
-        "cs.CL",
-        "cs.CV",
-        "cs.LG"
-      ],
-      "comment": "ECCV 2026. Code and data are available at: https://github.com/vLAR-group/PhysMani",
-      "journal_ref": "",
-      "doi": "",
-      "doi_url": "",
-      "external_urls": [
-        "https://github.com/vLAR-group/PhysMani"
-      ],
-      "source_kind": "arxiv",
-      "conference": "",
-      "conferences": [],
-      "publication_year": 2026,
-      "cited_by_count": 0,
-      "awards": [],
-      "embodied_categories": [
-        "操作与抓取",
-        "具身智能体",
-        "世界模型与仿真"
-      ],
-      "match_evidence": [
-        "embodied",
-        "embodied ai",
-        "manipulation",
-        "object manipulation",
-        "robot",
-        "world model"
       ],
       "institutions": [],
       "institutions_source": ""
@@ -22088,7 +21865,7 @@
       "published": "2022-05-23",
       "published_ts": 1653264000.0,
       "publication_year": 2022,
-      "cited_by_count": 350,
+      "cited_by_count": 351,
       "doi": "10.1109/icra46639.2022.9811935",
       "doi_url": "https://doi.org/10.1109/icra46639.2022.9811935",
       "paper_url": "https://doi.org/10.1109/icra46639.2022.9811935",
@@ -22426,7 +22203,7 @@
       "published": "2022-05-23",
       "published_ts": 1653264000.0,
       "publication_year": 2022,
-      "cited_by_count": 288,
+      "cited_by_count": 289,
       "doi": "10.1109/icra46639.2022.9812107",
       "doi_url": "https://doi.org/10.1109/icra46639.2022.9812107",
       "paper_url": "https://doi.org/10.1109/icra46639.2022.9812107",
@@ -22750,7 +22527,7 @@
       "published": "2022-05-23",
       "published_ts": 1653264000.0,
       "publication_year": 2022,
-      "cited_by_count": 323,
+      "cited_by_count": 327,
       "doi": "10.1109/icra46639.2022.9811809",
       "doi_url": "https://doi.org/10.1109/icra46639.2022.9811809",
       "paper_url": "https://doi.org/10.1109/icra46639.2022.9811809",
@@ -22840,7 +22617,7 @@
       "published": "2022-05-23",
       "published_ts": 1653264000.0,
       "publication_year": 2022,
-      "cited_by_count": 231,
+      "cited_by_count": 232,
       "doi": "10.1109/icra46639.2022.9812253",
       "doi_url": "https://doi.org/10.1109/icra46639.2022.9812253",
       "paper_url": "https://doi.org/10.1109/icra46639.2022.9812253",
@@ -31594,7 +31371,7 @@
       "published": "2022-10-23",
       "published_ts": 1666483200.0,
       "publication_year": 2022,
-      "cited_by_count": 32,
+      "cited_by_count": 33,
       "doi": "10.1109/iros47612.2022.9981456",
       "doi_url": "https://doi.org/10.1109/iros47612.2022.9981456",
       "paper_url": "https://doi.org/10.1109/iros47612.2022.9981456",
@@ -32017,7 +31794,7 @@
       "published": "2022-10-23",
       "published_ts": 1666483200.0,
       "publication_year": 2022,
-      "cited_by_count": 21,
+      "cited_by_count": 22,
       "doi": "10.1109/iros47612.2022.9981627",
       "doi_url": "https://doi.org/10.1109/iros47612.2022.9981627",
       "paper_url": "https://doi.org/10.1109/iros47612.2022.9981627",
@@ -35120,7 +34897,7 @@
       "published": "2022-10-23",
       "published_ts": 1666483200.0,
       "publication_year": 2022,
-      "cited_by_count": 34,
+      "cited_by_count": 35,
       "doi": "10.1109/iros47612.2022.9981117",
       "doi_url": "https://doi.org/10.1109/iros47612.2022.9981117",
       "paper_url": "https://doi.org/10.1109/iros47612.2022.9981117",
@@ -35404,7 +35181,7 @@
       "published": "2022-10-23",
       "published_ts": 1666483200.0,
       "publication_year": 2022,
-      "cited_by_count": 205,
+      "cited_by_count": 206,
       "doi": "10.1109/iros47612.2022.9981107",
       "doi_url": "https://doi.org/10.1109/iros47612.2022.9981107",
       "paper_url": "https://doi.org/10.1109/iros47612.2022.9981107",
@@ -35606,55 +35383,6 @@
       "match_evidence": [
         "robot",
         "world model"
-      ]
-    },
-    {
-      "id": "openalex:W4312551606",
-      "openalex_id": "W4312551606",
-      "source_kind": "conference",
-      "conference": "IROS",
-      "conferences": [
-        "IROS"
-      ],
-      "venue": "2022 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)",
-      "title": "Downwash-aware Control Allocation for Over-actuated UAV Platforms",
-      "summary": "Tracking position and orientation independently affords more agile maneuver for over-actuated multirotor Unmanned Aerial Vehicles (UAVs) while introducing undesired downwash effects; downwash flows generated by thrust generators may counteract others due to close proximity, which significantly threatens the stability of the platform. The complexity of modeling aerodynamic airflow challenges control algorithms from properly compensating for such a side effect. Leveraging the input redundancies in over-actuated UAVs, we tackle this issue with a novel control allocation framework that considers downwash effects and explores the entire allocation space for an optimal solution. This optimal solution avoids downwash effects while providing high thrust efficiency within the hardware constraints. To the best of our knowledge, ours is the first formal derivation to investigate the downwash effects on over-actuated UAVs. We verify our framework on different hardware configurations in both simulation and experiment.",
-      "authors": [
-        "Yao Su",
-        "Chi Meng Chu",
-        "Meng Wang",
-        "Jiarui Li",
-        "Yang Liu",
-        "Yixin Zhu",
-        "Hangxin Liu"
-      ],
-      "institutions": [
-        "Beijing Academy of Artificial Intelligence",
-        "Beijing Institute for General Artificial Intelligence",
-        "Tsinghua University",
-        "Peking University"
-      ],
-      "institutions_source": "OpenAlex",
-      "published": "2022-10-23",
-      "published_ts": 1666483200.0,
-      "publication_year": 2022,
-      "cited_by_count": 17,
-      "doi": "10.1109/iros47612.2022.9981140",
-      "doi_url": "https://doi.org/10.1109/iros47612.2022.9981140",
-      "paper_url": "https://doi.org/10.1109/iros47612.2022.9981140",
-      "pdf_url": "",
-      "arxiv_url": "",
-      "arxiv_categories": [],
-      "primary_category": "",
-      "external_urls": [],
-      "comment": "",
-      "journal_ref": "",
-      "awards": [],
-      "embodied_categories": [
-        "机器人学习"
-      ],
-      "match_evidence": [
-        "IROS"
       ]
     },
     {
@@ -36702,6 +36430,54 @@
       ]
     },
     {
+      "id": "openalex:W4312563990",
+      "openalex_id": "W4312563990",
+      "source_kind": "conference",
+      "conference": "IROS",
+      "conferences": [
+        "IROS"
+      ],
+      "venue": "2022 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)",
+      "title": "Cola-HRL: Continuous-Lattice Hierarchical Reinforcement Learning for Autonomous Driving",
+      "summary": "Reinforcement learning (RL) has shown promising performance in autonomous driving applications in recent years. The early end-to-end RL method is usually unexplainable and fails to generate stable actions, while the hierarchical RL (HRL) method can tackle the above issues by dividing complex problems into multiple sub-tasks. Prior HRL works either select discrete driving behaviors with continuous control commands, or generate expected goals for the low-level controller. However, they typically have strong scenario dependence or fail to generate goals with good quality. To address the above challenges, we propose a Continuous-Lattice Hierarchical RL (Cola-HRL) method for autonomous driving tasks to make high-quality decisions in various scenarios. We utilize the continuous-lattice module to generate reasonable goals, ensuring temporal and spatial reachability. Then, we train and evaluate our method under different traffic scenarios based on real-world High Definition maps. Experimental results show our method can handle multiple scenarios. In addition, our method also demonstrates better performance and driving behaviors compared to existing RL methods.",
+      "authors": [
+        "Lingping Gao",
+        "Ziqing Gu",
+        "Cong Qiu",
+        "Lanxin Lei",
+        "Shengbo Eben Li",
+        "Sifa Zheng",
+        "Wei Jing",
+        "Junbo Chen"
+      ],
+      "institutions": [
+        "Alibaba Group (China)",
+        "Tsinghua University"
+      ],
+      "institutions_source": "OpenAlex",
+      "published": "2022-10-23",
+      "published_ts": 1666483200.0,
+      "publication_year": 2022,
+      "cited_by_count": 18,
+      "doi": "10.1109/iros47612.2022.9982041",
+      "doi_url": "https://doi.org/10.1109/iros47612.2022.9982041",
+      "paper_url": "https://doi.org/10.1109/iros47612.2022.9982041",
+      "pdf_url": "",
+      "arxiv_url": "",
+      "arxiv_categories": [],
+      "primary_category": "",
+      "external_urls": [],
+      "comment": "",
+      "journal_ref": "",
+      "awards": [],
+      "embodied_categories": [
+        "机器人学习"
+      ],
+      "match_evidence": [
+        "IROS"
+      ]
+    },
+    {
       "id": "openalex:W4312333838",
       "openalex_id": "W4312333838",
       "source_kind": "conference",
@@ -37181,7 +36957,7 @@
       "published": "2022-10-23",
       "published_ts": 1666483200.0,
       "publication_year": 2022,
-      "cited_by_count": 21,
+      "cited_by_count": 22,
       "doi": "10.1109/iros47612.2022.9981152",
       "doi_url": "https://doi.org/10.1109/iros47612.2022.9981152",
       "paper_url": "https://doi.org/10.1109/iros47612.2022.9981152",
@@ -37941,7 +37717,7 @@
       "published": "2022-06-01",
       "published_ts": 1654041600.0,
       "publication_year": 2022,
-      "cited_by_count": 724,
+      "cited_by_count": 726,
       "doi": "10.1109/cvpr52688.2022.00581",
       "doi_url": "https://doi.org/10.1109/cvpr52688.2022.00581",
       "paper_url": "https://doi.org/10.1109/cvpr52688.2022.00581",
@@ -38084,7 +37860,7 @@
       "published": "2022-06-01",
       "published_ts": 1654041600.0,
       "publication_year": 2022,
-      "cited_by_count": 278,
+      "cited_by_count": 279,
       "doi": "10.1109/cvpr52688.2022.00619",
       "doi_url": "https://doi.org/10.1109/cvpr52688.2022.00619",
       "paper_url": "https://doi.org/10.1109/cvpr52688.2022.00619",
@@ -38129,7 +37905,7 @@
       "published": "2022-06-01",
       "published_ts": 1654041600.0,
       "publication_year": 2022,
-      "cited_by_count": 375,
+      "cited_by_count": 376,
       "doi": "10.1109/cvpr52688.2022.01103",
       "doi_url": "https://doi.org/10.1109/cvpr52688.2022.01103",
       "paper_url": "https://doi.org/10.1109/cvpr52688.2022.01103",
@@ -38172,7 +37948,7 @@
       "published": "2022-06-01",
       "published_ts": 1654041600.0,
       "publication_year": 2022,
-      "cited_by_count": 297,
+      "cited_by_count": 300,
       "doi": "10.1109/cvpr52688.2022.01294",
       "doi_url": "https://doi.org/10.1109/cvpr52688.2022.01294",
       "paper_url": "https://doi.org/10.1109/cvpr52688.2022.01294",
@@ -38400,7 +38176,7 @@
       "published": "2022-06-01",
       "published_ts": 1654041600.0,
       "publication_year": 2022,
-      "cited_by_count": 294,
+      "cited_by_count": 295,
       "doi": "10.1109/cvpr52688.2022.01036",
       "doi_url": "https://doi.org/10.1109/cvpr52688.2022.01036",
       "paper_url": "https://doi.org/10.1109/cvpr52688.2022.01036",
@@ -38441,7 +38217,7 @@
       "published": "2022-06-01",
       "published_ts": 1654041600.0,
       "publication_year": 2022,
-      "cited_by_count": 397,
+      "cited_by_count": 398,
       "doi": "10.1109/cvpr52688.2022.01816",
       "doi_url": "https://doi.org/10.1109/cvpr52688.2022.01816",
       "paper_url": "https://doi.org/10.1109/cvpr52688.2022.01816",
@@ -38536,7 +38312,7 @@
       "published": "2022-06-01",
       "published_ts": 1654041600.0,
       "publication_year": 2022,
-      "cited_by_count": 322,
+      "cited_by_count": 323,
       "doi": "10.1109/cvpr52688.2022.00381",
       "doi_url": "https://doi.org/10.1109/cvpr52688.2022.00381",
       "paper_url": "https://doi.org/10.1109/cvpr52688.2022.00381",
