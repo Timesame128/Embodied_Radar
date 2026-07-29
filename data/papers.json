@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-29T09:13:44.116294+00:00",
+  "updated_at": "2026-07-29T14:37:16.896786+00:00",
   "arxiv_papers": [
     {
       "id": "2607.26047v1",
@@ -7117,283 +7117,6 @@
       ],
       "institutions": [],
       "institutions_source": ""
-    },
-    {
-      "id": "2607.12702v1",
-      "title": "Vision-Based Dribbling for Humanoid Soccer via Privileged Representation Learning",
-      "summary": "Recent advances in humanoid robotics have highlighted the importance of deployable loco-manipulation skills. Dribbling a soccer ball while evading active opponents requires simultaneous balance, precise ball control, and awareness of a dynamic adversary under onboard sensing and real-time constraints. Existing approaches typically separate perception and motion, which can be effective in controlled settings but may fail under occlusions, fast ball movements, and complex opponent interactions, since perception is not directly optimized for control. We propose an integrated approach in which a temporal depth encoder is embedded into a reinforcement learning policy through a task-specific projection layer. We apply this framework to a simulated Booster T1 humanoid robot and show that it is possible to learn vision-based, opponent-aware dribbling directly from depth observations, without explicit state estimation or privileged scene information. The learned policy achieves 100% success in nominal target-driven dribbling and 96% success with a single static obstacle, while reaching 46% success against an actively moving ball-attacker opponent. These results demonstrate that the proposed framework supports robust vision-based dribbling in nominal and moderately dynamic settings, and provides a strong foundation for handling more challenging moving-adversary scenarios.",
-      "authors": [
-        "Flavio Maiorana",
-        "Valerio Spagnoli",
-        "Eugenio Bugli",
-        "Flavio Volpi",
-        "Daniele Affinita",
-        "Vincenzo Suriani",
-        "Daniele Nardi",
-        "Luca Iocchi"
-      ],
-      "published": "2026-07-14T12:27:58Z",
-      "updated": "2026-07-14T12:27:58Z",
-      "published_ts": 1784032078.0,
-      "arxiv_url": "http://arxiv.org/abs/2607.12702v1",
-      "pdf_url": "https://arxiv.org/pdf/2607.12702v1",
-      "primary_category": "cs.RO",
-      "arxiv_categories": [
-        "cs.RO"
-      ],
-      "comment": "",
-      "journal_ref": "",
-      "doi": "",
-      "doi_url": "",
-      "external_urls": [],
-      "source_kind": "arxiv",
-      "conference": "",
-      "conferences": [],
-      "publication_year": 2026,
-      "cited_by_count": 0,
-      "awards": [],
-      "embodied_categories": [
-        "运动与控制"
-      ],
-      "match_evidence": [
-        "humanoid",
-        "manipulation",
-        "robot",
-        "robotic"
-      ],
-      "institutions": [],
-      "institutions_source": ""
-    },
-    {
-      "id": "2607.12659v3",
-      "title": "Jetson-PI: Towards Onboard Real-Time Robot Control via Foresight-Aligned Asynchronous Inference",
-      "summary": "Vision-Language-Action (VLA) models have achieved impressive performance on diverse embodied tasks. However, deploying VLA models on low-power onboard devices, such as the Jetson Orin, remains challenging due to their high computational complexity, which leads to substantial inference latency and low control frequency. Asynchronous inference can partially mask this latency by parallelizing action execution and subsequent inference, but it introduces two critical issues: perception-execution misalignment and long reaction time. In this paper, we propose Jetson-PI, a method for efficient VLA deployment on onboard devices via Foresight-Aligned Asynchronous Correction. To address misalignment, we train a lightweight future correction module that predicts future environment representation conditioned on committed actions, enabling the action expert to directly predict actions from the future time step. To reduce reaction time, we introduce confidence-based scheduling optimization that adaptively balances VLM and action expert invocations, complemented by system-level accelerations including CUDA graph reuse, GPU-resident intermediate buffering, and flow unrolling. Extensive experiments demonstrate that Jetson-PI achieves 8.66x and 5.41x improvements in control frequency compared with naive PyTorch and vla.cpp on NVIDIA Jetson Orin, while outperforming VLASH by 14.8\\% in average success rate on the LIBERO benchmark. The code of our asynchronous algorithm is available on https://github.com/PKU-SEC-Lab/Jetson-PI, and our efficient llama.cpp-based inference engine is available on https://github.com/PKU-SEC-Lab/Jetson-PI-Edge.",
-      "authors": [
-        "Zebin Yang",
-        "Qi Wang",
-        "Yunhe Wang",
-        "Xiurui Guo",
-        "Bo Yu",
-        "Shaoshan Liu",
-        "Jiafeng Xu",
-        "Hao Dong",
-        "Meng Li"
-      ],
-      "published": "2026-07-14T11:38:36Z",
-      "updated": "2026-07-20T13:00:07Z",
-      "published_ts": 1784029116.0,
-      "arxiv_url": "http://arxiv.org/abs/2607.12659v3",
-      "pdf_url": "https://arxiv.org/pdf/2607.12659v3",
-      "primary_category": "cs.RO",
-      "arxiv_categories": [
-        "cs.RO",
-        "cs.AI"
-      ],
-      "comment": "16 pages, 10 figures",
-      "journal_ref": "",
-      "doi": "",
-      "doi_url": "",
-      "external_urls": [
-        "https://github.com/PKU-SEC-Lab/Jetson-PI",
-        "https://github.com/PKU-SEC-Lab/Jetson-PI-Edge"
-      ],
-      "source_kind": "arxiv",
-      "conference": "",
-      "conferences": [],
-      "publication_year": 2026,
-      "cited_by_count": 0,
-      "awards": [],
-      "embodied_categories": [
-        "视觉-语言-动作"
-      ],
-      "match_evidence": [
-        "embodied",
-        "robot",
-        "vision-language-action",
-        "vla model"
-      ],
-      "institutions": [],
-      "institutions_source": ""
-    },
-    {
-      "id": "2607.12630v2",
-      "title": "Instance-Enriched Semantic Maps for Visual Language Navigation",
-      "summary": "Visual Language Navigation (VLN) aims to enable an embodied agent to navigate complex environments by following natural language instructions. Recent approaches build semantic spatial maps and leverage Large Language Models (LLMs) for reasoning and decision making. Despite these advances, existing systems lack instance-level object detail and robustness to diverse user queries, limiting reliable navigation in complex indoor environments. To address these limitations, we propose Instance-Enriched Semantic Maps, a unified framework with three key contributions: (1) Instance-level two-and-a-half-dimensional (2.5D) rich information mapping that constructs maps from color and depth observations via open-vocabulary panoptic segmentation, preserving vertical distinctions and capturing small objects, while storing diverse semantic attributes and natural language captions enriched with room-level context. (2) Robust query processing via LLM-based target selection, which dynamically routes queries across type-specialized experts and integrates their outputs through score-level fusion, enabling consistent goal selection across diverse query formulations. (3) Storage-efficient semantic representation that achieves approximately 96% reduction compared to three-dimensional (3D) scene-graph approaches while preserving sufficient spatial information for navigation. The proposed 2.5D representation outperforms the 3D baseline by over 27% in prediction-normalized Area Under the Curve (AUC). In navigation experiments, our method achieves over 17% improvement in object retrieval and over 23% in navigation success compared to the baseline across diverse query types. The project page is available at https://rcilab.github.io/iesm_vln.",
-      "authors": [
-        "Jiho Hong",
-        "Eunae Kang",
-        "Sanghyun Kim",
-        "Young-Sik Shin"
-      ],
-      "published": "2026-07-14T11:09:48Z",
-      "updated": "2026-07-17T06:20:11Z",
-      "published_ts": 1784027388.0,
-      "arxiv_url": "http://arxiv.org/abs/2607.12630v2",
-      "pdf_url": "https://arxiv.org/pdf/2607.12630v2",
-      "primary_category": "cs.RO",
-      "arxiv_categories": [
-        "cs.RO",
-        "cs.CV"
-      ],
-      "comment": "",
-      "journal_ref": "",
-      "doi": "",
-      "doi_url": "",
-      "external_urls": [
-        "https://rcilab.github.io/iesm_vln"
-      ],
-      "source_kind": "arxiv",
-      "conference": "",
-      "conferences": [],
-      "publication_year": 2026,
-      "cited_by_count": 0,
-      "awards": [],
-      "embodied_categories": [
-        "具身智能体"
-      ],
-      "match_evidence": [
-        "embodied",
-        "embodied agent",
-        "navigation"
-      ],
-      "institutions": [],
-      "institutions_source": ""
-    },
-    {
-      "id": "2607.12571v1",
-      "title": "TrustVLA: Mechanism-Guided Inference-Time Defense Against Vision-Language-Action Backdoors",
-      "summary": "Vision-Language-Action (VLA) models are deployed through pipelines that end users cannot audit, and a poisoned VLA can behave normally on clean observations while a small visual trigger redirects a long-horizon robot policy before any failure becomes observable. Existing vision or language defenses rarely explain what a triggered VLA representation looks like or how to recover behavior without retraining. We study this gap through two independently proposed VLA attacks from groups with distinct injection strategies, BadVLA and INFUSE; the latter persists after downstream clean adaptation. Across the evaluated poisoned models, we identify a recurring internal mechanism: a \\emph{compact causal footprint}, namely a small visual support that is attention-seeded, spatially compact, and \\emph{causal} in a precise sense -- masking it returns a clean-calibrated evidence-evolution score to the normal operating region. This footprint motivates TrustVLA, a mechanism-guided inference-time defense that adapts the Dirichlet evidence framework from trusted classification to monitor per-token, per-layer epistemic uncertainty in VLA policies. With only a small clean calibration set, TrustVLA (i)~detects abnormal evidence evolution, (ii)~localizes the compact support by counterfactual mechanism-score drop, and (iii)~recovers the observation by localized inpainting. Across OpenVLA/LIBERO and $π_{0.5}$ transfer evaluations, TrustVLA reduces attack success while preserving clean-task performance, providing a retraining-free, mechanism-guided defense for visual-triggered VLA backdoors.",
-      "authors": [
-        "Pinhan Fu",
-        "Xianda Guo",
-        "Xuetao Li",
-        "Wenke Huang",
-        "Ruilin Wang",
-        "Weiheng Zhao",
-        "Wei Sui",
-        "Mang Ye"
-      ],
-      "published": "2026-07-14T09:43:52Z",
-      "updated": "2026-07-14T09:43:52Z",
-      "published_ts": 1784022232.0,
-      "arxiv_url": "http://arxiv.org/abs/2607.12571v1",
-      "pdf_url": "https://arxiv.org/pdf/2607.12571v1",
-      "primary_category": "cs.RO",
-      "arxiv_categories": [
-        "cs.RO"
-      ],
-      "comment": "",
-      "journal_ref": "",
-      "doi": "",
-      "doi_url": "",
-      "external_urls": [],
-      "source_kind": "arxiv",
-      "conference": "",
-      "conferences": [],
-      "publication_year": 2026,
-      "cited_by_count": 0,
-      "awards": [],
-      "embodied_categories": [
-        "视觉-语言-动作"
-      ],
-      "match_evidence": [
-        "robot",
-        "vision-language-action"
-      ],
-      "institutions": [],
-      "institutions_source": ""
-    },
-    {
-      "id": "2607.12477v2",
-      "title": "Self in Space: Benchmarking Self-Awareness and Spatial Cognition in UAV Embodied Intelligence",
-      "summary": "Autonomous UAV systems increasingly rely on multimodal large language models (MLLMs) to operate in complex real-world environments. Such embodied scenarios require not only understanding the surrounding space but also maintaining a coherent representation of the agent itself. However, existing UAV-oriented approaches and benchmarks remain largely environment-centric, primarily focusing on spatial understanding tasks, with the agent's self-awareness remaining implicit. To address this gap, we introduce SIS-Bench, a benchmark for evaluating embodied spatial intelligence in UAV scenarios under a unified self-in-space formulation. SIS-Bench organizes evaluation along two complementary dimensions, space and self, and a three-level hierarchy of perception, memory, and reasoning. It contains 4,856 question--answer pairs across 13 tasks derived from 1,646 real-world UAV videos through a task-conditioned construction pipeline with expert verification. Extensive evaluations reveal that current MLLMs exhibit fundamental limitations in modeling dynamic and agent-centered processes. In particular, we observe a clear imbalance between spatial cognition and self-awareness, as well as a progressive performance degradation across cognitive levels. Motivated by these findings, we further explore a motion-aware representation that incorporates self-related dynamics through optical flow and visual feature fusion. Experimental results show that modeling agent motion consistently improves perception and memory performance, not only in spatial cognition but also in self-awareness, and generalizes to downstream UAV decision-making tasks. Our results highlight the importance of self-awareness for advancing embodied spatial intelligence, and provide both a new benchmark and empirical evidence for motion-aware self-in-space modeling.",
-      "authors": [
-        "Zhishan Zou",
-        "Guoyan Sun",
-        "Zhiwei Wei",
-        "Jiancheng Pan",
-        "Yujie Li",
-        "Mugen Peng",
-        "Wenjia Xu"
-      ],
-      "published": "2026-07-14T08:04:31Z",
-      "updated": "2026-07-15T01:51:44Z",
-      "published_ts": 1784016271.0,
-      "arxiv_url": "http://arxiv.org/abs/2607.12477v2",
-      "pdf_url": "https://arxiv.org/pdf/2607.12477v2",
-      "primary_category": "cs.CV",
-      "arxiv_categories": [
-        "cs.CV"
-      ],
-      "comment": "Website:https://choucisan.github.io/publications/self-in-space ; Code:https://github.com/IntelliSensing/Self-in-Space",
-      "journal_ref": "",
-      "doi": "",
-      "doi_url": "",
-      "external_urls": [
-        "https://choucisan.github.io/publications/self-in-space",
-        "https://github.com/IntelliSensing/Self-in-Space"
-      ],
-      "source_kind": "arxiv",
-      "conference": "",
-      "conferences": [],
-      "publication_year": 2026,
-      "cited_by_count": 0,
-      "awards": [],
-      "embodied_categories": [
-        "具身智能体"
-      ],
-      "match_evidence": [
-        "embodied",
-        "embodied intelligence"
-      ],
-      "institutions": [],
-      "institutions_source": ""
-    },
-    {
-      "id": "2607.12356v2",
-      "title": "VistaVLA: Geometry- and Semantic-Aware 3D Gaussian-Grounded VLA for Robotic Manipulation",
-      "summary": "Vision-Language-Action (VLA) models have emerged as a powerful end-to-end paradigm for robotic manipulation by mapping language instructions and 2D visual inputs directly to actions. However, these models lack an explicit, scene-level 3D representation, limiting their ability to reason over spatial layouts and geometric constraints. While recent efforts incorporate explicit 3D cues, such as depth maps or point clouds, to improve geometric awareness, they primarily capture low-level structures and lack high-level semantic grounding in 3D space. In human cognition, interaction with the physical world relies on a 3D semantic cognitive map - an internal mental model that integrates spatial layouts with semantic context to enable persistent, viewpoint-invariant reasoning. In light of this, we present VistaVLA, a novel two-stage framework that constructs a geometry- and semantics-aware 3D cognitive representation from 3D Gaussian primitives and grounds it as compact context tokens for VLA policy learning. Specifically, VistaVLA lifts multi-view vision-language features into 3D Gaussian primitives, forming geometry-anchored semantic tokens that align view-consistent spatial grounding with 2D visual feature spaces. To make this 3D representation computationally tractable for effective VLA control, we introduce Merge-then-Query (MtQ), a token summarization mechanism. MtQ compresses dense Gaussian primitives into a highly compact set of spatially informative tokens, achieving a 99% token reduction while preserving action-relevant 3D layouts and semantic context. Extensive evaluations in both simulated and real-world environments demonstrate the effectiveness of VistaVLA. Notably, in real-world scenarios, VistaVLA improves success rates by 22.8% across seven real-world tasks and by 30.0% over the VLA-Adapter baseline on challenging out-of-distribution tasks.",
-      "authors": [
-        "Mohan Liu",
-        "Zhihao Gu",
-        "Xuanyu Chen",
-        "Haitian Zhang",
-        "Kaimin Mao",
-        "Yan Wu",
-        "Wei-Yun Yau",
-        "Lin Wang"
-      ],
-      "published": "2026-07-14T05:08:50Z",
-      "updated": "2026-07-16T05:52:45Z",
-      "published_ts": 1784005730.0,
-      "arxiv_url": "http://arxiv.org/abs/2607.12356v2",
-      "pdf_url": "https://arxiv.org/pdf/2607.12356v2",
-      "primary_category": "cs.RO",
-      "arxiv_categories": [
-        "cs.RO"
-      ],
-      "comment": "",
-      "journal_ref": "",
-      "doi": "",
-      "doi_url": "",
-      "external_urls": [],
-      "source_kind": "arxiv",
-      "conference": "",
-      "conferences": [],
-      "publication_year": 2026,
-      "cited_by_count": 0,
-      "awards": [],
-      "embodied_categories": [
-        "视觉-语言-动作"
-      ],
-      "match_evidence": [
-        "manipulation",
-        "robot",
-        "robotic",
-        "vision-language-action"
-      ],
-      "institutions": [],
-      "institutions_source": ""
     }
   ],
   "conference_papers": [
@@ -11721,7 +11444,7 @@
       ],
       "venue": "2022 17th International Conference on Control, Automation, Robotics and Vision (ICARCV)",
       "title": "Where to look for tiny objects? ROI prediction for tiny object detection in high resolution images",
-      "summary": "In this paper, we focus on the detection of tiny objects. The goal is to improve the performance of tiny object detection while preserving the average precision and recall metrics compared to a brute-force, sliding-window approach. We extend the object categories in COCO detection metrics from small, medium, and large by defining tiny, very tiny, and micro-objects. We propose an evaluation protocol for all six object sizes. To detect tiny objects, we offer a novel ROI proposal method based on a two-level nested U-structure architecture U <sup xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">2</sup> -Net. For this purpose, we experiment with multiple dilation techniques as well as Region of Interest (ROI) aggregation methods. We evaluate our method using the Mapillary Traffic Sign Dataset. The obtained detection strategy outperforms the single-step prediction approach and is comparable to the quality obtained with the use of the sliding-window, being nearly 7 times faster.",
+      "summary": "In this paper, we focus on the detection of tiny objects. The goal is to improve the performance of tiny object detection while preserving the average precision and recall metrics compared to a brute-force, sliding-window approach. We extend the object categories in COCO detection metrics from small, medium, and large by defining tiny, very tiny, and micro-objects. We propose an evaluation protocol for all six object sizes. To detect tiny objects, we offer a novel ROI proposal method based on a two-level nested U-structure architecture U2-Net. For this purpose, we experiment with multiple dilation techniques as well as Region of Interest (ROI) aggregation methods. We evaluate our method using the Mapillary Traffic Sign Dataset. The obtained detection strategy outperforms the single-step prediction approach and is comparable to the quality obtained with the use of the sliding-window, being nearly 7 times faster.",
       "authors": [
         "Aleksandra Kos",
         "Karol Majek",
@@ -12815,7 +12538,7 @@
       ],
       "venue": "2022 17th International Conference on Control, Automation, Robotics and Vision (ICARCV)",
       "title": "Stochastic Stability and $\\mathscr{L}_{1}$-gain Control of Positive Markov Switching Systems with Impulses",
-      "summary": "This paper studies the stability and <tex xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">$\\mathscr{L}_{1}$</tex> -gain control of positive systems with Markov switching parameters and impulses. Markov process is applied to describe the switching parameters and structures. The positivity constraint, Markov stochastic processes and impulsive jumps are taken into account in a unified framework. By utilizing the stochastic co-positive Lyapunuov function, some new conditions on stochastic stability and <tex xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">$\\mathscr{L}_{1}$</tex> -gain characterization of positive impulsive Markov switching systems (PIMSSs) are acquired. The stochastic stability and <tex xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">$\\mathscr{L}_{1}$</tex> -gain characterization of the closed-loop systems can be ensured via the <tex xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">$\\mathscr{L}_{1}$</tex> -gain mode-dependent state-feedback controller. Moreover, an example is presented to exhibit the usefulness of the obtained results.",
+      "summary": "This paper studies the stability and$\\mathscr{L}_{1}$-gain control of positive systems with Markov switching parameters and impulses. Markov process is applied to describe the switching parameters and structures. The positivity constraint, Markov stochastic processes and impulsive jumps are taken into account in a unified framework. By utilizing the stochastic co-positive Lyapunuov function, some new conditions on stochastic stability and$\\mathscr{L}_{1}$-gain characterization of positive impulsive Markov switching systems (PIMSSs) are acquired. The stochastic stability and$\\mathscr{L}_{1}$-gain characterization of the closed-loop systems can be ensured via the$\\mathscr{L}_{1}$-gain mode-dependent state-feedback controller. Moreover, an example is presented to exhibit the usefulness of the obtained results.",
       "authors": [
         "Mengjie Hu",
         "Ju H. Park"
@@ -14445,7 +14168,7 @@
       "published": "2022-12-11",
       "published_ts": 1670716800.0,
       "publication_year": 2022,
-      "cited_by_count": 6,
+      "cited_by_count": 7,
       "doi": "10.1109/icarcv57592.2022.10004273",
       "doi_url": "https://doi.org/10.1109/icarcv57592.2022.10004273",
       "paper_url": "https://doi.org/10.1109/icarcv57592.2022.10004273",
@@ -15311,7 +15034,7 @@
       ],
       "venue": "2022 17th International Conference on Control, Automation, Robotics and Vision (ICARCV)",
       "title": "High Order Approximation of Generalized Caputo Fractional Derivative and its Application",
-      "summary": "In this paper, we propose a high order approximation for generalized Caputo fractional derivative of order <tex xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">$\\alpha\\in(0,1)$</tex>. The approximation order is shown to be <tex xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">$O(\\tau^{3-\\alpha})$</tex> which improves some previous work done to date. We then apply the new approximation to solve a class of generalized time fractional sub-diffusion problem. Some experiments are carried out to demonstrate the accuracy of the proposed methods. The numerical results indicate consistency with the theoretical results and good performance of the methods.",
+      "summary": "In this paper, we propose a high order approximation for generalized Caputo fractional derivative of order$\\alpha\\in(0,1)$. The approximation order is shown to be$O(\\tau^{3-\\alpha})$which improves some previous work done to date. We then apply the new approximation to solve a class of generalized time fractional sub-diffusion problem. Some experiments are carried out to demonstrate the accuracy of the proposed methods. The numerical results indicate consistency with the theoretical results and good performance of the methods.",
       "authors": [
         "Xuhao Li",
         "Qinxu Ding",
@@ -15888,7 +15611,7 @@
       ],
       "venue": "2022 17th International Conference on Control, Automation, Robotics and Vision (ICARCV)",
       "title": "FAST AND VALID $\\mathrm{H}/\\alpha$ DECOMPOSITION COMBINED WITH MODEL-BASED DECOMPOSITION FOR POLSAR DATA",
-      "summary": "First, since time consumption for extracting <tex xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">$\\alpha$</tex> will become quite tedious for very large images by pixelwise eigendecomposition, we proposed a fast <tex xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">$\\alpha$</tex> angle's solution. Second, <tex xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">$\\alpha$</tex> may be not unique that results in the invalidity of <tex xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">$\\mathrm{H}/\\ \\alpha$</tex> decomposition. So we early proposed a sound discriminant to distinguish <tex xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">$\\alpha$</tex> is unique or not. Third, since depolarization is serious and <tex xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">$\\alpha$</tex> is unstable in high entropy zone, grass and flourishing canopy etc may be misclassified as double bounce scattering. Therefore we proposed a fast algorithm that <tex xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">$\\mathrm{H}/\\alpha$</tex> decomposition is combined with the model-based decomposition, which overcomes the shortcomings of the invalidity of <tex xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">$\\mathrm{H}/\\alpha$</tex> decomposition and the misclassification in high-entropy zone, and its time consumption is much shorter than <tex xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">$\\mathrm{H}/\\alpha$</tex> decomposition.",
+      "summary": "First, since time consumption for extracting$\\alpha$will become quite tedious for very large images by pixelwise eigendecomposition, we proposed a fast$\\alpha$angle's solution. Second,$\\alpha$may be not unique that results in the invalidity of$\\mathrm{H}/\\ \\alpha$decomposition. So we early proposed a sound discriminant to distinguish$\\alpha$is unique or not. Third, since depolarization is serious and$\\alpha$is unstable in high entropy zone, grass and flourishing canopy etc may be misclassified as double bounce scattering. Therefore we proposed a fast algorithm that$\\mathrm{H}/\\alpha$decomposition is combined with the model-based decomposition, which overcomes the shortcomings of the invalidity of$\\mathrm{H}/\\alpha$decomposition and the misclassification in high-entropy zone, and its time consumption is much shorter than$\\mathrm{H}/\\alpha$decomposition.",
       "authors": [
         "Gaofeng Liu",
         "Ming Li",
@@ -16319,7 +16042,7 @@
       ],
       "venue": "2022 17th International Conference on Control, Automation, Robotics and Vision (ICARCV)",
       "title": "Deep Reinforcement Learning with Omnidirectional Images: application to UAV Navigation in Forests",
-      "summary": "Deep Reinforcement Learning (DRL) is highly efficient for solving complex tasks such as drone obstacle avoidance using cameras. However, these methods are often limited by the camera perception capabilities. In this paper, we demonstrate that point-goal navigation performances can be improved by using cameras with a wider Field-Of-View (FOV). To this end, we present a DRL solution based on equirectangular images and demonstrates its relevance, especially compared to its perspective version. Several visual modalities are compared: ground truth depth, RGB, and depth directly estimated from these <tex xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">$360^{\\circ}$</tex> RGB images using Deep Learning methods. Next, we propose a spherical adaptation to take into account the spherical distortions of omnidirectional images in the convolutional neural networks (CNNs) used in the actor-critic network and show a significant improvement in navigation performance. Finally, we modify the perspective depth estimation network using this spherical adaptation and demonstrate a further performance improvement.",
+      "summary": "Deep Reinforcement Learning (DRL) is highly efficient for solving complex tasks such as drone obstacle avoidance using cameras. However, these methods are often limited by the camera perception capabilities. In this paper, we demonstrate that point-goal navigation performances can be improved by using cameras with a wider Field-Of-View (FOV). To this end, we present a DRL solution based on equirectangular images and demonstrates its relevance, especially compared to its perspective version. Several visual modalities are compared: ground truth depth, RGB, and depth directly estimated from these$360^{\\circ}$RGB images using Deep Learning methods. Next, we propose a spherical adaptation to take into account the spherical distortions of omnidirectional images in the convolutional neural networks (CNNs) used in the actor-critic network and show a significant improvement in navigation performance. Finally, we modify the perspective depth estimation network using this spherical adaptation and demonstrate a further performance improvement.",
       "authors": [
         "Charles-Olivier Artizzu",
         "Guillaume Allibert",
@@ -18893,7 +18616,7 @@
       ],
       "venue": "2022 International Conference on Robotics and Automation (ICRA)",
       "title": "TERP: Reliable Planning in Uneven Outdoor Environments using Deep Reinforcement Learning",
-      "summary": "We present a novel method for reliable robot navigation in uneven outdoor terrains. Our approach employs a fully-trained Deep Reinforcement Learning (DRL) network that uses elevation maps of the environment, robot pose, and goal as inputs to compute an attention mask of the environment. The attention mask is used to identify reduced stability regions in the elevation map and is computed using channel and spatial attention modules and a novel reward function. We continuously compute and update a navigation cost-map that encodes the elevation information or the level-of-flatness of the terrain using the attention mask. We then generate locally least-cost waypoints on the cost-map and compute the final dynamically feasible trajectory using another DRL-based method. Our approach guarantees safe, locally least-cost paths and dynamically feasible robot velocities in uneven terrains. We observe an increase of 35.18% in terms of success rate and, a decrease of 26.14% in the cumulative elevation gradient of the robot's trajectory compared to prior navigation methods in high-elevation regions. We evaluate our method on a Husky robot in real-world uneven terrains (∼ <tex xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">$4m$</tex> of elevation gain) and demonstrate its benefits.",
+      "summary": "We present a novel method for reliable robot navigation in uneven outdoor terrains. Our approach employs a fully-trained Deep Reinforcement Learning (DRL) network that uses elevation maps of the environment, robot pose, and goal as inputs to compute an attention mask of the environment. The attention mask is used to identify reduced stability regions in the elevation map and is computed using channel and spatial attention modules and a novel reward function. We continuously compute and update a navigation cost-map that encodes the elevation information or the level-of-flatness of the terrain using the attention mask. We then generate locally least-cost waypoints on the cost-map and compute the final dynamically feasible trajectory using another DRL-based method. Our approach guarantees safe, locally least-cost paths and dynamically feasible robot velocities in uneven terrains. We observe an increase of 35.18% in terms of success rate and, a decrease of 26.14% in the cumulative elevation gradient of the robot's trajectory compared to prior navigation methods in high-elevation regions. We evaluate our method on a Husky robot in real-world uneven terrains (∼$4m$of elevation gain) and demonstrate its benefits.",
       "authors": [
         "Kasun Weerakoon",
         "Adarsh Jagan Sathyamoorthy",
@@ -18907,7 +18630,7 @@
       "published": "2022-05-23",
       "published_ts": 1653264000.0,
       "publication_year": 2022,
-      "cited_by_count": 67,
+      "cited_by_count": 68,
       "doi": "10.1109/icra46639.2022.9812238",
       "doi_url": "https://doi.org/10.1109/icra46639.2022.9812238",
       "paper_url": "https://doi.org/10.1109/icra46639.2022.9812238",
@@ -19029,7 +18752,7 @@
       ],
       "venue": "2022 International Conference on Robotics and Automation (ICRA)",
       "title": "R<sup>3</sup>LIVE: A Robust, Real-time, RGB-colored, LiDAR-Inertial-Visual tightly-coupled state Estimation and mapping package",
-      "summary": "In this paper, we propose a novel LiDAR-Inertial-Visual sensor fusion framework termed R <sup xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">3</sup> LIVE, which takes advantage of measurement of LiDAR, inertial, and visual sensors to achieve robust and accurate state estimation. R <sup xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">3</sup> LIVE consists of two subsystems, a LiDAR-Inertial odometry (LIO) and a Visual-Inertial odometry (VIO). The LIO subsystem (FAST-LIO) utilizes the measurements from LiDAR and inertial sensors and builds the geometric structure (i.e., the positions of 3D points) of the map. The VIO subsystem uses the data of Visual-Inertial sensors and renders the map's texture (i.e., the color of 3D points). More specifically, the VIO subsystem fuses the visual data directly and effectively by minimizing the frame-to-map photometric error. The proposed system R <sup xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">3</sup> LIVE is developed based on our previous work R <sup xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">2</sup> LIVE, with a completely different VIO architecture design. The overall system is able to reconstruct the precise, dense, 3D, RGB-colored maps of the surrounding environment in real-time (see our attached video <sup xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">1</sup> <sup xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">1</sup> https://youtu.be/j5fT8NE5fdg). Our experiments show that the resultant system achieves higher robustness and accuracy in state estimation than its current counterparts. To share our findings and make contributions to the community, we open source R <sup xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">3</sup> LIVE on our Github <sup xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">2</sup> <sup xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">2</sup> https://github.com/hku-mars/r31ive",
+      "summary": "In this paper, we propose a novel LiDAR-Inertial-Visual sensor fusion framework termed R3LIVE, which takes advantage of measurement of LiDAR, inertial, and visual sensors to achieve robust and accurate state estimation. R3LIVE consists of two subsystems, a LiDAR-Inertial odometry (LIO) and a Visual-Inertial odometry (VIO). The LIO subsystem (FAST-LIO) utilizes the measurements from LiDAR and inertial sensors and builds the geometric structure (i.e., the positions of 3D points) of the map. The VIO subsystem uses the data of Visual-Inertial sensors and renders the map's texture (i.e., the color of 3D points). More specifically, the VIO subsystem fuses the visual data directly and effectively by minimizing the frame-to-map photometric error. The proposed system R3LIVE is developed based on our previous work R2LIVE, with a completely different VIO architecture design. The overall system is able to reconstruct the precise, dense, 3D, RGB-colored maps of the surrounding environment in real-time (see our attached video11https://youtu.be/j5fT8NE5fdg). Our experiments show that the resultant system achieves higher robustness and accuracy in state estimation than its current counterparts. To share our findings and make contributions to the community, we open source R3LIVE on our Github22https://github.com/hku-mars/r31ive",
       "authors": [
         "Jiarong Lin",
         "Fu Zhang"
@@ -19041,7 +18764,7 @@
       "published": "2022-05-23",
       "published_ts": 1653264000.0,
       "publication_year": 2022,
-      "cited_by_count": 352,
+      "cited_by_count": 355,
       "doi": "10.1109/icra46639.2022.9811935",
       "doi_url": "https://doi.org/10.1109/icra46639.2022.9811935",
       "paper_url": "https://doi.org/10.1109/icra46639.2022.9811935",
@@ -19138,7 +18861,7 @@
       "published": "2022-05-23",
       "published_ts": 1653264000.0,
       "publication_year": 2022,
-      "cited_by_count": 68,
+      "cited_by_count": 69,
       "doi": "10.1109/icra46639.2022.9812312",
       "doi_url": "https://doi.org/10.1109/icra46639.2022.9812312",
       "paper_url": "https://doi.org/10.1109/icra46639.2022.9812312",
@@ -19279,7 +19002,7 @@
       "published": "2022-05-23",
       "published_ts": 1653264000.0,
       "publication_year": 2022,
-      "cited_by_count": 142,
+      "cited_by_count": 143,
       "doi": "10.1109/icra46639.2022.9812146",
       "doi_url": "https://doi.org/10.1109/icra46639.2022.9812146",
       "paper_url": "https://doi.org/10.1109/icra46639.2022.9812146",
@@ -19441,6 +19164,52 @@
       ]
     },
     {
+      "id": "openalex:W4221155367",
+      "openalex_id": "W4221155367",
+      "source_kind": "conference",
+      "conference": "ICRA",
+      "conferences": [
+        "ICRA"
+      ],
+      "venue": "2022 International Conference on Robotics and Automation (ICRA)",
+      "title": "Multi-Agent Path Finding with Prioritized Communication Learning",
+      "summary": "Multi-agent pathfinding (MAPF) has been widely used to solve large-scale real-world problems, e.g., automation warehouses. The learning-based, fully decentralized framework has been introduced to alleviate real-time problems and simultaneously pursue optimal planning policy. However, existing methods might generate significantly more vertex conflicts (or collisions), which lead to a low success rate or more makespan. In this paper, we propose a PrIoritized COmmunication learning method (PICO), which incorporates the implicit planning priorities into the communication topology within the decentralized multi-agent reinforcement learning framework. Assembling with the classic coupled planners, the implicit priority learning module can be utilized to form the dynamic communication topology, which also builds an effective collision-avoiding mechanism. PICO performs significantly better in large-scale MAPF tasks in success rates and collision rates than state-of-the-art learning-based planners.",
+      "authors": [
+        "Wenhao Li",
+        "Hongjun Chen",
+        "Bo Jin",
+        "Wenzhe Tan",
+        "Hongyuan Zha",
+        "Xiangfeng Wang"
+      ],
+      "institutions": [
+        "East China Normal University",
+        "Chinese University of Hong Kong, Shenzhen"
+      ],
+      "institutions_source": "OpenAlex",
+      "published": "2022-05-23",
+      "published_ts": 1653264000.0,
+      "publication_year": 2022,
+      "cited_by_count": 60,
+      "doi": "10.1109/icra46639.2022.9811643",
+      "doi_url": "https://doi.org/10.1109/icra46639.2022.9811643",
+      "paper_url": "https://doi.org/10.1109/icra46639.2022.9811643",
+      "pdf_url": "",
+      "arxiv_url": "",
+      "arxiv_categories": [],
+      "primary_category": "",
+      "external_urls": [],
+      "comment": "",
+      "journal_ref": "",
+      "awards": [],
+      "embodied_categories": [
+        "机器人学习"
+      ],
+      "match_evidence": [
+        "ICRA"
+      ]
+    },
+    {
       "id": "openalex:W3201256746",
       "openalex_id": "W3201256746",
       "source_kind": "conference",
@@ -19450,7 +19219,7 @@
       ],
       "venue": "2022 International Conference on Robotics and Automation (ICRA)",
       "title": "LoGG3D-Net: Locally Guided Global Descriptor Learning for 3D Place Recognition",
-      "summary": "Retrieval-based place recognition is an efficient and effective solution for re-localization within a pre-built map, or global data association for Simultaneous Localization and Mapping (SLAM). The accuracy of such an approach is heavily dependant on the quality of the extracted scene-level representation. While end-to-end solutions - which learn a global descriptor from input point clouds - have demonstrated promising results, such approaches are limited in their ability to enforce desirable properties at the local feature level. In this paper, we introduce a local consistency loss to guide the network towards learning local features which are consistent across revisits, hence leading to more repeatable global descriptors resulting in an overall improvement in 3D place recognition performance. We formulate our approach in an end-to-end trainable architecture called LoGG3D-Net. Experiments on two large-scale public benchmarks (KITTI and MulRan) show that our method achieves mean F1 <inf xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">max</inf> scores of 0.939 and 0.968 on KITTI and MulRan respectively, achieving state-of-the-art performance while operating in near real-time. The open-source implementation is available at: https://github.com/csiro-robotics/LoGG3D-Net.",
+      "summary": "Retrieval-based place recognition is an efficient and effective solution for re-localization within a pre-built map, or global data association for Simultaneous Localization and Mapping (SLAM). The accuracy of such an approach is heavily dependant on the quality of the extracted scene-level representation. While end-to-end solutions - which learn a global descriptor from input point clouds - have demonstrated promising results, such approaches are limited in their ability to enforce desirable properties at the local feature level. In this paper, we introduce a local consistency loss to guide the network towards learning local features which are consistent across revisits, hence leading to more repeatable global descriptors resulting in an overall improvement in 3D place recognition performance. We formulate our approach in an end-to-end trainable architecture called LoGG3D-Net. Experiments on two large-scale public benchmarks (KITTI and MulRan) show that our method achieves mean F1maxscores of 0.939 and 0.968 on KITTI and MulRan respectively, achieving state-of-the-art performance while operating in near real-time. The open-source implementation is available at: https://github.com/csiro-robotics/LoGG3D-Net.",
       "authors": [
         "Kavisha Vidanapathirana",
         "Milad Ramezani",
@@ -19564,7 +19333,7 @@
       "published": "2022-05-23",
       "published_ts": 1653264000.0,
       "publication_year": 2022,
-      "cited_by_count": 92,
+      "cited_by_count": 93,
       "doi": "10.1109/icra46639.2022.9812353",
       "doi_url": "https://doi.org/10.1109/icra46639.2022.9812353",
       "paper_url": "https://doi.org/10.1109/icra46639.2022.9812353",
@@ -19704,7 +19473,7 @@
       "published": "2022-05-23",
       "published_ts": 1653264000.0,
       "publication_year": 2022,
-      "cited_by_count": 327,
+      "cited_by_count": 329,
       "doi": "10.1109/icra46639.2022.9811809",
       "doi_url": "https://doi.org/10.1109/icra46639.2022.9811809",
       "paper_url": "https://doi.org/10.1109/icra46639.2022.9811809",
@@ -19747,7 +19516,7 @@
       "published": "2022-05-23",
       "published_ts": 1653264000.0,
       "publication_year": 2022,
-      "cited_by_count": 213,
+      "cited_by_count": 215,
       "doi": "10.1109/icra46639.2022.9811832",
       "doi_url": "https://doi.org/10.1109/icra46639.2022.9811832",
       "paper_url": "https://doi.org/10.1109/icra46639.2022.9811832",
@@ -19926,7 +19695,7 @@
       "published": "2022-05-23",
       "published_ts": 1653264000.0,
       "publication_year": 2022,
-      "cited_by_count": 66,
+      "cited_by_count": 68,
       "doi": "10.1109/icra46639.2022.9811966",
       "doi_url": "https://doi.org/10.1109/icra46639.2022.9811966",
       "paper_url": "https://doi.org/10.1109/icra46639.2022.9811966",
@@ -19945,52 +19714,6 @@
         "manipulation",
         "robot",
         "tactile sensing"
-      ]
-    },
-    {
-      "id": "openalex:W4221145923",
-      "openalex_id": "W4221145923",
-      "source_kind": "conference",
-      "conference": "ICRA",
-      "conferences": [
-        "ICRA"
-      ],
-      "venue": "2022 International Conference on Robotics and Automation (ICRA)",
-      "title": "DEVO: Depth-Event Camera Visual Odometry in Challenging Conditions",
-      "summary": "We present a novel real-time visual odometry framework for a stereo setup of a depth and high-resolution event camera. Our framework balances accuracy and robustness against computational efficiency towards strong performance in challenging scenarios. We extend conventional edge-based semi-dense visual odometry towards time-surface maps obtained from event streams. Semi-dense depth maps are generated by warping the corresponding depth values of the extrinsically calibrated depth camera. The tracking module updates the camera pose through efficient, geometric semi-dense 3D-2D edge alignment. Our approach is validated on both public and self-collected datasets captured under various conditions. We show that the proposed method performs comparable to state-of-the-art RGB-D camera-based alternatives in regular conditions, and eventually outperforms in challenging conditions such as high dynamics or low illumination.",
-      "authors": [
-        "Yifan Zuo",
-        "Jiaqi Yang",
-        "Jiaben Chen",
-        "Xia Wang",
-        "Yifu Wang",
-        "Laurent Kneip"
-      ],
-      "institutions": [
-        "Beijing Institute of Technology",
-        "ShanghaiTech University"
-      ],
-      "institutions_source": "OpenAlex",
-      "published": "2022-05-23",
-      "published_ts": 1653264000.0,
-      "publication_year": 2022,
-      "cited_by_count": 59,
-      "doi": "10.1109/icra46639.2022.9811805",
-      "doi_url": "https://doi.org/10.1109/icra46639.2022.9811805",
-      "paper_url": "https://doi.org/10.1109/icra46639.2022.9811805",
-      "pdf_url": "",
-      "arxiv_url": "",
-      "arxiv_categories": [],
-      "primary_category": "",
-      "external_urls": [],
-      "comment": "",
-      "journal_ref": "",
-      "awards": [],
-      "embodied_categories": [
-        "机器人学习"
-      ],
-      "match_evidence": [
-        "ICRA"
       ]
     },
     {
@@ -20140,7 +19863,7 @@
       ],
       "venue": "2022 International Conference on Robotics and Automation (ICRA)",
       "title": "CRAT-Pred: Vehicle Trajectory Prediction with Crystal Graph Convolutional Neural Networks and Multi-Head Self-Attention",
-      "summary": "Predicting the motion of surrounding vehicles is essential for autonomous vehicles, as it governs their own motion plan. Current state-of-the-art vehicle prediction models heavily rely on map information. In reality, however, this information is not always available. We therefore propose CRAT-Pred, a multi-modal and non-rasterization-based trajectory prediction model, specifically designed to effectively model social interactions between vehicles, without relying on map information. CRAT-Pred applies a graph convolution method originating from the field of material science to vehicle prediction, allowing to efficiently leverage edge features, and combines it with multi-head self-attention. Compared to other map-free approaches, the model achieves state-of-the-art performance with a significantly lower number of model parameters. In addition to that, we quantitatively show that the self-attention mechanism is able to learn social interactions between vehicles, with the weights representing a measurable interaction score. The source code is publicly available <sup xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">3</sup> <sup xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">3</sup> Source code: https://github.com/schmidt-ju/crat-pred.",
+      "summary": "Predicting the motion of surrounding vehicles is essential for autonomous vehicles, as it governs their own motion plan. Current state-of-the-art vehicle prediction models heavily rely on map information. In reality, however, this information is not always available. We therefore propose CRAT-Pred, a multi-modal and non-rasterization-based trajectory prediction model, specifically designed to effectively model social interactions between vehicles, without relying on map information. CRAT-Pred applies a graph convolution method originating from the field of material science to vehicle prediction, allowing to efficiently leverage edge features, and combines it with multi-head self-attention. Compared to other map-free approaches, the model achieves state-of-the-art performance with a significantly lower number of model parameters. In addition to that, we quantitatively show that the self-attention mechanism is able to learn social interactions between vehicles, with the weights representing a measurable interaction score. The source code is publicly available33Source code: https://github.com/schmidt-ju/crat-pred.",
       "authors": [
         "Julian Schmidt",
         "Julian Jordan",
@@ -20156,7 +19879,7 @@
       "published": "2022-05-23",
       "published_ts": 1653264000.0,
       "publication_year": 2022,
-      "cited_by_count": 76,
+      "cited_by_count": 77,
       "doi": "10.1109/icra46639.2022.9811637",
       "doi_url": "https://doi.org/10.1109/icra46639.2022.9811637",
       "paper_url": "https://doi.org/10.1109/icra46639.2022.9811637",
@@ -20202,7 +19925,7 @@
       "published": "2022-05-23",
       "published_ts": 1653264000.0,
       "publication_year": 2022,
-      "cited_by_count": 65,
+      "cited_by_count": 66,
       "doi": "10.1109/icra46639.2022.9811999",
       "doi_url": "https://doi.org/10.1109/icra46639.2022.9811999",
       "paper_url": "https://doi.org/10.1109/icra46639.2022.9811999",
@@ -20304,7 +20027,7 @@
       "published": "2022-05-23",
       "published_ts": 1653264000.0,
       "publication_year": 2022,
-      "cited_by_count": 91,
+      "cited_by_count": 93,
       "doi": "10.1109/icra46639.2022.9812330",
       "doi_url": "https://doi.org/10.1109/icra46639.2022.9812330",
       "paper_url": "https://doi.org/10.1109/icra46639.2022.9812330",
