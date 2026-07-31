@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-07-31T09:20:32.131801+00:00",
+  "updated_at": "2026-07-31T14:40:04.652459+00:00",
   "arxiv_papers": [
     {
       "id": "2607.28625v1",
@@ -6911,230 +6911,6 @@
       ],
       "match_evidence": [
         "human-robot interaction",
-        "robot"
-      ],
-      "institutions": [],
-      "institutions_source": ""
-    },
-    {
-      "id": "2607.15065v1",
-      "title": "DriftWorld: Fast World Modeling through Drifting",
-      "summary": "Predictive world models enable robots to plan by imagining the outcomes of their actions, but their value for control hinges on generating many rollouts quickly. This creates a bottleneck for diffusion-based world models: multistep sampling makes each rollout expensive, limiting large-scale action search at inference time. We introduce DriftWorld, an action-conditioned world model based on drifting generative models. Rather than denoising iteratively at inference, DriftWorld learns an action-conditioned drift during training, allowing it to generate future frames from the current observation and a candidate action sequence in a single forward pass at 30+ fps, which is 17x faster on average than diffusion based baselines. We evaluate DriftWorld on standard vision-based robotic manipulation benchmarks, including Bridge-V2, RT-1, Language Table, Push-T, and Robomimic. By producing rollouts that are both accurate and fast, DriftWorld achieves state-of-the-art decision-making performance with far less inference time than diffusion-based world model baselines. Beyond online control, DriftWorld can also serve as an offline simulator for ranking real-world robot policies, with rollout-based scores correlating with ground truth at up to 0.99. These results show that drifting models are a strong fit for robot world modeling, where fast, high-quality imagination directly supports planning and policy evaluation.",
-      "authors": [
-        "Susie Lu",
-        "Haonan Chen",
-        "Weirui Ye",
-        "Yilun Du"
-      ],
-      "published": "2026-07-16T14:37:43Z",
-      "updated": "2026-07-16T14:37:43Z",
-      "published_ts": 1784212663.0,
-      "arxiv_url": "http://arxiv.org/abs/2607.15065v1",
-      "pdf_url": "https://arxiv.org/pdf/2607.15065v1",
-      "primary_category": "cs.RO",
-      "arxiv_categories": [
-        "cs.RO",
-        "cs.CV",
-        "cs.LG"
-      ],
-      "comment": "Website at https://susie-lu.github.io/driftworld/",
-      "journal_ref": "",
-      "doi": "",
-      "doi_url": "",
-      "external_urls": [
-        "https://susie-lu.github.io/driftworld/"
-      ],
-      "source_kind": "arxiv",
-      "conference": "",
-      "conferences": [],
-      "publication_year": 2026,
-      "cited_by_count": 0,
-      "awards": [],
-      "embodied_categories": [
-        "世界模型与仿真"
-      ],
-      "match_evidence": [
-        "manipulation",
-        "robot",
-        "robotic",
-        "world model"
-      ],
-      "institutions": [],
-      "institutions_source": ""
-    },
-    {
-      "id": "2607.14997v1",
-      "title": "AeroAct: Action-Centered World-Action Models for Language-Conditioned Quadrotor Flight",
-      "summary": "Language-conditioned quadrotor flight requires a policy to ground semantic goals, anticipate the visual consequences of ego-motion, and output control references that remain smooth and dynamically executable under rapidly changing first-person views. Existing aerial vision-language navigation and vision-language-action methods commonly use discrete actions, high-level waypoints, or instantaneous velocity commands, which provide limited supervision about how flight actions change future observations. We present AeroAct, an action-centered world-action model (WAM) for quadrotor navigation. To the best of our knowledge, AeroAct is the first WAM instantiated and demonstrated for real-world aerial flight. The model adapts a pretrained video diffusion Transformer to predict local trajectory-action chunks from egocentric visual history, proprioception, and language. Future first-person frames are used during training as dense consequence supervision, while deployment directly decodes actions without generating future video. To obtain aligned visual, state, language, and dynamically feasible action data, we build a DiffAero-based pipeline with complementary Isaac Lab and 3D Gaussian splatting renderers. We further introduce a low-cost handheld collection device that couples camera observations with motion estimates to recreate flight-like egocentric trajectories, and a self-guidance procedure that improves temporal consistency across overlapping trajectory chunks. Closed-loop simulation and real-world experiments show that temporal visual context improves target tracking and object-search performance, and that WAM-based policies can be executed on a physical quadrotor.",
-      "authors": [
-        "Xinhong Zhang",
-        "Qiyuan Zhu",
-        "Yubo Huang",
-        "Haolin Chen",
-        "Runqing Wang",
-        "Yuhao Mo",
-        "Zhongxin Chen",
-        "Yu Hu",
-        "Xinjiang Wang",
-        "Jian Sun",
-        "Gang Wang"
-      ],
-      "published": "2026-07-16T13:46:00Z",
-      "updated": "2026-07-16T13:46:00Z",
-      "published_ts": 1784209560.0,
-      "arxiv_url": "http://arxiv.org/abs/2607.14997v1",
-      "pdf_url": "https://arxiv.org/pdf/2607.14997v1",
-      "primary_category": "cs.RO",
-      "arxiv_categories": [
-        "cs.RO"
-      ],
-      "comment": "",
-      "journal_ref": "",
-      "doi": "",
-      "doi_url": "",
-      "external_urls": [],
-      "source_kind": "arxiv",
-      "conference": "",
-      "conferences": [],
-      "publication_year": 2026,
-      "cited_by_count": 0,
-      "awards": [],
-      "embodied_categories": [
-        "视觉-语言-动作",
-        "导航与探索"
-      ],
-      "match_evidence": [
-        "navigation",
-        "vision-language navigation",
-        "vision-language-action"
-      ],
-      "institutions": [],
-      "institutions_source": ""
-    },
-    {
-      "id": "2607.14919v1",
-      "title": "Human-Robot Interaction in GenAI Architectures via the Agent-Client Protocol",
-      "summary": "Recent advances in Generative Artificial Intelligence (GenAI), particularly Large Language Models (LLMs), are driving robotic architectures toward agent-based high-level orchestration, in which natural-language instructions can be translated into context-aware action sequences. While the integration of these agents and robotic capabilities is increasingly converging toward standardization through the Model Context Protocol (MCP), the upper Human-Robot Interaction (HRI) layer remains fragmented by proprietary, ad hoc interfaces that hinder real-time human-in-the-loop collaboration. To address this fragmentation, this paper proposes the adoption of the Agent-Client Protocol (ACP) -- a communication standard originally introduced for coding agents in software engineering -- as a unified communication contract for the HRI layer in agent-based robotic systems. By combining ACP at the interface-agent link and MCP at the agent-execution link, we formulate a fully decoupled three-layer architecture that separates human interaction, deliberative orchestration, and physical execution. This topology removes rigid architectural dependencies, enabling heterogeneous user interfaces to connect to the same robotic system and allowing the underlying robotic platform to be replaced without requiring client-specific integration changes. Moreover, it provides native support for collaborative HRI capabilities such as real-time observability, explicit human authorization, and immediate task interruption. We experimentally evaluate the proposed architecture on a physical mobile robot, demonstrating interoperability across three heterogeneous user interfaces and validating real-time human-in-the-loop workflows with negligible latency overhead.",
-      "authors": [
-        "Jesus Moncada-Ramirez",
-        "Jose-Raul Ruiz-Sarmiento",
-        "Javier Gonzalez-Jimenez"
-      ],
-      "published": "2026-07-16T12:38:48Z",
-      "updated": "2026-07-16T12:38:48Z",
-      "published_ts": 1784205528.0,
-      "arxiv_url": "http://arxiv.org/abs/2607.14919v1",
-      "pdf_url": "https://arxiv.org/pdf/2607.14919v1",
-      "primary_category": "cs.RO",
-      "arxiv_categories": [
-        "cs.RO"
-      ],
-      "comment": "8 pages, 5 figures, 1 table. Submitted to IEEE Robotics and Automation Letters (RA-L)",
-      "journal_ref": "",
-      "doi": "",
-      "doi_url": "",
-      "external_urls": [],
-      "source_kind": "arxiv",
-      "conference": "",
-      "conferences": [],
-      "publication_year": 2026,
-      "cited_by_count": 0,
-      "awards": [],
-      "embodied_categories": [
-        "人机交互"
-      ],
-      "match_evidence": [
-        "human-robot interaction",
-        "robot",
-        "robotic"
-      ],
-      "institutions": [
-        "Universidad de Málaga"
-      ],
-      "institutions_source": "OpenAlex"
-    },
-    {
-      "id": "2607.14852v2",
-      "title": "Towards Human-like Physical Intelligence: Lifelong Vision-Language-Action Learning for Robotic Manipulation",
-      "summary": "Similar to the natural capabilities of humans to sequentially learn new tasks, robots with Vision-Language-Action (VLA) models should possess lifelong learning ability to learn a new task when deployed in open-world environments. However, most recently proposed lifelong learning models aim to effectively learn the current task (plasticity) or maintain high accuracy on previous tasks (stability), while the plasticity-stability trade-off remains largely unsolved in robotic manipulation models. To address this fundamental challenge, we propose a cache-efficient lifelong Vision-Language-Action learning framework for robotic manipulation (i.e., LifelongVLA), which alleviates the plasticity-stability trade-off with a dual-timescale adaptation mechanism while achieving low-cost robotic deployment with a cache-efficient replay strategy. More concretely, we propose a dual-timescale LoRA gating module to decompose VLA adaptation into two lightweight pathways: a short-term adapter for plasticity and a long-term adapter for stable consolidation. These pathways are integrated via a task-aware gate, enabling explicit control of the plasticity-stability trade-off. In the skill replay phase, a cache-efficient stochastic replay strategy is proposed to preserve more balanced retention signals without full-trajectory storage. Finally, experiments show that LifelongVLA outperforms existing baselines, demonstrating efficient skill expansion, robust retention of learned manipulation behaviors, and reduced reliance on retraining for real-world deployment on an xArm robot.",
-      "authors": [
-        "Yao He",
-        "Gan Sun",
-        "Wenqi Liang",
-        "Fazeng Li",
-        "Yang Cong"
-      ],
-      "published": "2026-07-16T11:22:06Z",
-      "updated": "2026-07-21T06:49:06Z",
-      "published_ts": 1784200926.0,
-      "arxiv_url": "http://arxiv.org/abs/2607.14852v2",
-      "pdf_url": "https://arxiv.org/pdf/2607.14852v2",
-      "primary_category": "cs.RO",
-      "arxiv_categories": [
-        "cs.RO"
-      ],
-      "comment": "",
-      "journal_ref": "",
-      "doi": "",
-      "doi_url": "",
-      "external_urls": [],
-      "source_kind": "arxiv",
-      "conference": "",
-      "conferences": [],
-      "publication_year": 2026,
-      "cited_by_count": 0,
-      "awards": [],
-      "embodied_categories": [
-        "视觉-语言-动作"
-      ],
-      "match_evidence": [
-        "manipulation",
-        "robot",
-        "robotic",
-        "vision-language-action"
-      ],
-      "institutions": [],
-      "institutions_source": ""
-    },
-    {
-      "id": "2607.14809v1",
-      "title": "An LLM-Based Automatic Sportscast Solution for Robot Soccer Matches",
-      "summary": "RoboCup has always been a scenario to develop systems that solve real-world problems. Driven by the main goal of playing against the 2050 FIFA World Cup champions, the RoboCup Soccer leagues need to constantly measure how the research community is progressing. Computing visual statistics from match videos is a crucial way to track this evolution. To address this challenge, this paper introduces a fully autonomous, real-time sports commentator for RoboCup matches. By bridging the gap between raw kinematic tracking and natural language generation, our neuro-symbolic architecture extracts precise statistics from video streams and turns them into fluent, hallucination-free narration. The proposed system is capable of generating statistics and commentary both during live match streaming and in post-game analysis, easily adapting to the new dynamism of the league where different humanoid robots of different sizes share the field. Supplemental materials are available at https://lab-rococo-sapienza.github.io/MARIO/",
-      "authors": [
-        "Francesco Petri",
-        "Michele Brienza",
-        "Daniele Nardi",
-        "Domenico Daniele Bloisi",
-        "Aldo Gangemi",
-        "Vincenzo Suriani"
-      ],
-      "published": "2026-07-16T10:27:23Z",
-      "updated": "2026-07-16T10:27:23Z",
-      "published_ts": 1784197643.0,
-      "arxiv_url": "http://arxiv.org/abs/2607.14809v1",
-      "pdf_url": "https://arxiv.org/pdf/2607.14809v1",
-      "primary_category": "cs.CV",
-      "arxiv_categories": [
-        "cs.CV"
-      ],
-      "comment": "Poster presentation at RoboCup Symposium 2026",
-      "journal_ref": "",
-      "doi": "",
-      "doi_url": "",
-      "external_urls": [
-        "https://lab-rococo-sapienza.github.io/MARIO/"
-      ],
-      "source_kind": "arxiv",
-      "conference": "",
-      "conferences": [],
-      "publication_year": 2026,
-      "cited_by_count": 0,
-      "awards": [],
-      "embodied_categories": [
-        "运动与控制"
-      ],
-      "match_evidence": [
-        "humanoid",
         "robot"
       ],
       "institutions": [],
@@ -25043,7 +24819,7 @@
       "doi": "10.52497/kairos.810",
       "doi_url": "https://doi.org/10.52497/kairos.810",
       "paper_url": "http://dx.doi.org/10.52497/kairos.810",
-      "pdf_url": "",
+      "pdf_url": "https://www.theses.fr/2016AIXM1039.pdf",
       "arxiv_url": "",
       "arxiv_categories": [],
       "primary_category": "",
@@ -25202,7 +24978,7 @@
       "doi": "10.52497/kairos.865",
       "doi_url": "https://doi.org/10.52497/kairos.865",
       "paper_url": "http://dx.doi.org/10.52497/kairos.865",
-      "pdf_url": "",
+      "pdf_url": "https://www.icom-musees.fr/sites/default/files/2018-09/Concept%20cl%C3%A9%20mus%C3%A9ologie.pdf",
       "arxiv_url": "",
       "arxiv_categories": [],
       "primary_category": "",
