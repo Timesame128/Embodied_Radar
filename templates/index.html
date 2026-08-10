@@ -152,7 +152,14 @@
       </div>
     </section>
 
-    <section id="paperGrid" class="paper-grid" aria-live="polite"></section>
+    <div id="paperGridShell" class="paper-grid-shell">
+      <section id="paperGrid" class="paper-grid" aria-live="polite"></section>
+      <div id="paperScrollbar" class="paper-scrollbar" hidden>
+        <button id="paperScrollbarThumb" class="paper-scrollbar-thumb"
+          type="button" role="scrollbar" aria-controls="paperGrid"
+          aria-orientation="vertical" aria-label="论文列表滚动位置"></button>
+      </div>
+    </div>
     <section id="emptyState" class="empty-state" hidden>
       <div class="empty-orbit"></div>
       <h2>还没有可展示的论文</h2>
@@ -185,13 +192,7 @@
       </aside>
       <section class="immersive-results">
         <div id="immersiveHeadingSlot" class="immersive-heading-slot"></div>
-        <div id="immersiveGridSlot" class="immersive-grid-slot">
-          <div id="paperScrollbar" class="paper-scrollbar" hidden>
-            <button id="paperScrollbarThumb" class="paper-scrollbar-thumb"
-              type="button" role="scrollbar" aria-controls="paperGrid"
-              aria-orientation="vertical" aria-label="论文列表滚动位置"></button>
-          </div>
-        </div>
+        <div id="immersiveGridSlot" class="immersive-grid-slot"></div>
       </section>
     </div>
   </section>

@@ -67,7 +67,7 @@ def build(output_dir: Path, refresh: bool = False) -> dict:
         style_url="./style.css",
         script_url="./app.js",
         icon_url="./site-icon.png",
-        asset_version="scrollbar-thumb-20260810",
+        asset_version="scrollbar-all-20260810",
     )
     (output_dir / "index.html").write_text(html, encoding="utf-8")
     shutil.copy2(ROOT / "static" / "style.css", output_dir / "style.css")

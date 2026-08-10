@@ -74,6 +74,7 @@ const immersiveState = {
 };
 
 const grid = document.querySelector("#paperGrid");
+const paperGridShell = document.querySelector("#paperGridShell");
 const emptyState = document.querySelector("#emptyState");
 const sourceTabs = document.querySelector("#sourceTabs");
 const searchInput = document.querySelector("#searchInput");
@@ -125,7 +126,7 @@ const movableNodes = [
   activeFilters,
   sectionTitleBlock,
   resultsTools,
-  grid,
+  paperGridShell,
   emptyState
 ];
 const nodeAnchors = new Map(
@@ -654,6 +655,7 @@ function renderFacets() {
 }
 
 function renderPapers(papers) {
+  paperGridShell.hidden = papers.length === 0;
   grid.hidden = papers.length === 0;
   grid.innerHTML = papers.map((paper, index) => {
     const projectUrl = (paper.external_urls || []).find(url =>
@@ -782,7 +784,7 @@ function restoreNode(node) {
 
 function updatePaperScrollbar() {
   const scrollRange = Math.max(0, grid.scrollHeight - grid.clientHeight);
-  const canScroll = immersiveState.active && !grid.hidden && scrollRange > 1;
+  const canScroll = !paperGridShell.hidden && !grid.hidden && scrollRange > 1;
   paperScrollbar.hidden = !canScroll;
   if (!canScroll) return;
 
@@ -810,6 +812,7 @@ function updatePaperScrollbar() {
 
 function renderImmersiveState() {
   immersiveOverlay.hidden = !immersiveState.active;
+  document.documentElement.classList.toggle("immersive-open", immersiveState.active);
   document.body.classList.toggle("immersive-open", immersiveState.active);
   immersiveOverlay.classList.toggle("drawer-open", immersiveState.drawerOpen);
   immersiveFilterButton.setAttribute(
@@ -833,7 +836,7 @@ function enterImmersiveMode() {
   immersiveFacetSlot.append(facetPanel);
   immersiveActiveSlot.append(activeFilters);
   immersiveHeadingSlot.append(sectionTitleBlock);
-  immersiveGridSlot.append(grid, emptyState);
+  immersiveGridSlot.append(paperGridShell, emptyState);
 
   renderCurrentView();
   renderImmersiveState();

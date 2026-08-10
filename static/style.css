@@ -648,15 +648,24 @@ main {
   background: #edf2df;
 }
 
-.paper-grid {
-  display: grid;
+.paper-grid-shell {
+  position: relative;
   width: 100%;
   max-width: 1180px;
   min-width: 0;
+  min-height: 0;
   margin-right: auto;
   margin-left: auto;
+}
+
+.paper-grid-shell[hidden] { display: none; }
+
+.paper-grid {
+  display: grid;
+  width: 100%;
+  min-width: 0;
   max-height: min(78vh, 980px);
-  padding: 2px 12px 20px 2px;
+  padding: 2px 20px 20px 2px;
   overflow-x: hidden;
   overflow-y: auto;
   grid-template-columns: minmax(0, 1fr);
@@ -664,21 +673,12 @@ main {
   align-content: start;
   gap: 12px;
   overscroll-behavior: contain;
-  scrollbar-color: rgba(22,79,58,.45) transparent;
-  scrollbar-width: thin;
+  scrollbar-width: none;
 }
 
 .paper-grid[hidden] { display: none; }
 
-.paper-grid::-webkit-scrollbar { width: 10px; }
-.paper-grid::-webkit-scrollbar-track { background: transparent; }
-.paper-grid::-webkit-scrollbar-thumb {
-  min-height: 72px;
-  border: 2px solid var(--paper);
-  border-radius: 99px;
-  background: rgba(22,79,58,.42);
-}
-.paper-grid::-webkit-scrollbar-thumb:hover { background: rgba(22,79,58,.65); }
+.paper-grid::-webkit-scrollbar { display: none; }
 
 .paper-card {
   display: flex;
@@ -822,7 +822,12 @@ main {
 
 .immersive-overlay[hidden] { display: none; }
 
-body.immersive-open { overflow: hidden; }
+html.immersive-open,
+body.immersive-open {
+  overflow: hidden;
+  scrollbar-width: none;
+}
+html.immersive-open::-webkit-scrollbar { display: none; }
 
 .immersive-header {
   display: grid;
@@ -880,9 +885,12 @@ body.immersive-open { overflow: hidden; }
   min-height: 0;
   padding: 16px;
   overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   border-right: 1px solid var(--line);
   background: #efede5;
 }
+.immersive-sidebar::-webkit-scrollbar { display: none; }
 
 .immersive-sidebar-heading {
   display: flex;
@@ -955,6 +963,13 @@ body.immersive-open { overflow: hidden; }
   flex: 1;
 }
 
+.immersive-grid-slot .paper-grid-shell {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  margin: 0;
+}
+
 .immersive-grid-slot .paper-grid {
   width: 100%;
   max-width: none;
@@ -964,10 +979,7 @@ body.immersive-open { overflow: hidden; }
   padding-right: 20px;
   grid-auto-rows: max-content;
   align-content: start;
-  scrollbar-width: none;
 }
-
-.immersive-grid-slot .paper-grid::-webkit-scrollbar { display: none; }
 
 .paper-scrollbar {
   position: absolute;
@@ -1145,7 +1157,7 @@ footer a { color: var(--lime); font-weight: 700; text-decoration: none; }
   .active-filter-tags { order: 3; flex-basis: 100%; }
   .paper-grid {
     max-height: 72vh;
-    padding-right: 7px;
+    padding-right: 18px;
     grid-template-columns: 1fr;
     gap: 14px;
   }
