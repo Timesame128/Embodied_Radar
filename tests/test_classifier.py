@@ -26,3 +26,23 @@ def test_requires_specific_embodied_subcategory():
     )
     assert categories == []
 
+
+def test_classifies_motor_drive_control_as_its_own_direction():
+    categories, evidence = classify(
+        "Sensorless Field-Oriented Control of a PMSM Drive",
+        "A torque controller improves permanent magnet synchronous motor efficiency.",
+    )
+
+    assert "电机与驱动控制" in categories
+    assert "运动与控制" not in categories
+    assert "pmsm" in evidence
+
+
+def test_classifies_robot_motor_control_without_locomotion_overlap():
+    categories, _ = classify(
+        "High-Bandwidth Motor Control for Robotic Actuators",
+        "The electric motor drive improves torque tracking for a robot joint.",
+    )
+
+    assert "电机与驱动控制" in categories
+    assert "运动与控制" not in categories
