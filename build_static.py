@@ -23,6 +23,14 @@ def build(output_dir: Path, refresh: bool = False) -> dict:
         openalex_api_key=os.getenv("OPENALEX_API_KEY", ""),
         conference_max_results=int(os.getenv("CONFERENCE_MAX_RESULTS", "200")),
         conference_years=int(os.getenv("CONFERENCE_YEARS", "5")),
+        conference_refresh_hours=int(
+            os.getenv("CONFERENCE_REFRESH_HOURS", "168")
+        ),
+        journal_max_results=int(os.getenv("JOURNAL_MAX_RESULTS", "200")),
+        journal_years=int(os.getenv("JOURNAL_YEARS", "5")),
+        journal_refresh_hours=int(
+            os.getenv("JOURNAL_REFRESH_HOURS", "168")
+        ),
         awards_path=str(ROOT / "data" / "awards.json"),
     )
     if refresh:
@@ -59,7 +67,7 @@ def build(output_dir: Path, refresh: bool = False) -> dict:
         style_url="./style.css",
         script_url="./app.js",
         icon_url="./site-icon.png",
-        asset_version="aligned-results-20260616",
+        asset_version="source-groups-20260810",
     )
     (output_dir / "index.html").write_text(html, encoding="utf-8")
     shutil.copy2(ROOT / "static" / "style.css", output_dir / "style.css")

@@ -23,6 +23,14 @@ def create_app(testing: bool = False) -> Flask:
         openalex_api_key=os.getenv("OPENALEX_API_KEY", ""),
         conference_max_results=int(os.getenv("CONFERENCE_MAX_RESULTS", "200")),
         conference_years=int(os.getenv("CONFERENCE_YEARS", "5")),
+        conference_refresh_hours=int(
+            os.getenv("CONFERENCE_REFRESH_HOURS", "168")
+        ),
+        journal_max_results=int(os.getenv("JOURNAL_MAX_RESULTS", "200")),
+        journal_years=int(os.getenv("JOURNAL_YEARS", "5")),
+        journal_refresh_hours=int(
+            os.getenv("JOURNAL_REFRESH_HOURS", "168")
+        ),
         awards_path=os.getenv("AWARDS_PATH", "data/awards.json"),
     )
     app.extensions["paper_service"] = service

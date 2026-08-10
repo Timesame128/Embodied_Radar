@@ -44,6 +44,10 @@ jobs:
           OPENALEX_EMAIL: ${{ secrets.OPENALEX_EMAIL }}
           CONFERENCE_MAX_RESULTS: "1000"
           CONFERENCE_YEARS: "5"
+          CONFERENCE_REFRESH_HOURS: "168"
+          JOURNAL_MAX_RESULTS: "1000"
+          JOURNAL_YEARS: "5"
+          JOURNAL_REFRESH_HOURS: "168"
         run: python build_static.py --refresh
 
       - name: Persist refreshed paper cache

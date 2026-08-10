@@ -30,9 +30,9 @@
       <button id="refreshButton" class="refresh-button" type="button">立即刷新</button>
     </nav>
     <div class="hero-copy">
-      <p class="eyebrow">ARXIV · TOP CONFERENCES · CITATION RADAR</p>
+      <p class="eyebrow">ARXIV · CONFERENCES · JOURNALS</p>
       <h1>追踪具身智能<br><span>正在发生的事</span></h1>
-      <p class="intro">arXiv 最新研究与九大会议论文独立呈现，支持按发表时间、引用量和研究方向筛选，并收录 Best Paper 等特别荣誉。</p>
+      <p class="intro">arXiv、会议与期刊分区呈现，支持按来源、发表时间、引用量和研究方向筛选，并收录 Best Paper 等特别荣誉。</p>
     </div>
     <div class="stats">
       <div><strong id="paperCount">—</strong><span>篇论文</span></div>
@@ -55,13 +55,25 @@
       <div class="filter-toolbar">
         <div>
           <strong>分面筛选</strong>
-          <span>按方向、时间与引用量缩小结果范围</span>
+          <span>按来源、方向、时间与引用量缩小结果范围</span>
         </div>
         <button id="filterToggleButton" class="filter-toggle" type="button"
           aria-expanded="true" aria-controls="facetPanel">收起筛选</button>
       </div>
 
       <div id="facetPanel" class="facet-panel">
+        <section id="publicationSourceSection" class="facet-section" hidden
+          aria-labelledby="publicationSourceTitle">
+          <div class="facet-heading">
+            <div>
+              <h3 id="publicationSourceTitle">论文来源</h3>
+              <p id="publicationSourceHint">默认全选，可逐项关闭不需要的来源</p>
+            </div>
+          </div>
+          <div id="publicationSourceFacet"
+            class="facet-options publication-source-facet"></div>
+        </section>
+
         <section class="facet-section" aria-labelledby="categoryFacetTitle">
           <div class="facet-heading">
             <div>

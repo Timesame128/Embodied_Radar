@@ -6,7 +6,8 @@ const config = {
 
 const SECTION_LABELS = {
   arxiv: ["arXiv", "arXiv 最新论文", "ARXIV · LATEST"],
-  awards: ["Best Papers", "特别好文专区", "AWARDS · EDITOR'S CHOICE"]
+  conference: ["会议", "会议论文", "CONFERENCES · ALL"],
+  journal: ["期刊", "期刊论文", "JOURNALS · ALL"]
 };
 
 const CONFERENCE_TIME_OPTIONS = [
@@ -45,7 +46,11 @@ const filterState = {
   timePreset: "all",
   customFromYear: "",
   customToYear: "",
-  citationBucket: "all"
+  citationBucket: "all",
+  conferenceSources: new Set(),
+  journalSources: new Set(),
+  awardsOnly: false,
+  sourcesInitialized: false
 };
 
 const searchState = {
@@ -72,6 +77,10 @@ const grid = document.querySelector("#paperGrid");
 const emptyState = document.querySelector("#emptyState");
 const sourceTabs = document.querySelector("#sourceTabs");
 const searchInput = document.querySelector("#searchInput");
+const publicationSourceSection = document.querySelector("#publicationSourceSection");
+const publicationSourceTitle = document.querySelector("#publicationSourceTitle");
+const publicationSourceHint = document.querySelector("#publicationSourceHint");
+const publicationSourceFacet = document.querySelector("#publicationSourceFacet");
 const categoryFacet = document.querySelector("#categoryFacet");
 const timeFacet = document.querySelector("#timeFacet");
 const citationFacet = document.querySelector("#citationFacet");
@@ -156,8 +165,13 @@ function sectionMeta(source) {
 
 function paperMatchesSource(paper) {
   if (pageState.source === "arxiv") return paper.source_kind === "arxiv";
-  if (pageState.source === "awards") return (paper.awards || []).length > 0;
-  return paper.source_kind === "conference" && paper.conference === pageState.source;
+  if (pageState.source === "conference") {
+    if (paper.source_kind !== "conference") return false;
+    if (!filterState.conferenceSources.has(paper.conference)) return false;
+    return !filterState.awardsOnly || (paper.awards || []).length > 0;
+  }
+  return paper.source_kind === "journal" &&
+    filterState.journalSources.has(paper.journal);
 }
 
 function paperYear(paper) {
@@ -210,6 +224,7 @@ function searchableText(paper) {
     paper.title,
     paper.summary,
     paper.conference,
+    paper.journal,
     paper.venue,
     ...(paper.authors || []),
     ...(paper.institutions || []),
@@ -356,11 +371,23 @@ function sortedPapers(papers) {
   return sorted;
 }
 
+function sourceGroupCount(source) {
+  const direct = pageState.data.section_counts?.[source];
+  if (direct !== undefined) return direct;
+  const members = source === "conference"
+    ? pageState.data.conferences || []
+    : pageState.data.journals || [];
+  return members.reduce(
+    (total, member) => total + (pageState.data.section_counts?.[member] || 0),
+    0
+  );
+}
+
 function renderSourceTabs() {
-  const sources = ["arxiv", ...(pageState.data.conferences || []), "awards"];
+  const sources = ["arxiv", "conference", "journal"];
   sourceTabs.innerHTML = sources.map(source => {
     const [label] = sectionMeta(source);
-    const count = pageState.data.section_counts?.[source] || 0;
+    const count = sourceGroupCount(source);
     return `
       <button class="source-tab ${pageState.source === source ? "active" : ""}"
         data-source="${escapeHtml(source)}" type="button">
@@ -368,6 +395,68 @@ function renderSourceTabs() {
       </button>
     `;
   }).join("");
+}
+
+function initializePublicationSources(force = false) {
+  if (!pageState.data || (filterState.sourcesInitialized && !force)) return;
+  filterState.conferenceSources = new Set(pageState.data.conferences || []);
+  filterState.journalSources = new Set(pageState.data.journals || []);
+  filterState.awardsOnly = false;
+  filterState.sourcesInitialized = true;
+}
+
+function publicationSourceState() {
+  const isConference = pageState.source === "conference";
+  return {
+    isConference,
+    label: isConference ? "会议" : "期刊",
+    options: isConference
+      ? pageState.data.conferences || []
+      : pageState.data.journals || [],
+    selected: isConference
+      ? filterState.conferenceSources
+      : filterState.journalSources
+  };
+}
+
+function renderPublicationSourceFacet() {
+  const visible = pageState.source === "conference" || pageState.source === "journal";
+  publicationSourceSection.hidden = !visible;
+  if (!visible) return;
+
+  const { isConference, label, options, selected } = publicationSourceState();
+  const allSelected = options.length > 0 && options.every(item => selected.has(item));
+  const total = options.reduce(
+    (sum, item) => sum + (pageState.data.section_counts?.[item] || 0),
+    0
+  );
+  publicationSourceTitle.textContent = `${label}来源`;
+  publicationSourceHint.textContent = `默认全选，可逐项关闭不需要的${label}`;
+
+  const allButton = `
+    <button class="facet-option source-option ${allSelected ? "active" : ""}"
+      data-source-all type="button" aria-pressed="${allSelected}">
+      <span>全部${label}</span><strong>${total}</strong>
+    </button>
+  `;
+  const sourceButtons = options.map(source => {
+    const active = selected.has(source);
+    const count = pageState.data.section_counts?.[source] || 0;
+    return `
+      <button class="facet-option source-option ${active ? "active" : ""}"
+        data-publication-source="${escapeHtml(source)}" type="button"
+        aria-pressed="${active}">
+        <span>${escapeHtml(source)}</span><strong>${count}</strong>
+      </button>
+    `;
+  }).join("");
+  const awardsButton = isConference ? `
+    <button class="facet-option source-option awards-source-option ${filterState.awardsOnly ? "active" : ""}"
+      data-awards-only type="button" aria-pressed="${filterState.awardsOnly}">
+      <span>Best Papers</span><strong>${pageState.data.section_counts?.awards || 0}</strong>
+    </button>
+  ` : "";
+  publicationSourceFacet.innerHTML = allButton + sourceButtons + awardsButton;
 }
 
 function renderCategoryFacet() {
@@ -465,6 +554,24 @@ function activeFilterItems() {
       label: timeFilterLabel()
     });
   }
+  if (pageState.source === "conference" || pageState.source === "journal") {
+    const { label, options, selected } = publicationSourceState();
+    const allSelected = options.every(item => selected.has(item));
+    if (!allSelected) {
+      items.push({
+        type: "publication-sources",
+        value: pageState.source,
+        label: `${label}来源 ${selected.size}/${options.length}`
+      });
+    }
+  }
+  if (pageState.source === "conference" && filterState.awardsOnly) {
+    items.push({
+      type: "awards",
+      value: "awards",
+      label: "Best Papers"
+    });
+  }
   if (filterState.citationBucket !== "all") {
     const label = CITATION_OPTIONS.find(
       option => option.value === filterState.citationBucket
@@ -520,6 +627,7 @@ function renderLayoutControls() {
 }
 
 function renderFacets() {
+  renderPublicationSourceFacet();
   renderCategoryFacet();
   configureCustomRange();
   renderSingleChoiceFacet(
@@ -554,10 +662,14 @@ function renderPapers(papers) {
     ).join("");
     const sourceTag = paper.source_kind === "conference"
       ? `<span class="conference-tag">${escapeHtml(paper.conference)}</span>`
-      : '<span class="arxiv-tag">arXiv</span>';
+      : paper.source_kind === "journal"
+        ? `<span class="journal-tag">${escapeHtml(paper.journal)}</span>`
+        : '<span class="arxiv-tag">arXiv</span>';
     const paperUrl = paper.paper_url || paper.arxiv_url || paper.doi_url;
     const sourceLabel = paper.venue ||
-      (paper.source_kind === "arxiv" ? "arXiv" : paper.conference || "");
+      (paper.source_kind === "arxiv"
+        ? "arXiv"
+        : paper.conference || paper.journal || "");
     const titleLength = String(paper.title || "").length;
     const authorLength = (paper.authors || []).join(", ").length;
     const summaryLines = Math.min(
@@ -605,8 +717,7 @@ function renderCurrentView() {
   document.querySelector("#sectionTitle").textContent = title;
   document.querySelector("#sectionEyebrow").textContent = eyebrow;
   document.querySelector("#paperCount").textContent = papers.length;
-  document.querySelector("#sectionCount").textContent =
-    (pageState.data.conferences || []).length + 2;
+  document.querySelector("#sectionCount").textContent = "3";
   document.querySelector("#resultHint").textContent = pageState.data.last_error
     ? `部分数据更新异常：${pageState.data.last_error}`
     : `显示 ${papers.length} 篇符合条件的论文`;
@@ -617,6 +728,7 @@ async function loadPapers() {
     const response = await fetch(config.papersUrl, { cache: "no-store" });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     pageState.data = await response.json();
+    initializePublicationSources();
     renderCurrentView();
     document.querySelector("#updatedAt").textContent = pageState.data.updated_at
       ? new Intl.DateTimeFormat("zh-CN", {
@@ -653,6 +765,7 @@ function resetFilters() {
   filterState.customFromYear = "";
   filterState.customToYear = "";
   filterState.citationBucket = "all";
+  initializePublicationSources(true);
   searchInput.value = "";
 }
 
@@ -718,6 +831,26 @@ sourceTabs.addEventListener("click", event => {
   renderCurrentView();
 });
 
+publicationSourceFacet.addEventListener("click", event => {
+  const button = event.target.closest("button");
+  if (!button) return;
+  const { options, selected } = publicationSourceState();
+  if (button.hasAttribute("data-source-all")) {
+    selected.clear();
+    options.forEach(source => selected.add(source));
+  } else if (button.hasAttribute("data-awards-only")) {
+    filterState.awardsOnly = !filterState.awardsOnly;
+  } else if (button.dataset.publicationSource) {
+    const source = button.dataset.publicationSource;
+    if (selected.has(source)) {
+      selected.delete(source);
+    } else {
+      selected.add(source);
+    }
+  }
+  renderCurrentView();
+});
+
 categoryFacet.addEventListener("click", event => {
   const button = event.target.closest("[data-category]");
   if (!button) return;
@@ -766,6 +899,16 @@ activeFilterTags.addEventListener("click", event => {
     filterState.timePreset = "all";
     filterState.customFromYear = "";
     filterState.customToYear = "";
+  } else if (type === "publication-sources") {
+    const options = pageState.source === "conference"
+      ? pageState.data.conferences || []
+      : pageState.data.journals || [];
+    const selected = pageState.source === "conference"
+      ? filterState.conferenceSources
+      : filterState.journalSources;
+    options.forEach(source => selected.add(source));
+  } else if (type === "awards") {
+    filterState.awardsOnly = false;
   } else if (type === "citations") {
     filterState.citationBucket = "all";
   } else if (type === "query") {

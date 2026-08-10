@@ -10,7 +10,9 @@ Embodied Radar 是一个面向具身智能研究的论文雷达，用于自动�
 
 - 自动同步近期待筛选的 arXiv 论文。
 - 收录 CoRL、ICRA、RSS、IROS、CVPR、ICLR、NeurIPS、ICML、ICCV 等会议论文。
+- 收录 Science Robotics、IJRR、IEEE Transactions on Robotics 三本机器人期刊。
 - 使用 OpenAlex 补全作者单位、引用量、摘要和会议元数据，并在必要时回退到 DBLP。
+- 界面分为 arXiv、会议、期刊三个主入口，会议与期刊来源默认全选并支持逐项开关。
 - 支持按论文来源、研究方向、时间范围、引用量区间和关键词筛选。
 - 支持最新优先、引用最高、相关性最高和综合推荐排序。
 - 支持列表视图、卡片视图和沉浸浏览模式。
@@ -99,6 +101,10 @@ Settings -> Pages -> Build and deployment -> Source -> GitHub Actions
 | `OPENALEX_API_KEY` | 空 | OpenAlex API Key，建议在 GitHub Actions Secrets 中配置 |
 | `CONFERENCE_MAX_RESULTS` | `200` | 每个会议最多缓存的论文数，部署时通常设为 `1000` |
 | `CONFERENCE_YEARS` | `5` | 会议论文回溯年数 |
+| `CONFERENCE_REFRESH_HOURS` | `168` | 各会议成功刷新后的缓存有效时间；新数据只追加，不删除旧记录 |
+| `JOURNAL_MAX_RESULTS` | `200` | 每本期刊单次最多读取的论文数，部署时设为 `1000` |
+| `JOURNAL_YEARS` | `5` | 期刊论文回溯年数 |
+| `JOURNAL_REFRESH_HOURS` | `168` | 各期刊检查后的缓存有效时间；新数据只追加，不删除旧记录 |
 | `AWARDS_PATH` | `data/awards.json` | 获奖论文清单路径 |
 | `PORT` | `5000` | 本地服务端口 |
 | `DISABLE_SCHEDULER` | `0` | 设为 `1` 时关闭本地后台刷新 |

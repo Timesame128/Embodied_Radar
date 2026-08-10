@@ -1,6 +1,8 @@
 import json
 import time
+from datetime import datetime, timedelta, timezone
 
+import embodied_arxiv.service as service_module
 from embodied_arxiv.service import PaperService
 
 
@@ -44,10 +46,13 @@ def test_conference_sort_and_range_filters(tmp_path):
         to_year=2025,
         min_citations=20,
     )
+    conference_data = service.list_papers(source="conference")
 
     assert [paper["id"] for paper in data["papers"]] == ["two"]
     assert data["section_counts"]["CoRL"] == 2
     assert data["section_counts"]["ICRA"] == 1
+    assert data["section_counts"]["conference"] == 3
+    assert conference_data["count"] == 3
 
 
 def test_award_section_uses_curated_catalog(tmp_path):
@@ -172,3 +177,172 @@ def test_non_robotics_conference_keeps_core_robot_paper():
     assert len(selected) == 1
     assert selected[0]["embodied_categories"] == ["机器人学习"]
     assert "robot" in selected[0]["match_evidence"]
+
+
+def test_fresh_conference_cache_skips_network_fetch(tmp_path, monkeypatch):
+    monkeypatch.setattr(service_module, "SUPPORTED_CONFERENCES", ("ICRA",))
+    monkeypatch.setattr(service_module, "SUPPORTED_JOURNALS", ())
+    now = datetime.now(timezone.utc)
+    cache_path = tmp_path / "papers.json"
+    service = PaperService(
+        cache_path=str(cache_path),
+        conference_refresh_hours=168,
+    )
+    service._write_cache(
+        {
+            "updated_at": now.isoformat(),
+            "conference_updated_at": {"ICRA": now.isoformat()},
+            "arxiv_papers": [],
+            "conference_papers": [
+                _paper("old", "ICRA", 2025, 10, "Cached Robot Paper"),
+            ],
+        }
+    )
+    service._refresh_arxiv = lambda existing: []
+
+    def fail_fetch(conference):
+        raise AssertionError(f"unexpected conference fetch: {conference}")
+
+    service._fetch_conference = fail_fetch
+    service.refresh()
+
+    cached = service._read_cache()
+    assert [paper["id"] for paper in cached["conference_papers"]] == ["old"]
+    assert service._last_error == ""
+
+
+def test_stale_conference_refresh_appends_without_deleting(tmp_path, monkeypatch):
+    monkeypatch.setattr(service_module, "SUPPORTED_CONFERENCES", ("ICRA",))
+    monkeypatch.setattr(service_module, "SUPPORTED_JOURNALS", ())
+    old_refresh = datetime.now(timezone.utc) - timedelta(days=8)
+    cache_path = tmp_path / "papers.json"
+    service = PaperService(
+        cache_path=str(cache_path),
+        conference_refresh_hours=168,
+    )
+    service._write_cache(
+        {
+            "updated_at": old_refresh.isoformat(),
+            "conference_updated_at": {"ICRA": old_refresh.isoformat()},
+            "arxiv_papers": [],
+            "conference_papers": [
+                _paper("old", "ICRA", 2024, 10, "Older Robot Paper"),
+            ],
+        }
+    )
+    service._refresh_arxiv = lambda existing: []
+    service._fetch_conference = lambda conference: [
+        _paper("new", conference, 2025, 0, "New Robot Paper"),
+    ]
+    service.refresh()
+
+    cached = service._read_cache()
+    assert {paper["id"] for paper in cached["conference_papers"]} == {
+        "old",
+        "new",
+    }
+    assert cached["conference_updated_at"]["ICRA"] != old_refresh.isoformat()
+
+
+def test_failed_stale_refresh_keeps_cached_conference(tmp_path, monkeypatch):
+    monkeypatch.setattr(service_module, "SUPPORTED_CONFERENCES", ("ICRA",))
+    monkeypatch.setattr(service_module, "SUPPORTED_JOURNALS", ())
+    old_refresh = datetime.now(timezone.utc) - timedelta(days=8)
+    cache_path = tmp_path / "papers.json"
+    service = PaperService(cache_path=str(cache_path))
+    service._write_cache(
+        {
+            "updated_at": old_refresh.isoformat(),
+            "conference_updated_at": {"ICRA": old_refresh.isoformat()},
+            "arxiv_papers": [],
+            "conference_papers": [
+                _paper("old", "ICRA", 2024, 10, "Older Robot Paper"),
+            ],
+        }
+    )
+    service._refresh_arxiv = lambda existing: []
+    attempts = []
+
+    def fail_fetch(conference):
+        attempts.append(conference)
+        raise RuntimeError("temporary upstream failure")
+
+    service._fetch_conference = fail_fetch
+    service.refresh()
+    first_error = service._last_error
+    service.refresh()
+
+    cached = service._read_cache()
+    assert [paper["id"] for paper in cached["conference_papers"]] == ["old"]
+    assert cached["conference_updated_at"]["ICRA"] == old_refresh.isoformat()
+    assert cached["conference_checked_at"]["ICRA"] != old_refresh.isoformat()
+    assert attempts == ["ICRA"]
+    assert first_error == "ICRA: temporary upstream failure"
+    assert service._last_error == ""
+
+
+def test_journal_source_filter_and_counts(tmp_path):
+    service = PaperService(cache_path=str(tmp_path / "papers.json"))
+    paper = {
+        **_paper("journal-one", "", 2025, 12, "Journal Robot Paper"),
+        "source_kind": "journal",
+        "journal": "T-RO",
+        "conference": "",
+        "venue": "IEEE Transactions on Robotics",
+    }
+    service._write_cache(
+        {
+            "updated_at": "",
+            "arxiv_papers": [],
+            "conference_papers": [],
+            "journal_papers": [paper],
+        }
+    )
+
+    data = service.list_papers(source="T-RO")
+    journal_data = service.list_papers(source="journal")
+
+    assert [item["id"] for item in data["papers"]] == ["journal-one"]
+    assert data["section_counts"]["T-RO"] == 1
+    assert data["section_counts"]["journal"] == 1
+    assert journal_data["count"] == 1
+    assert data["journals"] == ["Science Robotics", "IJRR", "T-RO"]
+
+
+def test_stale_journal_refresh_appends_without_deleting(tmp_path, monkeypatch):
+    monkeypatch.setattr(service_module, "SUPPORTED_CONFERENCES", ())
+    monkeypatch.setattr(service_module, "SUPPORTED_JOURNALS", ("T-RO",))
+    old_refresh = datetime.now(timezone.utc) - timedelta(days=8)
+    service = PaperService(cache_path=str(tmp_path / "papers.json"))
+    old_paper = {
+        **_paper("old-journal", "", 2024, 10, "Older Journal Robot Paper"),
+        "source_kind": "journal",
+        "journal": "T-RO",
+        "conference": "",
+    }
+    new_paper = {
+        **_paper("new-journal", "", 2025, 0, "New Journal Robot Paper"),
+        "source_kind": "journal",
+        "journal": "T-RO",
+        "conference": "",
+    }
+    service._write_cache(
+        {
+            "updated_at": old_refresh.isoformat(),
+            "journal_updated_at": {"T-RO": old_refresh.isoformat()},
+            "journal_checked_at": {"T-RO": old_refresh.isoformat()},
+            "arxiv_papers": [],
+            "conference_papers": [],
+            "journal_papers": [old_paper],
+        }
+    )
+    service._refresh_arxiv = lambda existing: []
+    service.openalex.journal_papers = lambda journal: [new_paper]
+    service.refresh()
+
+    cached = service._read_cache()
+    assert {paper["id"] for paper in cached["journal_papers"]} == {
+        "old-journal",
+        "new-journal",
+    }
+    assert cached["journal_updated_at"]["T-RO"] != old_refresh.isoformat()

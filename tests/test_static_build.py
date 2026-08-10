@@ -12,9 +12,10 @@ def test_static_build_uses_relative_assets(tmp_path: Path):
     payload = json.loads((output / "data" / "papers.json").read_text(encoding="utf-8"))
 
     assert './data/papers.json' in html
-    assert './style.css?v=aligned-results-20260616' in html
-    assert './app.js?v=aligned-results-20260616' in html
+    assert './style.css?v=source-groups-20260810' in html
+    assert './app.js?v=source-groups-20260810' in html
     assert './site-icon.png' in html
+    assert 'id="publicationSourceFacet"' in html
     assert 'id="categoryFacet"' in html
     assert 'id="timeFacet"' in html
     assert 'id="citationFacet"' in html
@@ -28,4 +29,5 @@ def test_static_build_uses_relative_assets(tmp_path: Path):
     assert (output / "site-icon.png").exists()
     assert '{{' not in html
     assert payload["count"] == len(payload["papers"])
+    assert payload["journals"] == ["Science Robotics", "IJRR", "T-RO"]
     assert data["papers"]

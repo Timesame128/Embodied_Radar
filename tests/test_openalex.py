@@ -43,6 +43,24 @@ def test_parse_conference_work():
     assert paper["arxiv_url"].endswith("2501.12345")
 
 
+def test_parse_journal_work():
+    paper = OpenAlexClient._parse_journal_work(
+        {
+            **WORK,
+            "primary_location": {
+                **WORK["primary_location"],
+                "source": {"display_name": "IEEE Transactions on Robotics"},
+            },
+        },
+        "T-RO",
+    )
+
+    assert paper["source_kind"] == "journal"
+    assert paper["journal"] == "T-RO"
+    assert paper["conference"] == ""
+    assert paper["venue"] == "IEEE Transactions on Robotics"
+
+
 def test_source_name_matching_accepts_numbered_proceedings():
     assert _source_matches(
         "proceedings of the 8th conference on robot learning",
@@ -114,3 +132,48 @@ def test_source_lookup_uses_year_qualified_queries(monkeypatch):
 
     assert client._source_ids("ICRA", [2026]) == ["S123"]
     assert queries[0].endswith("2026")
+
+
+def test_journal_source_lookup_uses_verified_openalex_ids(monkeypatch):
+    client = OpenAlexClient()
+
+    def fail_get(url, params):
+        raise AssertionError("configured journal IDs should not require source search")
+
+    monkeypatch.setattr(client, "_get", fail_get)
+
+    assert client._journal_source_ids("Science Robotics") == ["S4210213233"]
+    assert client._journal_source_ids("IJRR") == ["S73484101"]
+    assert client._journal_source_ids("T-RO") == ["S144620930"]
+
+
+def test_journal_fetches_are_split_by_year(monkeypatch):
+    client = OpenAlexClient(journal_max_results=2, journal_years=2)
+    current_year = date.today().year
+    monkeypatch.setattr(client, "_journal_source_ids", lambda journal: ["S1"])
+
+    def fake_get(url, params):
+        year = current_year if f"{current_year}-01-01" in params["filter"] else current_year - 1
+        return {
+            "results": [
+                {
+                    **WORK,
+                    "id": f"https://openalex.org/J{year}",
+                    "doi": f"https://doi.org/10.1000/journal-{year}",
+                    "title": f"Journal Robot Paper {year}",
+                    "display_name": f"Journal Robot Paper {year}",
+                    "publication_date": f"{year}-06-01",
+                    "publication_year": year,
+                }
+            ],
+            "meta": {"next_cursor": None},
+        }
+
+    monkeypatch.setattr(client, "_get", fake_get)
+    papers = client.journal_papers("Science Robotics")
+
+    assert [paper["publication_year"] for paper in papers] == [
+        current_year,
+        current_year - 1,
+    ]
+    assert all(paper["source_kind"] == "journal" for paper in papers)

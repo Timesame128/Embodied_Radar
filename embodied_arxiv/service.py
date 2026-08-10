@@ -2,15 +2,19 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import threading
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+
+import requests
 
 from embodied_arxiv.arxiv_client import ArxivClient
 from embodied_arxiv.awards import AwardCatalog
 from embodied_arxiv.classifier import classify, core_evidence, normalize_text
 from embodied_arxiv.conferences import SUPPORTED_CONFERENCES, detect_conferences
 from embodied_arxiv.dblp import DblpClient
+from embodied_arxiv.journals import SUPPORTED_JOURNALS
 from embodied_arxiv.openalex import OpenAlexClient
 
 
@@ -39,6 +43,10 @@ class PaperService:
         openalex_api_key: str = "",
         conference_max_results: int = 200,
         conference_years: int = 5,
+        conference_refresh_hours: int = 168,
+        journal_max_results: int = 200,
+        journal_years: int = 5,
+        journal_refresh_hours: int = 168,
         awards_path: str = "data/awards.json",
     ):
         self.cache_path = Path(cache_path)
@@ -49,11 +57,15 @@ class PaperService:
             api_key=openalex_api_key,
             conference_max_results=conference_max_results,
             conference_years=conference_years,
+            journal_max_results=journal_max_results,
+            journal_years=journal_years,
         )
         self.dblp = DblpClient(
             max_results=conference_max_results,
             years=conference_years,
         )
+        self.conference_refresh_hours = max(conference_refresh_hours, 1)
+        self.journal_refresh_hours = max(journal_refresh_hours, 1)
         self.awards = AwardCatalog(awards_path)
         self._lock = threading.Lock()
         self._refreshing = False
@@ -72,10 +84,11 @@ class PaperService:
         max_citations: int | None = None,
     ) -> dict:
         data = self._read_cache()
-        arxiv_papers, conference_papers = self._collections(data)
+        arxiv_papers, conference_papers, journal_papers = self._collections(data)
         arxiv_papers = self._prepare_arxiv(self._recent(arxiv_papers))
         conference_papers = self.awards.apply(self._prepare_conferences(conference_papers))
-        all_papers = arxiv_papers + conference_papers
+        journal_papers = self._prepare_journals(journal_papers)
+        all_papers = arxiv_papers + conference_papers + journal_papers
         papers = list(all_papers)
 
         selected_source = source or conference
@@ -83,11 +96,21 @@ class PaperService:
             papers = arxiv_papers
         elif selected_source == "awards":
             papers = [paper for paper in conference_papers if paper.get("awards")]
+        elif selected_source == "conference":
+            papers = conference_papers
+        elif selected_source == "journal":
+            papers = journal_papers
         elif selected_source in SUPPORTED_CONFERENCES:
             papers = [
                 paper
                 for paper in conference_papers
                 if paper.get("conference") == selected_source
+            ]
+        elif selected_source in SUPPORTED_JOURNALS:
+            papers = [
+                paper
+                for paper in journal_papers
+                if paper.get("journal") == selected_source
             ]
 
         if category:
@@ -143,18 +166,26 @@ class PaperService:
         years = sorted(
             {
                 paper.get("publication_year")
-                for paper in conference_papers
+                for paper in conference_papers + journal_papers
                 if paper.get("publication_year")
             },
             reverse=True,
         )
         section_counts = {
             "arxiv": len(arxiv_papers),
+            "conference": len(conference_papers),
+            "journal": len(journal_papers),
             **{
                 name: sum(
                     paper.get("conference") == name for paper in conference_papers
                 )
                 for name in SUPPORTED_CONFERENCES
+            },
+            **{
+                name: sum(
+                    paper.get("journal") == name for paper in journal_papers
+                )
+                for name in SUPPORTED_JOURNALS
             },
             "awards": sum(bool(paper.get("awards")) for paper in conference_papers),
         }
@@ -162,6 +193,7 @@ class PaperService:
             "papers": papers,
             "categories": categories,
             "conferences": list(SUPPORTED_CONFERENCES),
+            "journals": list(SUPPORTED_JOURNALS),
             "section_counts": section_counts,
             "years": years,
             "count": len(papers),
@@ -174,11 +206,13 @@ class PaperService:
 
     def status(self) -> dict:
         data = self._read_cache()
-        arxiv_papers, conference_papers = self._collections(data)
+        arxiv_papers, conference_papers, journal_papers = self._collections(data)
         return {
             "refreshing": self._refreshing,
             "updated_at": data.get("updated_at", ""),
-            "count": len(self._recent(arxiv_papers)) + len(conference_papers),
+            "count": (
+                len(self._recent(arxiv_papers)) + len(conference_papers) + len(journal_papers)
+            ),
             "last_error": self._last_error,
         }
 
@@ -201,17 +235,40 @@ class PaperService:
         errors = []
         try:
             cached = self._read_cache()
-            old_arxiv, old_conferences = self._collections(cached)
+            now = datetime.now(timezone.utc)
+            old_arxiv, old_conferences, old_journals = self._collections(cached)
             old_arxiv_by_id = {paper["id"]: paper for paper in old_arxiv}
+            conference_updated_at = dict(cached.get("conference_updated_at") or {})
+            conference_checked_at = dict(cached.get("conference_checked_at") or {})
+            journal_updated_at = dict(cached.get("journal_updated_at") or {})
+            journal_checked_at = dict(cached.get("journal_checked_at") or {})
 
             try:
                 arxiv_papers = self._refresh_arxiv(old_arxiv_by_id)
             except Exception as exc:
                 arxiv_papers = old_arxiv
-                errors.append(f"arXiv: {exc}")
+                errors.append(f"arXiv: {_short_error(exc)}")
 
-            conference_papers = []
+            conference_papers = list(old_conferences)
             for conference in SUPPORTED_CONFERENCES:
+                cached_for_conference = [
+                    paper
+                    for paper in old_conferences
+                    if paper.get("conference") == conference
+                ]
+                if (
+                    cached_for_conference
+                    and conference not in conference_checked_at
+                    and cached.get("updated_at")
+                ):
+                    conference_checked_at[conference] = cached["updated_at"]
+                if not self._source_refresh_due(
+                    conference_checked_at.get(conference, ""),
+                    now,
+                    self.conference_refresh_hours,
+                ):
+                    continue
+
                 try:
                     fetched = self._fetch_conference(conference)
                     selected = self._classify_conference_papers(fetched, conference)
@@ -222,26 +279,72 @@ class PaperService:
                         for paper in selected
                     ):
                         selected = self.openalex.enrich_papers(selected, limit=40)
-                    conference_papers.extend(selected)
-                except Exception as exc:
-                    cached_for_conference = [
+                    merged = self._deduplicate([*cached_for_conference, *selected])
+                    conference_papers = [
                         paper
-                        for paper in old_conferences
-                        if paper.get("conference") == conference
+                        for paper in conference_papers
+                        if paper.get("conference") != conference
                     ]
-                    conference_papers.extend(cached_for_conference)
-                    errors.append(f"{conference}: {exc}")
+                    conference_papers.extend(merged)
+                    conference_updated_at[conference] = now.isoformat()
+                    conference_checked_at[conference] = now.isoformat()
+                except Exception as exc:
+                    conference_checked_at[conference] = now.isoformat()
+                    errors.append(f"{conference}: {_short_error(exc)}")
+
+            journal_papers = list(old_journals)
+            for journal in SUPPORTED_JOURNALS:
+                cached_for_journal = [
+                    paper
+                    for paper in old_journals
+                    if paper.get("journal") == journal
+                ]
+                if (
+                    cached_for_journal
+                    and journal not in journal_checked_at
+                    and cached.get("updated_at")
+                ):
+                    journal_checked_at[journal] = cached["updated_at"]
+                if not self._source_refresh_due(
+                    journal_checked_at.get(journal, ""),
+                    now,
+                    self.journal_refresh_hours,
+                ):
+                    continue
+
+                try:
+                    fetched = self.openalex.journal_papers(journal)
+                    selected = self._classify_journal_papers(fetched, journal)
+                    if not selected:
+                        raise RuntimeError("主题筛选后没有符合条件的论文")
+                    merged = self._deduplicate([*cached_for_journal, *selected])
+                    journal_papers = [
+                        paper
+                        for paper in journal_papers
+                        if paper.get("journal") != journal
+                    ]
+                    journal_papers.extend(merged)
+                    journal_updated_at[journal] = now.isoformat()
+                    journal_checked_at[journal] = now.isoformat()
+                except Exception as exc:
+                    journal_checked_at[journal] = now.isoformat()
+                    errors.append(f"{journal}: {_short_error(exc)}")
 
             self._write_cache(
                 {
-                    "updated_at": datetime.now(timezone.utc).isoformat(),
+                    "updated_at": now.isoformat(),
+                    "conference_updated_at": conference_updated_at,
+                    "conference_checked_at": conference_checked_at,
+                    "journal_updated_at": journal_updated_at,
+                    "journal_checked_at": journal_checked_at,
                     "arxiv_papers": arxiv_papers,
                     "conference_papers": self._deduplicate(conference_papers),
+                    "journal_papers": self._deduplicate(journal_papers),
                 }
             )
             self._last_error = "；".join(errors)
         except Exception as exc:
-            self._last_error = str(exc)
+            self._last_error = _short_error(exc)
         finally:
             with self._lock:
                 self._refreshing = False
@@ -252,11 +355,11 @@ class PaperService:
         try:
             papers.extend(self.openalex.conference_papers(conference))
         except Exception as exc:
-            errors.append(f"OpenAlex: {exc}")
+            errors.append(f"OpenAlex: {_short_error(exc)}")
         try:
             papers.extend(self.dblp.conference_papers(conference))
         except Exception as exc:
-            errors.append(f"DBLP: {exc}")
+            errors.append(f"DBLP: {_short_error(exc)}")
         papers = self._deduplicate(papers)
         papers.sort(
             key=lambda item: (item.get("published_ts", 0), item.get("title", "")),
@@ -266,6 +369,24 @@ class PaperService:
             detail = "；".join(errors) or "未返回错误详情"
             raise RuntimeError(f"OpenAlex 与 DBLP 均未返回数据；{detail}")
         return papers
+
+    @staticmethod
+    def _source_refresh_due(
+        value: str,
+        now: datetime,
+        refresh_hours: int,
+    ) -> bool:
+        if not value:
+            return True
+        try:
+            last_refresh = datetime.fromisoformat(value.replace("Z", "+00:00"))
+            if last_refresh.tzinfo is None:
+                last_refresh = last_refresh.replace(tzinfo=timezone.utc)
+        except (AttributeError, TypeError, ValueError):
+            return True
+        return now - last_refresh >= timedelta(
+            hours=refresh_hours,
+        )
 
     def _refresh_arxiv(self, existing: dict[str, dict]) -> list[dict]:
         selected = []
@@ -328,6 +449,32 @@ class PaperService:
             selected.append(paper)
         return selected
 
+    @staticmethod
+    def _classify_journal_papers(
+        papers: list[dict],
+        journal: str,
+    ) -> list[dict]:
+        return PaperService._classify_robotics_source_papers(papers, journal)
+
+    @staticmethod
+    def _classify_robotics_source_papers(papers: list[dict], source: str) -> list[dict]:
+        selected = []
+        for paper in papers:
+            categories, evidence = classify(
+                paper.get("title", ""),
+                paper.get("summary", ""),
+            )
+            if not categories:
+                categories = ["机器人学习"]
+                evidence = core_evidence(
+                    paper.get("title", ""),
+                    paper.get("summary", ""),
+                ) or [source]
+            paper["embodied_categories"] = categories
+            paper["match_evidence"] = evidence
+            selected.append(paper)
+        return selected
+
     def _recent(self, papers: list[dict]) -> list[dict]:
         cutoff = (datetime.now(timezone.utc) - timedelta(days=self.days)).timestamp()
         return [paper for paper in papers if paper.get("published_ts", 0) >= cutoff]
@@ -363,10 +510,30 @@ class PaperService:
         return prepared
 
     @staticmethod
-    def _collections(data: dict) -> tuple[list[dict], list[dict]]:
-        if "arxiv_papers" in data or "conference_papers" in data:
-            return data.get("arxiv_papers", []), data.get("conference_papers", [])
-        return data.get("papers", []), []
+    def _prepare_journals(papers: list[dict]) -> list[dict]:
+        prepared = []
+        for paper in papers:
+            item = dict(paper)
+            item["source_kind"] = "journal"
+            item["conference"] = ""
+            item["conferences"] = []
+            item["cited_by_count"] = int(item.get("cited_by_count") or 0)
+            item["awards"] = item.get("awards") or []
+            prepared.append(item)
+        return prepared
+
+    @staticmethod
+    def _collections(data: dict) -> tuple[list[dict], list[dict], list[dict]]:
+        if any(
+            key in data
+            for key in ("arxiv_papers", "conference_papers", "journal_papers")
+        ):
+            return (
+                data.get("arxiv_papers", []),
+                data.get("conference_papers", []),
+                data.get("journal_papers", []),
+            )
+        return data.get("papers", []), [], []
 
     @staticmethod
     def _paper_year(paper: dict) -> int | None:
@@ -385,6 +552,7 @@ class PaperService:
                 " ".join(paper.get("authors", [])),
                 " ".join(paper.get("institutions", [])),
                 paper.get("conference", ""),
+                paper.get("journal", ""),
                 " ".join(
                     award.get("award", "")
                     for award in paper.get("awards", [])
@@ -396,11 +564,17 @@ class PaperService:
     def _deduplicate(papers: list[dict]) -> list[dict]:
         result = {}
         for paper in papers:
-            key = paper.get("doi") or normalize_text(paper.get("title", ""))
-            if not key:
+            identity = paper.get("doi") or normalize_text(paper.get("title", ""))
+            if not identity:
                 continue
+            source_name = paper.get("conference") or paper.get("journal") or ""
+            key = (
+                paper.get("source_kind", ""),
+                source_name,
+                identity,
+            )
             existing = result.get(key)
-            if not existing or _paper_quality(paper) > _paper_quality(existing):
+            if not existing or _paper_quality(paper) >= _paper_quality(existing):
                 result[key] = paper
         return list(result.values())
 
@@ -420,6 +594,23 @@ class PaperService:
             encoding="utf-8",
         )
         os.replace(temp_path, self.cache_path)
+
+
+def _short_error(exc: Exception) -> str:
+    if isinstance(exc, requests.HTTPError):
+        response = getattr(exc, "response", None)
+        if response is not None:
+            return f"HTTP {response.status_code}"
+    if isinstance(exc, requests.Timeout):
+        return "request timed out"
+    if isinstance(exc, requests.ConnectionError):
+        message = str(exc).lower()
+        if "reset" in message:
+            return "connection reset"
+        return "connection failed"
+
+    message = re.sub(r"\s+for url:.*$", "", str(exc), flags=re.DOTALL).strip()
+    return (message or exc.__class__.__name__)[:180]
 
 
 def _paper_quality(paper: dict) -> tuple[int, int, int, int]:
