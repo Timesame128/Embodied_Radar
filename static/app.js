@@ -111,6 +111,8 @@ const immersiveFacetSlot = document.querySelector("#immersiveFacetSlot");
 const immersiveActiveSlot = document.querySelector("#immersiveActiveSlot");
 const immersiveHeadingSlot = document.querySelector("#immersiveHeadingSlot");
 const immersiveGridSlot = document.querySelector("#immersiveGridSlot");
+const paperScrollbar = document.querySelector("#paperScrollbar");
+const paperScrollbarThumb = document.querySelector("#paperScrollbarThumb");
 const immersiveFilterButton = document.querySelector("#immersiveFilterButton");
 const exitImmersiveButton = document.querySelector("#exitImmersiveButton");
 const closeImmersiveFilters = document.querySelector("#closeImmersiveFilters");
@@ -133,6 +135,9 @@ const nodeAnchors = new Map(
     return [node, anchor];
   })
 );
+
+const MIN_PAPER_SCROLLBAR_THUMB = 80;
+let paperScrollbarDrag = null;
 
 function escapeHtml(value = "") {
   return String(value).replace(/[&<>"']/g, char => ({
@@ -704,6 +709,7 @@ function renderPapers(papers) {
     `;
   }).join("");
   emptyState.hidden = papers.length > 0;
+  requestAnimationFrame(updatePaperScrollbar);
 }
 
 function renderCurrentView() {
@@ -774,6 +780,34 @@ function restoreNode(node) {
   anchor.parentNode.insertBefore(node, anchor.nextSibling);
 }
 
+function updatePaperScrollbar() {
+  const scrollRange = Math.max(0, grid.scrollHeight - grid.clientHeight);
+  const canScroll = immersiveState.active && !grid.hidden && scrollRange > 1;
+  paperScrollbar.hidden = !canScroll;
+  if (!canScroll) return;
+
+  const trackHeight = paperScrollbar.clientHeight;
+  if (!trackHeight) return;
+  const proportionalHeight = trackHeight * (grid.clientHeight / grid.scrollHeight);
+  const thumbHeight = Math.min(
+    trackHeight,
+    Math.max(MIN_PAPER_SCROLLBAR_THUMB, proportionalHeight)
+  );
+  const thumbRange = Math.max(0, trackHeight - thumbHeight);
+  const thumbTop = scrollRange
+    ? (grid.scrollTop / scrollRange) * thumbRange
+    : 0;
+  const progress = scrollRange
+    ? Math.round((grid.scrollTop / scrollRange) * 100)
+    : 0;
+
+  paperScrollbarThumb.style.height = `${thumbHeight}px`;
+  paperScrollbarThumb.style.transform = `translateY(${thumbTop}px)`;
+  paperScrollbarThumb.setAttribute("aria-valuemin", "0");
+  paperScrollbarThumb.setAttribute("aria-valuemax", "100");
+  paperScrollbarThumb.setAttribute("aria-valuenow", String(progress));
+}
+
 function renderImmersiveState() {
   immersiveOverlay.hidden = !immersiveState.active;
   document.body.classList.toggle("immersive-open", immersiveState.active);
@@ -782,6 +816,7 @@ function renderImmersiveState() {
     "aria-expanded",
     String(immersiveState.drawerOpen)
   );
+  requestAnimationFrame(updatePaperScrollbar);
 }
 
 function enterImmersiveMode() {
@@ -820,6 +855,78 @@ function setImmersiveDrawer(open) {
   immersiveState.drawerOpen = open;
   renderImmersiveState();
 }
+
+function paperScrollMetrics() {
+  const trackHeight = paperScrollbar.clientHeight;
+  const thumbHeight = paperScrollbarThumb.offsetHeight;
+  return {
+    scrollRange: Math.max(0, grid.scrollHeight - grid.clientHeight),
+    thumbRange: Math.max(0, trackHeight - thumbHeight)
+  };
+}
+
+paperScrollbar.addEventListener("pointerdown", event => {
+  if (event.target === paperScrollbarThumb || event.button !== 0) return;
+  event.preventDefault();
+  const rect = paperScrollbar.getBoundingClientRect();
+  const { scrollRange, thumbRange } = paperScrollMetrics();
+  const targetTop = Math.max(
+    0,
+    Math.min(thumbRange, event.clientY - rect.top - paperScrollbarThumb.offsetHeight / 2)
+  );
+  grid.scrollTop = thumbRange ? (targetTop / thumbRange) * scrollRange : 0;
+});
+
+paperScrollbarThumb.addEventListener("pointerdown", event => {
+  if (event.button !== 0) return;
+  event.preventDefault();
+  const { scrollRange, thumbRange } = paperScrollMetrics();
+  paperScrollbarDrag = {
+    pointerId: event.pointerId,
+    startY: event.clientY,
+    startScrollTop: grid.scrollTop,
+    scrollRange,
+    thumbRange
+  };
+  paperScrollbarThumb.setPointerCapture(event.pointerId);
+  paperScrollbarThumb.classList.add("is-dragging");
+});
+
+paperScrollbarThumb.addEventListener("pointermove", event => {
+  if (!paperScrollbarDrag || event.pointerId !== paperScrollbarDrag.pointerId) return;
+  const { startY, startScrollTop, scrollRange, thumbRange } = paperScrollbarDrag;
+  const scrollDelta = thumbRange
+    ? ((event.clientY - startY) / thumbRange) * scrollRange
+    : 0;
+  grid.scrollTop = Math.max(0, Math.min(scrollRange, startScrollTop + scrollDelta));
+});
+
+function endPaperScrollbarDrag(event) {
+  if (!paperScrollbarDrag || event.pointerId !== paperScrollbarDrag.pointerId) return;
+  paperScrollbarDrag = null;
+  paperScrollbarThumb.classList.remove("is-dragging");
+}
+
+paperScrollbarThumb.addEventListener("pointerup", endPaperScrollbarDrag);
+paperScrollbarThumb.addEventListener("pointercancel", endPaperScrollbarDrag);
+paperScrollbarThumb.addEventListener("keydown", event => {
+  const pageStep = Math.max(80, grid.clientHeight * 0.85);
+  const keyActions = {
+    ArrowUp: () => { grid.scrollTop -= 48; },
+    ArrowDown: () => { grid.scrollTop += 48; },
+    PageUp: () => { grid.scrollTop -= pageStep; },
+    PageDown: () => { grid.scrollTop += pageStep; },
+    Home: () => { grid.scrollTop = 0; },
+    End: () => { grid.scrollTop = grid.scrollHeight; }
+  };
+  const action = keyActions[event.key];
+  if (!action) return;
+  event.preventDefault();
+  action();
+});
+
+grid.addEventListener("scroll", updatePaperScrollbar, { passive: true });
+window.addEventListener("resize", updatePaperScrollbar, { passive: true });
 
 sourceTabs.addEventListener("click", event => {
   const button = event.target.closest("[data-source]");

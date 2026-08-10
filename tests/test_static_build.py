@@ -12,8 +12,8 @@ def test_static_build_uses_relative_assets(tmp_path: Path):
     payload = json.loads((output / "data" / "papers.json").read_text(encoding="utf-8"))
 
     assert './data/papers.json' in html
-    assert './style.css?v=source-groups-20260810' in html
-    assert './app.js?v=source-groups-20260810' in html
+    assert './style.css?v=scrollbar-thumb-20260810' in html
+    assert './app.js?v=scrollbar-thumb-20260810' in html
     assert './site-icon.png' in html
     assert 'id="publicationSourceFacet"' in html
     assert 'id="categoryFacet"' in html
@@ -25,6 +25,8 @@ def test_static_build_uses_relative_assets(tmp_path: Path):
     assert 'data-view="card"' in html
     assert 'id="immersiveOverlay"' in html
     assert 'id="exitImmersiveButton"' in html
+    assert 'id="paperScrollbar"' in html
+    assert 'id="paperScrollbarThumb"' in html
     assert 'id="fromYearInput"' not in html
     assert (output / "site-icon.png").exists()
     assert '{{' not in html
