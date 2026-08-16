@@ -4,7 +4,7 @@ Embodied Radar 是一个面向具身智能研究的论文雷达，用于自动�
 
 线上地址：
 
-<https://timesame128.github.io/reach-arXiv/>
+<https://timesame128.github.io/Embodied_Radar/>
 
 ## 功能
 
