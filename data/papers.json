@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-09-05T04:34:30.838340+00:00",
+  "updated_at": "2026-09-05T10:39:55.657147+00:00",
   "conference_updated_at": {
     "ICRA": "2026-08-31T13:57:31.175365+00:00",
     "IROS": "2026-08-31T13:57:31.175365+00:00",
@@ -534,8 +534,10 @@
         "robotic",
         "world model"
       ],
-      "institutions": [],
-      "institutions_source": ""
+      "institutions": [
+        "Genecast (China)"
+      ],
+      "institutions_source": "OpenAlex"
     },
     {
       "id": "2609.03497v1",
@@ -7861,140 +7863,6 @@
       "match_evidence": [
         "embodied",
         "embodied agent"
-      ],
-      "institutions": [],
-      "institutions_source": ""
-    },
-    {
-      "id": "2608.20936v1",
-      "title": "Graph-Operator World Models for Morphology-Parameter Generalization in Continuous Control",
-      "summary": "World models for continuous control are commonly trained for a fixed physical system and can degrade when known morphology parameters such as link lengths, masses, damping, and actuation change. Existing approaches often provide these parameters as conditioning information, but leave unspecified which part of the learned transition should remain reusable and which part should change with morphology. We propose Graph-Operator World Models (GraphOp-WM), a structured world model for generalization across unseen morphology parameters within related articulated robot families. GraphOp-WM represents bodies and their kinematic relations as an attributed graph and factorizes each transition into a morphology-independent local dynamics basis and a morphology-conditioned structured operator. The operator combines node-local modulation, kinematic-tree coupling, and a low-rank global correction, while architectural information separation, basis normalization, and paired-morphology supervision encourage static morphology dependence to be carried by the operator pathway. Graph-level readout and edge-wise action representations provide a compatible interface for reward, value, and TD-MPC-style planning. We further define controlled MuJoCo parameter splits covering interpolation, extrapolation, and held-out compositions of link geometry, mass, damping, and actuation parameters in Hopper, Walker2d, and HalfCheetah.",
-      "authors": [
-        "Xu Yang",
-        "Yiqin Yang",
-        "Qianchuan Zhao"
-      ],
-      "published": "2026-08-21T10:01:46Z",
-      "updated": "2026-08-21T10:01:46Z",
-      "published_ts": 1787306506.0,
-      "arxiv_url": "http://arxiv.org/abs/2608.20936v1",
-      "pdf_url": "https://arxiv.org/pdf/2608.20936v1",
-      "primary_category": "cs.AI",
-      "arxiv_categories": [
-        "cs.AI",
-        "cs.RO"
-      ],
-      "comment": "",
-      "journal_ref": "",
-      "doi": "",
-      "doi_url": "",
-      "external_urls": [],
-      "source_kind": "arxiv",
-      "conference": "",
-      "conferences": [],
-      "publication_year": 2026,
-      "cited_by_count": 0,
-      "awards": [],
-      "embodied_categories": [
-        "世界模型与仿真"
-      ],
-      "match_evidence": [
-        "robot",
-        "world model"
-      ],
-      "institutions": [],
-      "institutions_source": ""
-    },
-    {
-      "id": "2608.26182v1",
-      "title": "Why did My Robot Just Change Personality? Prompting Guidelines for a Grounded Robot Persona in LLM-Based HRI",
-      "summary": "Large language models (LLMs) are increasingly used for verbal interaction in social robots, yet prompt design in human-robot interaction (HRI) remains underspecified. As a result, robots may present hallucinated capabilities, unclear behavioural boundaries, and misleading personas. This paper develops a framework for prompt design in LLM-based robots and introduces a structured prompt template comprising eight functional components through which robot behaviour can be specified, bounded, and adapted. The framework is grounded in a review of prior LLM-based HRI work and complemented by survey and discussion data from HRI experts gathered at the Robo-Identity workshop at IEEE RO-MAN 2025 (N=27). The qualitative findings highlight limited legibility of robot personality, the need for user adaptation, and strong ethical concerns about safety, deception, and governance. Based on these findings, we present prompting guidelines accompanied by proof-of-concept template as a structured design and reporting aid for HRI research. We argue that prompt design should be treated as a socio-technical problem rather than a minor implementation detail, requiring explicit capability boundaries, transparent behavioural assumptions, and context-sensitive safeguards to support reliable and interpretable HRI.",
-      "authors": [
-        "Ashita Ashok",
-        "Franziska Babel",
-        "Patrick Holthaus",
-        "Rucha Khot",
-        "Karla Bransky",
-        "Fethiye Irmak Dogan",
-        "Karsten Berns",
-        "Silvia Rossi",
-        "Minha Lee",
-        "Guy Laban"
-      ],
-      "published": "2026-08-21T07:14:56Z",
-      "updated": "2026-08-21T07:14:56Z",
-      "published_ts": 1787296496.0,
-      "arxiv_url": "http://arxiv.org/abs/2608.26182v1",
-      "pdf_url": "https://arxiv.org/pdf/2608.26182v1",
-      "primary_category": "cs.AI",
-      "arxiv_categories": [
-        "cs.AI",
-        "cs.HC",
-        "cs.RO"
-      ],
-      "comment": "Accepted for publication at the 35th IEEE International Conference on Robot and Human Interactive Communication (RO-MAN 2026)",
-      "journal_ref": "",
-      "doi": "",
-      "doi_url": "",
-      "external_urls": [],
-      "source_kind": "arxiv",
-      "conference": "",
-      "conferences": [],
-      "publication_year": 2026,
-      "cited_by_count": 0,
-      "awards": [],
-      "embodied_categories": [
-        "人机交互"
-      ],
-      "match_evidence": [
-        "human-robot interaction",
-        "robot",
-        "social robot"
-      ],
-      "institutions": [],
-      "institutions_source": ""
-    },
-    {
-      "id": "2608.20735v2",
-      "title": "ForeTime-VLA: Causal Future-Token Distillation from a World Action Model for Conveyor-Belt Manipulation",
-      "summary": "Manipulating moving objects requires a policy to anticipate contact events, yet vision-language-action (VLA) policies are commonly fine-tuned from the current observation alone. World action models (WAMs) learn predictive dynamics, but running a video-scale teacher or explicitly imagining future frames at deployment is costly. We introduce ForeTime-VLA, a dense pi0.5 policy that distills a future-aware, action-equivalent representation from a frozen Fast-WAM-derived teacher while remaining causal at inference. Offline, current and future video latents are compressed into a whitened 64-D target. Online, an eight-frame history encoder predicts this target together with manipulation phase and normalized time-to-transition. Four future tokens and one phase token condition the VLM prefix, while the predicted future and transition horizon condition the action expert. Training retains the original flow-matching action target and adds cosine, relational geometry, phase, time-to-transition, and action-equivalence objectives. On a deduplicated conveyor-belt dataset, we compare 40k-step checkpoints on 768 matched windows per split. Test MAE decreases from 0.134119 to 0.130593 (2.63%; paired-bootstrap 95% CI: 0.82-4.48% improvement), and test L2 decreases by 3.02%, at a 2.46-2.93% latency cost. In quantitative real-robot evaluation, ForeTime-VLA achieves 81.1% stationary and 58.9% slow-moving grasp success, exceeding the next-best reference by 12.2 and 22.2 percentage points, respectively. Across three belt speeds, it completes 44/90 grasps versus 23/90 for pi0.5, including 11/30 versus 2/30 at fast speed. The agreement between offline orientation gains and reduced real-robot contact-pose failures supports causal future-token distillation as an effective way to improve dynamic manipulation without deploying the world-model teacher.",
-      "authors": [
-        "Siyuan Ma",
-        "Yutian Zhang",
-        "Boshi Zhang",
-        "Qinglian Wu",
-        "Jiaqi Zhai",
-        "Dong Wei",
-        "Xiaojin Huang"
-      ],
-      "published": "2026-08-21T04:40:41Z",
-      "updated": "2026-08-24T03:31:07Z",
-      "published_ts": 1787287241.0,
-      "arxiv_url": "http://arxiv.org/abs/2608.20735v2",
-      "pdf_url": "https://arxiv.org/pdf/2608.20735v2",
-      "primary_category": "cs.AI",
-      "arxiv_categories": [
-        "cs.AI",
-        "cs.RO"
-      ],
-      "comment": "8 pages, 5 figures. Introduces ForeTime-VLA, a causal future-token distillation method for conveyor-belt manipulation from a frozen world action model teacher",
-      "journal_ref": "",
-      "doi": "",
-      "doi_url": "",
-      "external_urls": [],
-      "source_kind": "arxiv",
-      "conference": "",
-      "conferences": [],
-      "publication_year": 2026,
-      "cited_by_count": 0,
-      "awards": [],
-      "embodied_categories": [
-        "视觉-语言-动作"
-      ],
-      "match_evidence": [
-        "manipulation",
-        "robot",
-        "vision-language-action"
       ],
       "institutions": [],
       "institutions_source": ""
